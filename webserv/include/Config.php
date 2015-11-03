@@ -3,7 +3,7 @@
 /**
  * Database config variables
  */
-define("DB_HOST", "localhost");
+define("DB_HOST", "23.91.114.44");
 define("DB_USER", "mysql");
 define("DB_PASSWORD", "mysql");
 define("DB_DATABASE", "hms");
