@@ -11,8 +11,8 @@ define("DB_DATABASE", "hms");
 class DB_Class {
 
     function __construct() {
-        $connection = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD) or die('Oops connection error -> ' . mysql_error());
-        mysql_select_db(DB_DATABASE, $connection) or die('Database error -> ' . mysql_error());
+        $connection = mysql_connect('23.91.114.44', 'mysql', 'mysql') or die('Oops connection error -> ' . mysql_error());
+        mysql_select_db('hms', $connection) or die('Database error -> ' . mysql_error());
     }
 
 }
