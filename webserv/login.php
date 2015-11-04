@@ -8,7 +8,7 @@ $response = array("error" => FALSE);
 
 if (isset($_POST['email']) && isset($_POST['password'])) {
 
- $email = $_POST['email'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
 
     // get the user by email and password
