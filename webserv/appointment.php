@@ -23,15 +23,15 @@ if (isset($_POST['patient_name']) && isset($_POST['patient_email'])) {
     // check if user is already existed with the same email
     if ($db->isappointmentExisted($App_Time)) {
         // user already existed
-        $response["success"] = 0;
+        $response["response"] = 0;
         $response["error_msg"] = "Appointment already Booked for " . $App_Time;
         echo json_encode($response);
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         $user = $db->register_appointment($App_Date,$App_Time,$Doc_Name,$Pat_Name,$Pat_Email,$Pat_Mobile,$Br_Name);
         if ($user) {
-            // user stored successfully
-        $response["success"] = 1;
+            // user stored responsefully
+        $response["response"] = 1;
         $user = mysql_query("SELECT * from Appointment_master WHERE Pat_Email = '$Pat_Email'");
         $user_data = mysql_fetch_array($user);
         $no_rows = mysql_num_rows($user);
@@ -46,18 +46,18 @@ if (isset($_POST['patient_name']) && isset($_POST['patient_email'])) {
 //            return NULL;
         }
         $response["APP_ID"] = $user_data['APP_ID'];
-        $response["message"] = "Appointment booked successfully.";
+        $response["message"] = "Appointment booked responsefully.";
         echo json_encode($response);
         } else {
             // user failed to store
             
-            $response["success"] = 2;
+            $response["response"] = 2;
             $response["error_msg"] = "Unknown error occurred in registration!";
             echo json_encode($response);
         }
     }
 } else {
-    $response["success"] = 3;
+    $response["response"] = 3;
     $response["error_msg"] = "Required parameters is missing!";
     echo json_encode($response);
 }

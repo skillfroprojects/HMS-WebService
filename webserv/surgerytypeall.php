@@ -14,6 +14,8 @@ if (mysql_num_rows($result) > 0) {
     $response["surgerytype"] = array();
     
     while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;
         // temp user array
         $Surgerytype = array();
         $Surgerytype["sp_id"] = $row["sp_id"];
@@ -22,14 +24,12 @@ if (mysql_num_rows($result) > 0) {
         // push single product into final response array
         array_push($response["surgerytype"], $Surgerytype);
     }
-    // success
-    $response["success"] = 1;
-
+   
     // echoing JSON response
     echo json_encode($response);
 } else {
     // no products found
-    $response["success"] = 2;
+    $response["response"] = 2;
     $response["message"] = "No data found";
 
     // echo no users JSON
@@ -37,8 +37,8 @@ if (mysql_num_rows($result) > 0) {
 }
 }
 else {
-    $response["missing"] = 3;
-    $response["error_msg"] = "Required parameters is missing!";
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
     echo json_encode($response);
 }
 ?>

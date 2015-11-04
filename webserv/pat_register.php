@@ -27,7 +27,7 @@ if (isset($_POST['pat_name']) && isset($_POST['pat_email'])) {
     // check if user already exists with the same email
     if ($db->isUserExisted($Pat_Email)) {
         // user already exists
-        $response["success"] = 0;
+        $response["response"] = 0;
         $response["error_msg"] = "User already exists for this " . $Pat_Email;
         echo json_encode($response);
     } else {
@@ -36,8 +36,8 @@ if (isset($_POST['pat_name']) && isset($_POST['pat_email'])) {
         $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type);
 
         if ($user) {
-            // user stored successfully
-        $response["success"] = 1;
+            // user stored responsefully
+        $response["response"] = 1;
         $user = mysql_query("SELECT * from Patient_master WHERE Pat_Email = '$Pat_Email'");
         $user_data = mysql_fetch_array($user);
         $no_rows = mysql_num_rows($user);
@@ -52,19 +52,19 @@ if (isset($_POST['pat_name']) && isset($_POST['pat_email'])) {
 //            return NULL;
         }
         $response["PAT_ID"] = $user_data['PAT_ID'];
-        $response["message"] = "Patient successfully Registered.";
+        $response["message"] = "Patient responsefully Registered.";
         echo json_encode($response);
         
         } else {
             // user registeration failed 
             
-            $response["success"] = 3;
+            $response["response"] = 3;
             $response["error_msg"] = "Unknown error occurred in registration!";
             echo json_encode($response);
         }
     }
 } else {
-    $response["success"] = 4;
+    $response["response"] = 4;
     $response["error_msg"] = "Required parameters is missing!";
     echo json_encode($response);
 }

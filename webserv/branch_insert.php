@@ -6,7 +6,7 @@ $db = new DB_Functions();
 // json response array
 $response = array("error" => FALSE);
 
-if (isset($_POST['branch_name']) && isset($_POST['branch_location'])) {
+if (isset($_POST['branch_name']) && isset($_POST['branch_email'])) {
 
     // receiving the post params
     $Branch_Name = $_POST['branch_name'];
@@ -18,31 +18,31 @@ if (isset($_POST['branch_name']) && isset($_POST['branch_location'])) {
     $Branch_Phone = $_POST['branch_phone'];
     $Branch_Phone_Other= $_POST['branch_phone_other'];
     $Hospital_ID = '1';
-    // check if user is already existed with the same email
+    // check if user already exists with the same email
     if ($db->isBranchExisted($Branch_Name)) {
-        // user already existed
-        $response["exist"] = 1;
-        $response["error_msg"] = "Branch Data already existed with " . $Branch_Name;
+        // user already exists
+        $response["response"] = 0;
+        $response["message"] = $Branch_Name. "already exists";
         echo json_encode($response);
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         $user = $db->insertBranch($Branch_Name, $Hospital_ID,$Branch_Location,$Branch_Addr1,$Branch_Addr2,$Branch_Postal_Code,$Branch_Email,$Branch_Phone,$Branch_Phone_Other);
         if ($user) {
             // user stored successfully
-        $response["success"] = 2;
+        $response["response"] = 1;
         $response["message"] = "Branch Details Inserted.";
         echo json_encode($response);
         } else {
             // user failed to store
             
-            $response["error"] = 3;
-            $response["error_msg"] = "Unknown error occurred in registration!";
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
             echo json_encode($response);
         }
     }
 } else {
-    $response["missing"] = 4;
-    $response["error_msg"] = "Required parameters is missing!";
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
     echo json_encode($response);
 }
 ?>

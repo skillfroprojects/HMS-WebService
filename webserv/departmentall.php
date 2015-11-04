@@ -10,8 +10,8 @@ if (isset($_POST['br_id'])) {
 $result = mysql_query("Select * from department_master where br_id = '$BR_ID'") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
-    // looping through all results
-    // products node
+   // response
+    $response["response"] = 1;
     $response["department"] = array();
     
     while ($row = mysql_fetch_array($result)) {
@@ -23,14 +23,12 @@ if (mysql_num_rows($result) > 0) {
         // push single product into final response array
         array_push($response["department"], $Department);
     }
-    // success
-    $response["success"] = 1;
-
+    
     // echoing JSON response
     echo json_encode($response);
 } else {
     // no products found
-    $response["success"] = 2;
+    $response["response"] = 2;
     $response["message"] = "No data found";
 
     // echo no users JSON
@@ -38,8 +36,8 @@ if (mysql_num_rows($result) > 0) {
 }
 }
 else {
-    $response["missing"] = 3;
-    $response["error_msg"] = "Required parameters is missing!";
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
     echo json_encode($response);
 }
 ?>

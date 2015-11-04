@@ -24,9 +24,9 @@ if (isset($_POST['hs_id']) && isset($_POST['email'])) {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         $user = $db->storeUser($Cust_Name, $Cust_Email, $Cust_Password);
         if ($user) {
-            // user stored successfully
-        $response["success"] = 2;
-        $response["message"] = "Product successfully created.";
+            // user stored responsefully
+        $response["response"] = 2;
+        $response["message"] = "Product responsefully created.";
         echo json_encode($response);
         } else {
             // user failed to store

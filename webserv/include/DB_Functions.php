@@ -23,7 +23,11 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
      */
     public function loginUser($Login_uname,$Login_name,$Login_password,$Login_type) {
         $CR_Date = date('d/m/Y');
-        $result = mysql_query("INSERT INTO Login_Master (Login_uname,Login_name,Login_password,Login_type,Created_Date,Created_IP,Created_By,Modify_Date,Modify_IP,Modify_By) VALUES('$Login_uname','$Login_name','$Login_password','$Login_type','$CR_Date','100','Admin','$CR_Date','100','Amin')");
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Login_Master (Login_uname,Login_name,Login_password,Login_type,Reg_Via,Reg_frm_Device,Created_Date,Created_Device,Created_IP,Created_By,Modify_Date,Modify_Device,Modify_IP,Modify_By) VALUES('$Login_uname','$Login_name','$Login_password','$Login_type', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     public function storeUser($Pat_Name,$Pat_Email,$Pat_Gender,$Pat_Mobile,$Pat_Addr1,$Pat_Addr2,$Pat_Postal_Code,$Pat_Blood_Group) {
@@ -33,17 +37,29 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
     }
      public function insertBranch($Branch_Name, $Hospital_ID,$Branch_Location,$Branch_Addr1,$Branch_Addr2,$Branch_Postal_Code,$Branch_Email,$Branch_Phone,$Branch_Phone_Other) {
         $CR_Date = date('d/m/Y');
-        $result = mysql_query("INSERT INTO Branch_Master(HS_ID,BR_NAME,BR_LOCATION,BR_ADDR1,BR_ADDR2,BR_POSTAL_CODE,BR_EMAIL,BR_PHONE,BR_PHONE_OTHER,BR_CREATED_DATE,BR_CREATED_IP,BR_CREATED_BY,BR_MODIFY_DATE,BR_MODIFY_IP,BR_MODIF_BT) VALUES('$Hospital_ID','$Branch_Name','$Branch_Location','$Branch_Addr1','$Branch_Addr2','$Branch_Postal_Code','$Branch_Email','$Branch_Phone','$Branch_Phone_Other','$CR_Date','100','Admin','$CR_Date','100','Amin')");
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Branch_Master(HS_ID,BR_NAME,BR_LOCATION,BR_ADDR1,BR_ADDR2,BR_POSTAL_CODE,BR_EMAIL,BR_PHONE,BR_PHONE_OTHER,BR_REG_VIA, BR_REG_FRM_DEVICE,BR_CREATED_DATE,BR_CREATED_DEVICE,BR_CREATED_IP,BR_CREATED_BY,BR_MODIFY_DATE,BR_MODIFY_DEVICE,BR_MODIFY_IP,BR_MODIFY_BY) VALUES('$Hospital_ID','$Branch_Name','$Branch_Location','$Branch_Addr1','$Branch_Addr2','$Branch_Postal_Code','$Branch_Email','$Branch_Phone','$Branch_Phone_Other', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     public function insertSpecialization($Sp_Name) {
         $CR_Date = date('d/m/Y');
-        $result = mysql_query("INSERT INTO Specialization_Master (sp_name) VALUES('$Sp_Name')");
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Specialization_Master (SP_NAME, REG_VIA, REG_FRM_DEVICE,CREATED_DATE, CREATED_DEVICE, CREATED_IP, CREATED_BY, MODIFY_DATE, MODIFY_DEVICE, MODIFY_IP, MODIFY_BY) VALUES('$Sp_Name', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
-     public function insertDoctor($Br_ID, $Doc_Name,$Doc_Email,$Doc_Date_Of_Birth,$Doc_Gender,$Doc_Mobile,$Doc_Address1,$Doc_Address2,$Doc_Postal_Code,$Doc_Qualification,$Sp_ID) {
+     public function insertDoctor($Br_ID, $Doc_Name,$Doc_Email,$Doc_Date_Of_Birth,$Doc_Gender,$Doc_Mobile,$Doc_Address1,$Doc_Address2,$Doc_Postal_Code,$Doc_Qualification, $Doc_Emergency_Availability,$Sp_ID, $Doc_Med_Licence_no) {
         $CR_Date = date('d/m/Y');
-        $result = mysql_query("INSERT INTO Doctor_Master(BR_ID,DOC_NAME,DOC_EMAIL,DOC_DATE_OF_BIRTH,DOC_GENDER,DOC_MOBILE,DOC_ADDRESS1,DOC_ADDRESS2,DOC_POSTAL_CODE,DOC_QUALIFICATION,SP_ID,DOC_CREATED_DATE,DOC_CREATED_IP,DOC_CREATED_BY,DOC_MODIFY_DATE,DOC_MODIFY_IP,DOC_MODIFY_BY) VALUES('$Br_ID','$Doc_Name','$Doc_Email','$Doc_Date_Of_Birth','$Doc_Gender','$Doc_Mobile','$Doc_Address1','$Doc_Address2','$Doc_Postal_Code','$Doc_Qualification','$Sp_ID','$CR_Date','100','Admin','$CR_Date','100','Admin')");
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Doctor_Master(BR_ID,DOC_NAME,DOC_EMAIL,DOC_DATE_OF_BIRTH,DOC_GENDER,DOC_MOBILE,DOC_ADDRESS1,DOC_ADDRESS2,DOC_POSTAL_CODE,DOC_QUALIFICATION, DOC_EMERGENCY_AVAILABILITY,SP_ID, DOC_MED_LICENCE_NO, DOC_REG_VIA, DOC_REG_FRM_DEVICE,DOC_CREATED_DATE, DOC_CREATED_DEVICE,DOC_CREATED_IP,DOC_CREATED_BY,DOC_MODIFY_DATE, DOC_MODIFY_DEVICE,DOC_MODIFY_IP,DOC_MODIFY_BY) VALUES('$Br_ID','$Doc_Name','$Doc_Email','$Doc_Date_Of_Birth','$Doc_Gender','$Doc_Mobile','$Doc_Address1','$Doc_Address2','$Doc_Postal_Code','$Doc_Qualification', '$Doc_Emergency_Availability','$Sp_ID', '$Doc_Med_Licence_no', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     public function updateUser($Cust_UserID,$Cust_Name,$Cust_Email,$Cust_Phone) {

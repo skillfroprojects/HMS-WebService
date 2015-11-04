@@ -5,8 +5,8 @@ $db = new DB_Class();
 $result = mysql_query("Select DISTINCT * from designation_master") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
-    // looping through all results
-    // products node
+    // response
+    $response["response"] = 1;
     $response["designation"] = array();
     
     while ($row = mysql_fetch_array($result)) {
@@ -18,14 +18,12 @@ if (mysql_num_rows($result) > 0) {
         // push single product into final response array
         array_push($response["designation"], $Designation);
     }
-    // success
-    $response["success"] = 1;
-
+    
     // echoing JSON response
     echo json_encode($response);
 } else {
     // no products found
-    $response["success"] = 0;
+    $response["response"] = 0;
     $response["message"] = "No data found";
 
     // echo no users JSON

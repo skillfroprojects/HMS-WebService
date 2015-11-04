@@ -10,6 +10,8 @@ if (mysql_num_rows($result) > 0) {
     $response["medicolegal"] = array();
     
     while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;
         // temp user array
         $Medicolegal = array();
         $Medicolegal["mlc_id"] = $row["mlc_id"];
@@ -18,14 +20,12 @@ if (mysql_num_rows($result) > 0) {
         // push single product into final response array
         array_push($response["medicolegal"], $Medicolegal);
     }
-    // success
-    $response["success"] = 1;
-
+   
     // echoing JSON response
     echo json_encode($response);
 } else {
     // no products found
-    $response["success"] = 0;
+    $response["response"] = 0;
     $response["message"] = "No data found";
 
     // echo no users JSON

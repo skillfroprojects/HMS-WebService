@@ -2,68 +2,90 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
-// receiving the post params
-$Doc_ID = $_GET['doc_id'];
-//$Service_ID = $_GET['salon_id'];
+$response = array("error" => FALSE);
 
-$result_doc = mysql_query("Select * from doctor_master");
-if (mysql_num_rows($result_doc) > 0) {
-    
-    while ($row_doc = mysql_fetch_array($result_doc)) {
+if (isset($_POST['BR_ID'])) {
+
+// receiving the post params
+$BR_ID = $_POST['BR_ID'];
         
-      $Doc_NM = $row_doc["DOC_NAME"];
-        
-//if (isset($_GET["type"])) { $Type  = $_GET["type"]; } else { $Type='DESC'; }; 
-//$Price_Type = $Type;
-//if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; }; 
-//if (isset($_GET["page_count"])) { $page_data  = $_GET["page_count"]; } else { $page_data=10; }; 
-//$start_from = ($page-1) * 10; 
+if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
+$Price_Type = $Type;
+if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
+if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=10; }; 
+$start_from = ($page-1) * 10; 
+
 $result = mysql_query("SELECT
-doctor_master.DOC_ID,
-doctor_master.BR_ID,
-doctor_master.DOC_NAME,
-doctor_master.DOC_EMAIL,
-doctor_master.DOC_DATE_OF_BIRTH,
-doctor_master.DOC_GENDER,
-doctor_master.DOC_MOBILE,
-doctor_master.DOC_ADDRESS1,
-doctor_master.DOC_ADDRESS2,
-doctor_master.DOC_POSTAL_CODE,
-doctor_master.DOC_QUALIFICATION,
-doctor_master.DOC_EMERGENCY_AVAILABILITY,
-doctor_master.SP_ID,
-doctor_master.DOC_REG_VIA,
-doctor_master.DOC_REG_FRM_DEVICE,
-doctor_master.DOC_CREATED_DATE,
-doctor_master.DOC_CREATED_DEVICE,
-doctor_master.DOC_CREATED_IP,
-doctor_master.DOC_CREATED_BY,
-doctor_master.DOC_MODIFY_DATE,
-doctor_master.DOC_MODIFY_DEVICE,
-doctor_master.DOC_MODIFY_IP,
-doctor_master.DOC_MODIFY_BY,
-specialization_master.SP_ID,
-specialization_master.SP_NAME,
-specialization_master.REG_VIA,
-specialization_master.REG_FRM_DEVICE,
-specialization_master.CREATED_DATE,
-specialization_master.CREATED_DEVICE,
-specialization_master.CREATED_IP,
-specialization_master.CREATED_BY,
-specialization_master.MODIFY_DATE,
-specialization_master.MODIFY_DEVICE,
-specialization_master.MODIFY_IP,
-specialization_master.MODIFY_BY
-FROM
-doctor_master
-INNER JOIN specialization_master ON doctor_master.SP_ID = specialization_master.SP_ID") or die("Error");
+        doctor_master.DOC_ID,
+        doctor_master.BR_ID,
+        doctor_master.DOC_NAME,
+        doctor_master.DOC_EMAIL,
+        doctor_master.DOC_DATE_OF_BIRTH,
+        doctor_master.DOC_GENDER,
+        doctor_master.DOC_MOBILE,
+        doctor_master.DOC_ADDRESS1,
+        doctor_master.DOC_ADDRESS2,
+        doctor_master.DOC_POSTAL_CODE,
+        doctor_master.DOC_QUALIFICATION,
+        doctor_master.DOC_EMERGENCY_AVAILABILITY,
+        doctor_master.SP_ID,
+        doctor_master.DOC_MED_LICENCE_NO,
+        doctor_master.DOC_REG_VIA,
+        doctor_master.DOC_REG_FRM_DEVICE,
+        doctor_master.DOC_CREATED_DATE,
+        doctor_master.DOC_CREATED_DEVICE,
+        doctor_master.DOC_CREATED_IP,
+        doctor_master.DOC_CREATED_BY,
+        doctor_master.DOC_MODIFY_DATE,
+        doctor_master.DOC_MODIFY_DEVICE,
+        doctor_master.DOC_MODIFY_IP,
+        doctor_master.DOC_MODIFY_BY,
+        specialization_master.SP_NAME,
+        specialization_master.REG_VIA,
+        specialization_master.REG_FRM_DEVICE,
+        specialization_master.CREATED_DATE,
+        specialization_master.CREATED_DEVICE,
+        specialization_master.CREATED_IP,
+        specialization_master.CREATED_BY,
+        specialization_master.MODIFY_DATE,
+        specialization_master.MODIFY_DEVICE,
+        specialization_master.MODIFY_IP,
+        specialization_master.MODIFY_BY,
+        branch_master.HS_ID,
+        branch_master.BR_NAME,
+        branch_master.BR_LOCATION,
+        branch_master.BR_ADDR1,
+        branch_master.BR_ADDR2,
+        branch_master.BR_POSTAL_CODE,
+        branch_master.BR_EMAIL,
+        branch_master.BR_PHONE,
+        branch_master.BR_PHONE_OTHER,
+        branch_master.BR_REG_VIA,
+        branch_master.BR_REG_FRM_DEVICE,
+        branch_master.BR_CREATED_DATE,
+        branch_master.BR_CREATED_DEVICE,
+        branch_master.BR_CREATED_IP,
+        branch_master.BR_CREATED_BY,
+        branch_master.BR_MODIFY_DATE,
+        branch_master.BR_MODIFY_DEVICE,
+        branch_master.BR_MODIFY_IP,
+        branch_master.BR_MODIF_BT,
+        branch_master.BR_ID,
+        specialization_master.SP_ID
+        FROM
+        doctor_master
+        INNER JOIN specialization_master ON doctor_master.SP_ID = specialization_master.SP_ID
+        INNER JOIN branch_master ON doctor_master.BR_ID = branch_master.BR_ID
+        WHERE
+        doctor_master.BR_ID = '$BR_ID' LIMIT 10") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
-    // looping through all results
-    // products node
+     // response
+    $response["response"] = 1;
     $response["doc"] = array();
     
     while ($row = mysql_fetch_array($result)) {
+       
         // temp user array
         $doc = array();
                 $doc["DOC_NAME"] = $row["DOC_NAME"];
@@ -72,24 +94,24 @@ if (mysql_num_rows($result) > 0) {
                 $doc["DOC_ADDRESS2"] = $row["DOC_ADDRESS2"];
                 $doc["DOC_EMERGENCY_AVAILABILITY"] = $row["DOC_EMERGENCY_AVAILABILITY"];
                         
-
                 array_push($response["doc"], $doc);
         
     }
-    // success
-    $response["success"] = 1;
+    
 
     // echoing JSON response
     echo json_encode($response);
 } else {
     // no products found
-    $response["success"] = 2;
+    $response["response"] = 2;
     $response["message"] = "No data found";
 
     // echo no users JSON
     echo json_encode($response);
 }
-    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
 }
-
 ?>
