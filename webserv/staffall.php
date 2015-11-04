@@ -1,17 +1,17 @@
 <?php
 include 'include/Config.php';
 $db = new DB_Class();
+if (isset($_POST['br_id'])) {
 
-$result = mysql_query("Select DISTINCT * from staff_master") or die("Error");
+    $BR_ID = $_POST['br_id'];
+$result = mysql_query("Select * from staff_master where BR_ID = '$BR_ID'") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
-    // looping through all results
-    // products node
+    // response
+    $response["response"] = 1;
     $response["staff"] = array();
     
     while ($row = mysql_fetch_array($result)) {
-          // response
-        $response["response"] = 1;
         // temp user array
         $Staff = array();
         $Staff["staff_id"] = $row["staff_id"];
@@ -23,7 +23,9 @@ if (mysql_num_rows($result) > 0) {
   
     // echoing JSON response
     echo json_encode($response);
-} else {
+} 
+}
+else {
     // no products found
     $response["response"] = 0;
     $response["message"] = "No data found";

@@ -17,6 +17,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     if ($user) {
         $response["response"] = 1;
         $response["login_id"] = $user["Login_id"];
+        $response["br_id"] = $user["Br_id"];
         $response["login_uname"] = $user["Login_uname"];
         $response["login_name"] = $user["Login_name"];
         $response["login_type"] = $user["Login_type"];
@@ -25,14 +26,14 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     } else {
         // user is not found with the credentials
         $response["response"] = 0;
-        $response["error_msg"] = "Login credentials are wrong. Please try again!";
+        $response["message"] = "Login credentials are wrong. Please try again!";
         echo json_encode($response);
     }
 }
 else {
     // required post params is missing
     $response["response"] = 2;
-    $response["error_msg"] = "Required parameters is missing!";
+    $response["message"] = "Required parameters is missing!";
     echo json_encode($response);
 }
 ?>

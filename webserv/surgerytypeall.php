@@ -2,11 +2,8 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
-if (isset($_POST['sp_id'])) {
 
-    $SP_ID = $_POST['sp_id'];
-
-$result = mysql_query("Select * from surgery_type_master where sp_id = '$SP_ID'") or die("Error");
+$result = mysql_query("Select * from surgery_type_master") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
     // looping through all results
@@ -25,20 +22,14 @@ if (mysql_num_rows($result) > 0) {
         array_push($response["surgerytype"], $Surgerytype);
     }
    
-    // echoing JSON response
+     // echoing JSON response
     echo json_encode($response);
 } else {
     // no products found
-    $response["response"] = 2;
+    $response["response"] = 0;
     $response["message"] = "No data found";
 
     // echo no users JSON
-    echo json_encode($response);
-}
-}
-else {
-    $response["response"] = 3;
-    $response["message"] = "Required parameters is missing!";
     echo json_encode($response);
 }
 ?>

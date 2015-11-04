@@ -18,9 +18,9 @@ if (isset($_POST['branch_name']) && isset($_POST['branch_email'])) {
     $Branch_Phone = $_POST['branch_phone'];
     $Branch_Phone_Other= $_POST['branch_phone_other'];
     $Hospital_ID = '1';
-    // check if user already exists with the same email
+    // check if branch already exists 
     if ($db->isBranchExisted($Branch_Name)) {
-        // user already exists
+        // branch already exists
         $response["response"] = 0;
         $response["message"] = $Branch_Name. "already exists";
         echo json_encode($response);
@@ -28,12 +28,12 @@ if (isset($_POST['branch_name']) && isset($_POST['branch_email'])) {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         $user = $db->insertBranch($Branch_Name, $Hospital_ID,$Branch_Location,$Branch_Addr1,$Branch_Addr2,$Branch_Postal_Code,$Branch_Email,$Branch_Phone,$Branch_Phone_Other);
         if ($user) {
-            // user stored successfully
+            // branch stored successfully
         $response["response"] = 1;
         $response["message"] = "Branch Details Inserted.";
         echo json_encode($response);
         } else {
-            // user failed to store
+            // branch failed to store
             
             $response["response"] = 2;
             $response["message"] = "Unknown error occurred in registration!";

@@ -40,6 +40,7 @@ $result = mysql_query("SELECT
         doctor_master.DOC_MODIFY_DEVICE,
         doctor_master.DOC_MODIFY_IP,
         doctor_master.DOC_MODIFY_BY,
+        specialization_master.SP_ID,
         specialization_master.SP_NAME,
         specialization_master.REG_VIA,
         specialization_master.REG_FRM_DEVICE,
@@ -50,32 +51,10 @@ $result = mysql_query("SELECT
         specialization_master.MODIFY_DATE,
         specialization_master.MODIFY_DEVICE,
         specialization_master.MODIFY_IP,
-        specialization_master.MODIFY_BY,
-        branch_master.HS_ID,
-        branch_master.BR_NAME,
-        branch_master.BR_LOCATION,
-        branch_master.BR_ADDR1,
-        branch_master.BR_ADDR2,
-        branch_master.BR_POSTAL_CODE,
-        branch_master.BR_EMAIL,
-        branch_master.BR_PHONE,
-        branch_master.BR_PHONE_OTHER,
-        branch_master.BR_REG_VIA,
-        branch_master.BR_REG_FRM_DEVICE,
-        branch_master.BR_CREATED_DATE,
-        branch_master.BR_CREATED_DEVICE,
-        branch_master.BR_CREATED_IP,
-        branch_master.BR_CREATED_BY,
-        branch_master.BR_MODIFY_DATE,
-        branch_master.BR_MODIFY_DEVICE,
-        branch_master.BR_MODIFY_IP,
-        branch_master.BR_MODIF_BT,
-        branch_master.BR_ID,
-        specialization_master.SP_ID
+        specialization_master.MODIFY_BY
         FROM
         doctor_master
         INNER JOIN specialization_master ON doctor_master.SP_ID = specialization_master.SP_ID
-        INNER JOIN branch_master ON doctor_master.BR_ID = branch_master.BR_ID
         WHERE
         doctor_master.BR_ID = '$BR_ID' LIMIT 10") or die("Error");
 
@@ -90,8 +69,7 @@ if (mysql_num_rows($result) > 0) {
         $doc = array();
                 $doc["DOC_NAME"] = $row["DOC_NAME"];
                 $doc["SP_NAME"] = $row["SP_NAME"];
-                $doc["DOC_ADDRESS1"] = $row["DOC_ADDRESS1"];
-                $doc["DOC_ADDRESS2"] = $row["DOC_ADDRESS2"];
+                $doc["DOC_ADDRESS"] = $row["DOC_ADDRESS1"].$row["DOC_ADDRESS2"];
                 $doc["DOC_EMERGENCY_AVAILABILITY"] = $row["DOC_EMERGENCY_AVAILABILITY"];
                         
                 array_push($response["doc"], $doc);

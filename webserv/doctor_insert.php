@@ -22,6 +22,11 @@ if (isset($_POST['doc_name']) && isset($_POST['doc_email'])) {
     $Doc_Emergency_Availability = $_POST['doc_emergency_availability'];
     $Sp_ID = $_POST['specialization_id'];
     $Doc_Med_Licence_no = $_POST['doc_med_licence_no'];
+    $Login_uname = $_POST['doc_name'];
+    $Login_name = $_POST['doc_email'];
+    $Br_id = $_POST['branch_id'];  
+    $Login_password = 'doctor';
+    $Login_type = 'doctor';
 
     
     // check if user already exists with the same email
@@ -33,9 +38,25 @@ if (isset($_POST['doc_name']) && isset($_POST['doc_email'])) {
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         $user = $db->insertDoctor($Br_ID, $Doc_Name,$Doc_Email,$Doc_Date_Of_Birth,$Doc_Gender,$Doc_Mobile,$Doc_Address1,$Doc_Address2,$Doc_Postal_Code,$Doc_Qualification,$Doc_Emergency_Availability,$Sp_ID,$Doc_Med_Licence_no);
+        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
+
         if ($user) {
             // user stored successfully
         $response["response"] = 1;
+        $user = mysql_query("SELECT * from Doctor_master WHERE Doc_Email = '$Doc_Email'");
+        $user_data = mysql_fetch_array($user);
+        $no_rows = mysql_num_rows($user);
+  
+        if ($no_rows == 1) {
+            // user exists
+            //$stmt->close();
+            $user['DOC_ID'] = $user_data['DOC_ID'];
+            
+        } else {
+            
+//            return NULL;
+        }
+        $response["DOC_ID"] = $user_data['DOC_ID'];
         $response["message"] = "Doctor Details Inserted.";
         echo json_encode($response);
         } else {

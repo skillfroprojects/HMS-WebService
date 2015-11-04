@@ -15,7 +15,7 @@ if (mysql_num_rows($result) > 0) {
         // temp user array
         $Wardtype = array();
         $Wardtype["ward_type_id"] = $row["ward_type_id"];
-        $Wardtype["ward_type_name"] = $row["ward_type_name"];
+        $Wardtype["ward_type_name"] = $row["ward_type"];
         //$services["SERV_PRICE"] = $row["SERV_PRICE"];
         // push single product into final response array
         array_push($response["wardtype"], $Wardtype);

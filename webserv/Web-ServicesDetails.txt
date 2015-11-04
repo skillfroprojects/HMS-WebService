@@ -33,8 +33,8 @@ $Br_Name = $_POST['branch_name'];
 http://hms.yogintechnologies.com/webservice/bednumberall.php
 
 if (mysql_num_rows($result) > 0) {
-    // looping through all results
-    // products node
+     // response
+    $response["response"] = 1;
     $response["bednumber"] = array();
     
     while ($row = mysql_fetch_array($result)) {
@@ -46,9 +46,7 @@ if (mysql_num_rows($result) > 0) {
         // push single product into final response array
         array_push($response["bednumber"], $Bednumber);
     }
-    // response
-    $response["response"] = 1;
-
+   
     // echoing JSON response
     echo json_encode($response);
 } else {
@@ -107,8 +105,8 @@ http://hms.yogintechnologies.com/webservice/branch_insert.php
 http://hms.yogintechnologies.com/webservice/branchall.php
 
  if (mysql_num_rows($result) > 0) {
-    // looping through all results
-    // products node
+     // response
+    $response["response"] = 1;
     $response["branch"] = array();
     
     while ($row = mysql_fetch_array($result)) {
@@ -120,9 +118,7 @@ http://hms.yogintechnologies.com/webservice/branchall.php
         // push single product into final response array
         array_push($response["branch"], $Branch);
     }
-    // response
-    $response["response"] = 1;
-
+   
     // echoing JSON response
     echo json_encode($response);
 } else {
@@ -140,19 +136,67 @@ http://hms.yogintechnologies.com/webservice/departmentall.php
 
  $BR_ID = $_POST['br_id'];
 
- $response["response"] = 1;
+if (mysql_num_rows($result) > 0) {
+   // response
+    $response["response"] = 1;
+    $response["department"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Department = array();
+        $Department["BR_ID"] = $row["BR_ID"];
+        $Department["dept_name"] = $row["dept_name"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["department"], $Department);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
 
- $response["response"] = 2;
- $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
+}
+else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
 
 6. Designation
 
 http://hms.yogintechnologies.com/webservice/designationall.php
 
-  $response["response"] = 1;
+  if (mysql_num_rows($result) > 0) {
+    // response
+    $response["response"] = 1;
+    $response["designation"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Designation = array();
+        $Designation["desc_id"] = $row["designation_id"];
+        $Designation["desc_name"] = $row["designation_name"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["designation"], $Designation);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
-  $response["response"] = 0;
-  $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 7. Doctor Insert
 
@@ -203,19 +247,67 @@ http://hms.yogintechnologies.com/webservice/doctorall.php
 
  $BR_ID = $_POST['br_id'];
 
- $response["response"] = 1;
+if (mysql_num_rows($result) > 0) {
+    // response
+    $response["response"] = 1;
+    $response["doctor"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Doctor = array();
+        $Doctor["BR_ID"] = $row["BR_ID"];
+        $Doctor["DOC_Name"] = $row["DOC_NAME"]."-".$row["DOC_EMERGENCY_AVAILABILITY"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["doctor"], $Doctor);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
 
-  $response["response"] = 2;
-  $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
+}
+else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
 
 9. Drug Form
 
 http://hms.yogintechnologies.com/webservice/drugformall.php
 
- $response["response"] = 1;
+ if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["drugform"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Drugform = array();
+        $Drugform["drug_id"] = $row["drug_id"];
+        $Drugform["drug_name"] = $row["drug_name"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["drugform"], $Drugform);
+    }
+   
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
- $response["response"] = 0;
- $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 10. Hospital Insert
 
@@ -256,10 +348,31 @@ http://hms.yogintechnologies.com/webservice/hospital_insert.php
 
 http://hms.yogintechnologies.com/webservice/laball.php
 
-$response["response"] = 1;
+if (mysql_num_rows($result) > 0) {
+    // response
+    $response["response"] = 1;
+    $response["laboratory"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Laboratory = array();
+        $Laboratory["lab_id"] = $row["lab_id"];
+        $Laboratory["lab_name"] = $row["lab_name"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["laboratory"], $Laboratory);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
-$response["response"] = 0;
-$response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 12. Login
 
@@ -294,10 +407,33 @@ else {
 
 http://hms.yogintechnologies.com/webservice/medicolegalall.php
 
- $response["response"] = 1;
+if (mysql_num_rows($result) > 0) {
+    // looping through all results
+    // products node
+    $response["medicolegal"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;
+        // temp user array
+        $Medicolegal = array();
+        $Medicolegal["mlc_id"] = $row["mlc_id"];
+        $Medicolegal["mlc_name"] = $row["mlc_name"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["medicolegal"], $Medicolegal);
+    }
+   
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
- $response["response"] = 0;
- $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 14. Patient Registration
 
@@ -365,32 +501,97 @@ http://hms.yogintechnologies.com/webservice/pat_register.php
 
 http://hms.yogintechnologies.com/webservice/pharmacyall.php
 
- $response["response"] = 1;
+ if (mysql_num_rows($result) > 0) {
+    // looping through all results
+    // products node
+    $response["pharmacy"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;        
+        // temp user array
+        $Pharmacy = array();
+        $Pharmacy["pharma_id"] = $row["pharma_id"];
+        $Pharmacy["pharmacy_name"] = $row["pharmacy_name"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["pharmacy"], $Pharmacy);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
- $response["response"] = 0;
- $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 16. Room Number
 
 http://hms.yogintechnologies.com/webservice/roomnumberall.php
 
- $response["roomnumber"] = array();
+if (mysql_num_rows($result) > 0) {
+    // looping through all results
+    // products node
+    $response["roomnumber"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;
+        // temp user array
+        $Roomnumber = array();
+        $Roomnumber["room_id"] = $row["room_id"];
+        $Roomnumber["room_no"] = $row["room_no"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["roomnumber"], $Roomnumber);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
- $response["response"] = 1;
-
- $response["response"] = 0;
- $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 17. Room Type
 
 http://hms.yogintechnologies.com/webservice/roomtypeall.php
 
- $response["roomtype"] = array();
+ if (mysql_num_rows($result) > 0) {
+    // looping through all results
+    // products node
+    $response["roomtype"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;
+        // temp user array
+        $Roomtype = array();
+        $Roomtype["room_type_id"] = $row["room_type_id"];
+        $Roomtype["room_type"] = $row["room_type"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["roomtype"], $Roomtype);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
- $response["response"] = 1;
-
- $response["response"] = 0;
- $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 18. Specialization Insert
 
@@ -429,68 +630,415 @@ http://hms.yogintechnologies.com/webservice/speci_insert.php
 
 http://hms.yogintechnologies.com/webservice/speciall.php
 
-  $response["specialize"] = array();
+ if (mysql_num_rows($result) > 0) {
+    // looping through all results
+    // products node
+    $response["specialize"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;        
+        // temp user array
+        $Specialize = array();
+        $Specialize["SP_ID"] = $row["SP_ID"];
+        $Specialize["SP_NAME"] = $row["SP_NAME"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["specialize"], $Specialize);
+    }
+   
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
-  $response["response"] = 1;
-
-  $response["response"] = 0;
-  $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 20.Specimen
 
 http://hms.yogintechnologies.com/webservice/specimenall.php
 
- $response["specimen"] = array();
+ if (mysql_num_rows($result) > 0) {
+    // looping through all results
+    // products node
+    $response["specimen"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;
+        // temp user array
+        $Specimen = array();
+        $Specimen["specimen_id"] = $row["specimen_id"];
+        $Specimen["specimen_name"] = $row["specimen_name"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["specimen"], $Specimen);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
- $response["response"] = 1;
-
- $response["response"] = 0;
- $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 21. Staff
 
 http://hms.yogintechnologies.com/webservice/staffall.php
 
- $response["staff"] = array();
+ if (mysql_num_rows($result) > 0) {
+    // response
+    $response["response"] = 1;
+    $response["staff"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Staff = array();
+        $Staff["staff_id"] = $row["staff_id"];
+        $Staff["staff_name"] = $row["staff_name"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["staff"], $Staff);
+    }
+  
+    // echoing JSON response
+    echo json_encode($response);
+} 
+}
+else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
- $response["response"] = 1;
-
- $response["response"] = 0;
- $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 22. Surgery Type
 
 http://hms.yogintechnologies.com/webservice/surgerytypeall.php
 
- $response["surgerytype"] = array();
+if (mysql_num_rows($result) > 0) {
+    // looping through all results
+    // products node
+    $response["surgerytype"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;
+        // temp user array
+        $Surgerytype = array();
+        $Surgerytype["sp_id"] = $row["sp_id"];
+        $Surgerytype["surgery_type"] = $row["surgery_type"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["surgerytype"], $Surgerytype);
+    }
+   
+     // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
- $response["response"] = 1;
-
- $response["response"] = 2;
- $response["message"] = "No data found";
-
- $response["missing"] = 3;
- $response["error_msg"] = "Required parameters is missing!";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 23. Surgical Anaesthetists
 
 http://hms.yogintechnologies.com/webservice/surgicalanaesthetistsall.php
 
- $response["surgicalanaesthetists"] = array();
+ if (mysql_num_rows($result) > 0) {
+    // looping through all results
+    // products node
+    $response["surgicalanaesthetists"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;
+        // temp user array
+        $Surgicalanaesthetists = array();
+        $Surgicalanaesthetists["DOC_ID"] = $row["DOC_ID"];
+        $Surgicalanaesthetists["DOC_NAME"] = $row["DOC_NAME"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["surgicalanaesthetists"], $Surgicalanaesthetists);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
- $response["response"] = 1;
-
- $response["response"] = 0;
- $response["message"] = "No data found";
+    // echo no users JSON
+    echo json_encode($response);
+}
 
 24. Ward Type
 
 http://hms.yogintechnologies.com/webservice/wardtypeall.php
 
- $response["wardtype"] = array();
+ if (mysql_num_rows($result) > 0) {
+    // looping through all results
+    // products node
+    $response["wardtype"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // response
+        $response["response"] = 1;
+        // temp user array
+        $Wardtype = array();
+        $Wardtype["ward_type_id"] = $row["ward_type_id"];
+        $Wardtype["ward_type_name"] = $row["ward_type_name"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["wardtype"], $Wardtype);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
 
- $response["response"] = 1;
+    // echo no users JSON
+    echo json_encode($response);
+}
 
- $response["response"] = 0;
- $response["message"] = "No data found";
+25. Doctor List
 
+http://hms.yogintechnologies.com/webservice/doctor_list.php
+
+$BR_ID = $_POST['BR_ID'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["doc"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $doc = array();
+                $doc["DOC_NAME"] = $row["DOC_NAME"];
+                $doc["SP_NAME"] = $row["SP_NAME"];
+                $doc["DOC_ADDRESS"] = $row["DOC_ADDRESS1"].$row["DOC_ADDRESS2"];
+                $doc["DOC_EMERGENCY_AVAILABILITY"] = $row["DOC_EMERGENCY_AVAILABILITY"];
+                        
+                array_push($response["doc"], $doc);
+        
+    }
+    
+
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+25. Staff List
+
+http://hms.yogintechnologies.com/webservice/staff_list.php
+
+$BR_ID = $_POST['BR_ID'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["staff"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $staff = array();
+                $staff["STAFF_NAME"] = $row["staff_name"];
+                $staff["DESIGNATION"] = $row["designation_name"];
+                $staff["PHONE"] = $row["staff_phone"];
+                        
+                array_push($response["staff"], $staff);
+        
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+26. Pharmacy List
+
+http://hms.yogintechnologies.com/webservice/pharmacy_list.php
+
+$BR_ID = $_POST['BR_ID'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["pharmacy"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $pharmacy = array();
+                $pharmacy["PHARMACY_NAME"] = $row["pharmacy_name"];
+                $pharmacy["ADDRESS"] = $row["pharma_addr1"].",".$row["pharma_addr2"];
+                $pharmacy["PHONE"] = $row["pharma_phone"];
+                $pharmacy["EMAIL"] = $row["pharma_email"];
+                array_push($response["pharmacy"], $pharmacy);
+        
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+27. Lab List
+
+http://hms.yogintechnologies.com/webservice/lab_list.php
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["lab"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $lab = array();
+                $lab["LABORATORY_NAME"] = $row["lab_name"];
+                $lab["ADDRESS"] = $row["lab_addr1"].",".$row["lab_addr2"];
+                $lab["PHONE"] = $row["lab_phone"];
+                $lab["EMAIL"] = $row["lab_email"];
+                array_push($response["lab"], $lab);
+        
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+28. Drug Stock Control
+
+http://hms.yogintechnologies.com/webservice/drugstockcontrol_list.php
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["drugstockcontrol"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $drugstockcontrol = array();
+                $drugstockcontrol["DRUG_NAME"] = $row["drug_name"];
+                $drugstockcontrol["DRUG_BRAND_NAME"] = $row["drug_brand_name"];
+                $drugstockcontrol["AVAILABLE_STOCK"] = $row["available_stock"];
+                        
+                array_push($response["drugstockcontrol"], $drugstockcontrol);
+        
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+
+29. Suppliers List
+
+http://hms.yogintechnologies.com/webservice/suppliers_list.php
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["supplier"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $supplier = array();
+                $supplier["SUPPLIER_NAME"] = $row["supplier_name"];
+                $supplier["ADDRESS"] = $row["supplier_addr1"].",".$row["supplier_addr2"];
+                $supplier["PHONE"] = $row["supplier_phone"];
+                $supplier["EMAIL"] = $row["supplier_email"];
+                array_push($response["supplier"], $supplier);
+        
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
