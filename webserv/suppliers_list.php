@@ -2,7 +2,7 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
-$response = array("error" => FALSE);
+//$response = array("error" => FALSE);
 
 if (isset($_POST['BR_ID'])) {
 

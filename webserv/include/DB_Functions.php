@@ -92,6 +92,77 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         $result = mysql_query("INSERT INTO Laboratory_Master(br_id,lab_name,lab_timing,lab_addr1,lab_addr2,lab_postal_code,lab_phone,lab_email,lab_landline_no,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_ID', '$Lab_Name','$Lab_Timing','$Lab_Addr1','$Lab_Addr2','$Lab_Postal_Code','$Lab_Phone','$Lab_Email','$Lab_Landline_No', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
+    
+    public function insertPathologist($Br_id, $pathologist_name,$lab_id,$lab_email,$pathologist_addr1,$pathologist_addr2,$pathologist_postal_code,$pathologist_phone,$pathologist_email,$pathologist_other_no) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Pathologist_Master(br_id,pathologist_name,lab_id,lab_email,pathologist_addr1,pathologist_addr2,pathologist_postal_code,pathologist_phone,pathologist_email,pathologist_other_no,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id','$pathologist_name','$lab_id','$lab_email','$pathologist_addr1','$pathologist_addr2','$pathologist_postal_code','$pathologist_phone','$pathologist_email','$pathologist_other_no', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertStaff($Br_id, $Staff_Name,$Staff_Email,$Staff_dob,$Staff_Gender,$Staff_Phone,$Staff_Addr1,$Staff_Addr2,$Staff_Postal_Code,$Dept_id,$Designation_id,$Staff_Joining_Date) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Staff_Master(br_id,staff_name,staff_email,staff_dob,staff_gender,staff_phone,staff_addr1,staff_addr2,staff_postal_code,dept_id,designation_id,staff_joining_date,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Staff_Name','$Staff_Email','$Staff_dob','$Staff_Gender','$Staff_Phone','$Staff_Addr1','$Staff_Addr2','$Staff_Postal_Code','$Dept_id','$Designation_id','$Staff_Joining_Date', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertWard($Br_id, $Ward_No,$Ward_Type) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Ward_Master(br_id,ward_no,ward_type,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Ward_No','$Ward_Type', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertWardType($Br_id,$Ward_Type) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Ward_Type_Master(br_id,ward_type,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Ward_Type', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertRoomDetails($Br_id, $Room_No,$Room_Type,$Room_Charges) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Room_Master(br_id,room_no,room_type,room_charges,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Room_No','$Room_Type', '$Room_Charges', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertRoomType($Br_id,$Room_Type) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Room_Type_Master(br_id,room_type,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Room_Type', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertBedDetails($Br_id, $Room_No,$Room_Type,$Bed_No,$Bed_Status) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Bed_Master(br_id,room_no,room_type,bed_no,bed_status,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Room_No','$Room_Type', '$Bed_No', '$Bed_Status', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
     public function updateUser($Cust_UserID,$Cust_Name,$Cust_Email,$Cust_Phone) {
         
         $result = mysql_query("Update Customer_master set Cust_Name = '$Cust_Name', Cust_Phone ='$Cust_Phone', Cust_Email = '$Cust_Email' where Cust_ID = '$Cust_UserID' ");
@@ -315,7 +386,139 @@ public function isBranchExisted($Branch_Name) {
             return FALSE;
         }
     }
+    
+    public function isPathologistExisted($pathologist_email) {
+        
+        $result = mysql_query("SELECT pathologist_email FROM Pathologist_master where pathologist_email = '$pathologist_email'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $pathologist_email;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
 
+    public function isStaffExisted($Staff_Email) {
+        
+        $result = mysql_query("SELECT staff_email FROM Staff_master where staff_email = '$Staff_Email'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Staff_Email;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isWardExisted($Ward_No) {
+        
+        $result = mysql_query("SELECT ward_no FROM Ward_master where ward_no = '$Ward_No'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Ward_No;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isWardTypeExisted($Ward_Type) {
+        
+        $result = mysql_query("SELECT ward_type FROM Ward_Type_master where ward_type = '$Ward_Type'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Ward_Type;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isRoomExisted($Room_No) {
+        
+        $result = mysql_query("SELECT room_no FROM Room_master where room_no = '$Room_No'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Room_No;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isRoomTypeExisted($Room_Type) {
+        
+        $result = mysql_query("SELECT room_type FROM Room_Type_master where room_type = '$Room_Type'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Room_Type;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isBedExisted($Bed_No) {
+        
+        $result = mysql_query("SELECT bed_no FROM Bed_master where bed_no = '$Bed_No'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Bed_No;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
     /**
      * Encrypting password
      * @param password

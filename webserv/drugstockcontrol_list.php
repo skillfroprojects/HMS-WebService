@@ -2,7 +2,7 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
-$response = array("error" => FALSE);
+//$response = array("error" => FALSE);
    
 if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
 $Price_Type = $Type;

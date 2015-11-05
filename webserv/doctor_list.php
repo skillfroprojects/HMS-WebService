@@ -2,7 +2,7 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
-$response = array("error" => FALSE);
+//$response = array("error" => FALSE);
 
 if (isset($_POST['BR_ID'])) {
 
@@ -71,7 +71,7 @@ if (mysql_num_rows($result) > 0) {
                 $doc["SP_NAME"] = $row["SP_NAME"];
                 $doc["DOC_ADDRESS"] = $row["DOC_ADDRESS1"].$row["DOC_ADDRESS2"];
                 $doc["DOC_EMERGENCY_AVAILABILITY"] = $row["DOC_EMERGENCY_AVAILABILITY"];
-                        
+                $doc["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
                 array_push($response["doc"], $doc);
         
     }

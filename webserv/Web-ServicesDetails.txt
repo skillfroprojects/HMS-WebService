@@ -72,61 +72,30 @@ http://hms.yogintechnologies.com/webservice/branch_insert.php
     $Branch_Phone_Other= $_POST['branch_phone_other'];
     $Hospital_ID = '1';
 
- if ($db->isBranchExisted($Branch_Name)) {
-        // user already existed
-        $response["exist"] = 1;
-        $response["error_msg"] = "Branch Data already existed with " . $Branch_Name;
+  if ($db->isBranchExisted($Branch_Name)) {
+        // branch already exists
+        $response["response"] = 0;
+        $response["message"] = $Branch_Name. "already exists";
         echo json_encode($response);
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         $user = $db->insertBranch($Branch_Name, $Hospital_ID,$Branch_Location,$Branch_Addr1,$Branch_Addr2,$Branch_Postal_Code,$Branch_Email,$Branch_Phone,$Branch_Phone_Other);
         if ($user) {
-            // user stored responsefully
-        $response["response"] = 2;
+            // branch stored successfully
+        $response["response"] = 1;
         $response["message"] = "Branch Details Inserted.";
         echo json_encode($response);
         } else {
-            // user failed to store
+            // branch failed to store
             
-            $response["error"] = 3;
-            $response["error_msg"] = "Unknown error occurred in registration!";
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
             echo json_encode($response);
         }
     }
 } else {
-    $response["missing"] = 4;
-    $response["error_msg"] = "Required parameters is missing!";
-    echo json_encode($response);
-}
-
-
-4. Branch
-
-http://hms.yogintechnologies.com/webservice/branchall.php
-
- if (mysql_num_rows($result) > 0) {
-     // response
-    $response["response"] = 1;
-    $response["branch"] = array();
-    
-    while ($row = mysql_fetch_array($result)) {
-        // temp user array
-        $Branch = array();
-        $Branch["BR_ID"] = $row["BR_ID"];
-        $Branch["BR_NAME"] = $row["BR_NAME"];
-        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
-        // push single product into final response array
-        array_push($response["branch"], $Branch);
-    }
-   
-    // echoing JSON response
-    echo json_encode($response);
-} else {
-    // no products found
-    $response["response"] = 0;
-    $response["message"] = "No data found";
-
-    // echo no users JSON
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
     echo json_encode($response);
 }
 
@@ -212,32 +181,55 @@ http://hms.yogintechnologies.com/webservice/doctor_insert.php
     $Doc_Address2= $_POST['doc_address2'];
     $Doc_Postal_Code = $_POST['doc_postal_code'];
     $Doc_Qualification = $_POST['doc_qualification'];
+    $Doc_Emergency_Availability = $_POST['doc_emergency_availability'];
     $Sp_ID = $_POST['specialization_id'];
+    $Doc_Med_Licence_no = $_POST['doc_med_licence_no'];
+    $Login_uname = $_POST['doc_name'];
+    $Login_name = $_POST['doc_email'];
+    $Br_id = $_POST['branch_id'];  
+    $Login_password = 'doctor';
+    $Login_type = 'doctor';
 
 if ($db->isDoctorExisted($Doc_Email)) {
-        // user already existed
-        $response["exist"] = 1;
-        $response["error_msg"] = "Doctor Data already existed with " . $Doc_Email;
+        // user already exists
+        $response["response"] = 0;
+        $response["message"] = $Doc_Email. "already exists";
         echo json_encode($response);
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
-        $user = $db->insertDoctor($Br_ID, $Doc_Name,$Doc_Email,$Doc_Date_Of_Birth,$Doc_Gender,$Doc_Mobile,$Doc_Address1,$Doc_Address2,$Doc_Postal_Code,$Doc_Qualification,$Sp_ID);
+        $user = $db->insertDoctor($Br_ID, $Doc_Name,$Doc_Email,$Doc_Date_Of_Birth,$Doc_Gender,$Doc_Mobile,$Doc_Address1,$Doc_Address2,$Doc_Postal_Code,$Doc_Qualification,$Doc_Emergency_Availability,$Sp_ID,$Doc_Med_Licence_no);
+        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
+
         if ($user) {
-            // user stored responsefully
-        $response["response"] = 2;
+            // user stored successfully
+        $response["response"] = 1;
+        $user = mysql_query("SELECT * from Doctor_master WHERE Doc_Email = '$Doc_Email'");
+        $user_data = mysql_fetch_array($user);
+        $no_rows = mysql_num_rows($user);
+  
+        if ($no_rows == 1) {
+            // user exists
+            //$stmt->close();
+            $user['DOC_ID'] = $user_data['DOC_ID'];
+            
+        } else {
+            
+//            return NULL;
+        }
+        $response["DOC_ID"] = $user_data['DOC_ID'];
         $response["message"] = "Doctor Details Inserted.";
         echo json_encode($response);
         } else {
             // user failed to store
             
-            $response["error"] = 3;
-            $response["error_msg"] = "Unknown error occurred in registration!";
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
             echo json_encode($response);
         }
     }
 } else {
-    $response["missing"] = 4;
-    $response["error_msg"] = "Required parameters is missing!";
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
     echo json_encode($response);
 }
 
@@ -309,42 +301,7 @@ http://hms.yogintechnologies.com/webservice/drugformall.php
     echo json_encode($response);
 }
 
-10. Hospital Insert
-
-http://hms.yogintechnologies.com/webservice/hospital_insert.php
-
-    $Cust_Name = $_POST['name'];
-    $Cust_Email = $_POST['email'];
-    $Cust_Password = $_POST['password'];
-
- if ($db->isUserExisted($Cust_Email)) {
-        // user already existed
-        $response["exist"] = 1;
-        $response["error_msg"] = "User already existed with " . $Cust_Email;
-        echo json_encode($response);
-    } else {
-        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
-        $user = $db->storeUser($Cust_Name, $Cust_Email, $Cust_Password);
-        if ($user) {
-            // user stored responsefully
-        $response["response"] = 2;
-        $response["message"] = "Product responsefully created.";
-        echo json_encode($response);
-        } else {
-            // user failed to store
-            
-            $response["error"] = 3;
-            $response["error_msg"] = "Unknown error occurred in registration!";
-            echo json_encode($response);
-        }
-    }
-} else {
-    $response["missing"] = 4;
-    $response["error_msg"] = "Required parameters is missing!";
-    echo json_encode($response);
-}
-
-11. Lab
+10. Lab
 
 http://hms.yogintechnologies.com/webservice/laball.php
 
@@ -374,16 +331,19 @@ if (mysql_num_rows($result) > 0) {
     echo json_encode($response);
 }
 
-12. Login
+11. Login
 
 http://hms.yogintechnologies.com/webservice/login.php
 
-$email = $_POST['email'];
-$password = $_POST['password'];
+ $email = $_POST['email'];
+ $password = $_POST['password'];
 
- if ($user) {
+  $user = $db->getUserByEmailAndPassword($email, $password);
+
+    if ($user) {
         $response["response"] = 1;
         $response["login_id"] = $user["Login_id"];
+        $response["br_id"] = $user["Br_id"];
         $response["login_uname"] = $user["Login_uname"];
         $response["login_name"] = $user["Login_name"];
         $response["login_type"] = $user["Login_type"];
@@ -392,18 +352,18 @@ $password = $_POST['password'];
     } else {
         // user is not found with the credentials
         $response["response"] = 0;
-        $response["error_msg"] = "Login credentials are wrong. Please try again!";
+        $response["message"] = "Login credentials are wrong. Please try again!";
         echo json_encode($response);
     }
 }
 else {
     // required post params is missing
     $response["response"] = 2;
-    $response["error_msg"] = "Required parameters is missing!";
+    $response["message"] = "Required parameters is missing!";
     echo json_encode($response);
 }
 
-13. Medico Legal 
+12. Medico Legal 
 
 http://hms.yogintechnologies.com/webservice/medicolegalall.php
 
@@ -435,7 +395,7 @@ if (mysql_num_rows($result) > 0) {
     echo json_encode($response);
 }
 
-14. Patient Registration
+13. Patient Registration
 
 http://hms.yogintechnologies.com/webservice/pat_register.php
 
@@ -497,7 +457,7 @@ http://hms.yogintechnologies.com/webservice/pat_register.php
     echo json_encode($response);
 }
 
-15. Pharmacy
+14. Pharmacy
 
 http://hms.yogintechnologies.com/webservice/pharmacyall.php
 
@@ -529,7 +489,7 @@ http://hms.yogintechnologies.com/webservice/pharmacyall.php
     echo json_encode($response);
 }
 
-16. Room Number
+15. Room Number
 
 http://hms.yogintechnologies.com/webservice/roomnumberall.php
 
@@ -561,7 +521,7 @@ if (mysql_num_rows($result) > 0) {
     echo json_encode($response);
 }
 
-17. Room Type
+16. Room Type
 
 http://hms.yogintechnologies.com/webservice/roomtypeall.php
 
@@ -593,40 +553,40 @@ http://hms.yogintechnologies.com/webservice/roomtypeall.php
     echo json_encode($response);
 }
 
-18. Specialization Insert
+17. Specialization Insert
 
 http://hms.yogintechnologies.com/webservice/speci_insert.php
 
- $Sp_Name = $_POST['sp_name'];
+  $Sp_Name = $_POST['sp_name'];
 
  if ($db->isSpecializeExisted($Sp_Name)) {
-        // user already existed
-        $response["exist"] = 1;
-        $response["error_msg"] = "Data already existed with " . $Sp_Name;
+        // user already exists
+        $response["response"] = 0;
+        $response["message"] = $Sp_Name. "already exists";
         echo json_encode($response);
     } else {
-        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        
         $user = $db->insertSpecialization($Sp_Name);
         if ($user) {
-            // user stored responsefully
-        $response["response"] = 2;
+            // user stored successfully
+        $response["response"] = 1;
         $response["message"] = "Data Inserted.";
         echo json_encode($response);
         } else {
             // user failed to store
             
-            $response["error"] = 3;
-            $response["error_msg"] = "Unknown error occurred in registration!";
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
             echo json_encode($response);
         }
     }
 } else {
-    $response["missing"] = 4;
-    $response["error_msg"] = "Required parameters is missing!";
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
     echo json_encode($response);
 }
 
-19. Specialization
+18. Specialization
 
 http://hms.yogintechnologies.com/webservice/speciall.php
 
@@ -658,7 +618,7 @@ http://hms.yogintechnologies.com/webservice/speciall.php
     echo json_encode($response);
 }
 
-20.Specimen
+19.Specimen
 
 http://hms.yogintechnologies.com/webservice/specimenall.php
 
@@ -690,7 +650,7 @@ http://hms.yogintechnologies.com/webservice/specimenall.php
     echo json_encode($response);
 }
 
-21. Staff
+20. Staff
 
 http://hms.yogintechnologies.com/webservice/staffall.php
 
@@ -722,7 +682,7 @@ else {
     echo json_encode($response);
 }
 
-22. Surgery Type
+21. Surgery Type
 
 http://hms.yogintechnologies.com/webservice/surgerytypeall.php
 
@@ -754,7 +714,7 @@ if (mysql_num_rows($result) > 0) {
     echo json_encode($response);
 }
 
-23. Surgical Anaesthetists
+22. Surgical Anaesthetists
 
 http://hms.yogintechnologies.com/webservice/surgicalanaesthetistsall.php
 
@@ -786,7 +746,7 @@ http://hms.yogintechnologies.com/webservice/surgicalanaesthetistsall.php
     echo json_encode($response);
 }
 
-24. Ward Type
+23. Ward Type
 
 http://hms.yogintechnologies.com/webservice/wardtypeall.php
 
@@ -818,7 +778,7 @@ http://hms.yogintechnologies.com/webservice/wardtypeall.php
     echo json_encode($response);
 }
 
-25. Doctor List
+24. Doctor List
 
 http://hms.yogintechnologies.com/webservice/doctor_list.php
 
@@ -1040,5 +1000,657 @@ if (mysql_num_rows($result) > 0) {
 } else {
     $response["response"] = 3;
     $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+30. E-Prescription
+
+http://hms.yogintechnologies.com/webservice/eprescription_list.php
+
+$pat_id = $_GET['pat_id'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["eprescription"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $eprescription = array();
+                $eprescription["DOCTOR_NAME"] = $row["doc_id"];
+                $eprescription["PATIENT_NAME"] = $row["pat_id"];
+                $eprescription["STAFF_NAME"] = $row["staff_id"];
+                $eprescription["PRESCRIPTION_DATE"] = $row["presc_date"];
+                $eprescription["PRESC_NOOFDAYS"] = $row["presc_no_of_days"];
+                $eprescription["DRUG_NAME"] = $row["drug_name"];
+                $eprescription["DRUG_STRENGTH"] = $row["drug_strength"];
+                $eprescription["DRUG_PERDAY"] = $row["druds_per_day"];
+                $eprescription["PRESC_NOTES"] = $row["presc_notes"];
+                $eprescription["WARD_NO"] = $row["ward_no"];
+                $eprescription["ROOM_NO"] = $row["room_no"];
+                $eprescription["BED_NO"] = $row["bed_no"];
+                array_push($response["eprescription"], $eprescription);
+        
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+31. Appointment List
+
+http://hms.yogintechnologies.com/webservice/appointment_list.php
+
+<?php
+include 'include/Config.php';
+$db = new DB_Class();
+
+$response = array("error" => FALSE);
+
+if (isset($_POST['DOC_NAME'])) {
+
+// receiving the post params
+$DOC_NAME = $_POST['DOC_NAME'];
+        
+if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
+$Price_Type = $Type;
+if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
+if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=10; }; 
+$start_from = ($page-1) * 10; 
+
+$result = mysql_query("SELECT
+        appointment_master.APP_ID,
+        appointment_master.APP_DATE,
+        appointment_master.APP_TIME,
+        appointment_master.APP_TOKEN_NO,
+        appointment_master.DOC_NAME,
+        appointment_master.PAT_NAME,
+        appointment_master.PAT_EMAIL,
+        appointment_master.PAT_MOBILE,
+        appointment_master.PAT_ID,
+        appointment_master.BR_NAME,
+        appointment_master.APP_REG_VIA,
+        appointment_master.APP_REG_FRM_DEVICE,
+        appointment_master.APP_CREATED_DATE,
+        appointment_master.APP_CREATED_DEVICE,
+        appointment_master.APP_CREATED_IP,
+        appointment_master.APP_CREATED_BY,
+        appointment_master.APP_MODIFY_DATE,
+        appointment_master.APP_MODIFY_DEVICE,
+        appointment_master.APP_MODIFT_IP,
+        appointment_master.APP_MODIFY_BY
+        FROM
+        appointment_master
+        WHERE
+        appointment_master.DOC_NAME = $DOC_NAME LIMIT 10") or die("Error");
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["appointment"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $appointment = array();
+                $appointment["PAT_NAME"] = $row["PAT_NAME"];
+                $appointment["APP_DATE"] = $row["APP_DATE"];
+                $appointment["APP_TIME"] = $row["APP_TIME"];                        
+                array_push($response["appointment"], $appointment);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+?>
+
+32. OutPatient List
+
+http://hms.yogintechnologies.com/webservice/outpatient_list.php
+
+$DOC_NAME = $_POST['DOC_NAME'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["outpatient"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $outpatient = array();
+                $outpatient["PAT_NAME"] = $row["PAT_NAME"];
+                $outpatient["PAT_EMAIL"] = $row["PAT_EMAIL"];
+                $outpatient["PAT_MOBILE"] = $row["PAT_MOBILE"];                        
+                array_push($response["outpatient"], $outpatient);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+33. InPatient List
+
+http://hms.yogintechnologies.com/webservice/inpatient_list.php
+
+$doc_id = $_POST['doc_id'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["inpatient"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $inpatient = array();
+                $inpatient["PAT_NAME"] = $row["pat_id"];
+                $inpatient["ROOM_TYPE"] = $row["room_type"];
+                $inpatient["ROOM_NO"] = $row["room_no"];  
+                $inpatient["BED_NO"] = $row["bed_no"];  
+                array_push($response["inpatient"], $inpatient);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+34. Manage Report List
+
+http://hms.yogintechnologies.com/webservice/managereport_list.php
+
+$pat_id = $_POST['pat_id'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["report"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $report = array();
+                $report["PAT_NAME"] = $row["pat_id"];
+                $report["TEST_NAME"] = $row["lab_test_name"];
+                $report["LAB_NAME"] = $row["lab_id"];  
+                $report["TEST_REQUESTED_DATE"] = $row["requested_date"];  
+                array_push($response["report"], $report);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+35. Department Insert
+
+http://hms.yogintechnologies.com/webservice/department_insert.php
+
+    $Br_ID = $_POST['br_id'];
+    $Dept_Name = $_POST['dept_name'];
+    $Dept_Email = $_POST['dept_email'];
+    $Dept_Phone = $_POST['dept_phone'];
+
+if ($db->isDepartmentExisted($Dept_Name)) {
+        // department already exists
+        $response["response"] = 0;
+        $response["message"] = $Dept_Name. "already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertDepartment($Br_ID, $Dept_Name,$Dept_Email,$Dept_Phone);
+        if ($user) {
+            // department stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Department Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // department failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+36. Laboratory Insert
+
+http://hms.yogintechnologies.com/webservice/laboratory_insert.php
+
+    $Br_ID = $_POST['branch_id'];
+    $Lab_Name = $_POST['lab_name'];
+    $Lab_Timing = $_POST['lab_timing'];
+    $Lab_Addr1 = $_POST['lab_addr1'];
+    $Lab_Addr2 = $_POST['lab_addr2'];
+    $Lab_Postal_Code = $_POST['lab_postal_code'];
+    $Lab_Phone = $_POST['lab_phone'];
+    $Lab_Email= $_POST['lab_email'];
+    $Lab_Landline_No = $_POST['lab_landline_no'];    
+    $Login_uname = $_POST['lab_name'];
+    $Login_name = $_POST['lab_email'];
+    $Br_id = $_POST['branch_id'];  
+    $Login_password = 'laboratory';
+    $Login_type = 'laboratory';
+
+if ($db->isLaboratoryExisted($Lab_Email)) {
+        // lab already exists
+        $response["response"] = 0;
+        $response["message"] = $Lab_Email. "already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
+        $user = $db->insertLaboratory($Br_ID, $Lab_Name,$Lab_Timing,$Lab_Addr1,$Lab_Addr2,$Lab_Postal_Code,$Lab_Phone,$Lab_Email,$Lab_Landline_No);
+        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
+
+        if ($user) {
+            // lab stored successfully
+        $response["response"] = 1;
+        $user = mysql_query("SELECT * from Laboratory_master WHERE Lab_Email = '$Lab_Email'");
+        $user_data = mysql_fetch_array($user);
+        $no_rows = mysql_num_rows($user);
+  
+        if ($no_rows == 1) {
+            // lab exists
+            //$stmt->close();
+            $user['lab_id'] = $user_data['lab_id'];
+            
+        } else {
+            
+//            return NULL;
+        }
+        $response["lab_id"] = $user_data['lab_id'];
+        $response["message"] = "Laboratory Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // lab failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+37. Pathologist Insert
+
+http://hms.yogintechnologies.com/webservice/pathologist_insert.php
+
+    $Br_id = $_POST['branch_id'];
+    $pathologist_name = $_POST['pathologist_name'];
+    $lab_id = $_POST['lab_id'];
+    $lab_email = $_POST['lab_email'];
+    $pathologist_addr1 = $_POST['pathologist_addr1'];
+    $pathologist_addr2 = $_POST['pathologist_addr2'];
+    $pathologist_postal_code = $_POST['pathologist_postal_code'];
+    $pathologist_phone= $_POST['pathologist_phone'];
+    $pathologist_email = $_POST['pathologist_email'];
+    $pathologist_other_no = $_POST['pathologist_other_no'];  
+    $Login_uname = $_POST['pathologist_name'];
+    $Login_name = $_POST['pathologist_email'];
+    $Login_password = 'pathologist';
+    $Login_type = 'laboratory';
+
+if ($db->isPathologistExisted($pathologist_email)) {
+        // Pathologist already exists
+        $response["response"] = 0;
+        $response["message"] = $pathologist_email. "already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
+        $user = $db->insertPathologist($Br_id, $pathologist_name,$lab_id,$lab_email,$pathologist_addr1,$pathologist_addr2,$pathologist_postal_code,$pathologist_phone,$pathologist_email,$pathologist_other_no);
+        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
+
+        if ($user) {
+            // Pathologist stored successfully
+        $response["response"] = 1;
+        $user = mysql_query("SELECT * from Pathologist_master WHERE pathologist_email = '$pathologist_email'");
+        $user_data = mysql_fetch_array($user);
+        $no_rows = mysql_num_rows($user);
+  
+        if ($no_rows == 1) {
+            // Pathologist exists
+            //$stmt->close();
+            $user['pathologist_id'] = $user_data['pathologist_id'];
+            
+        } else {
+            
+//            return NULL;
+        }
+        $response["pathologist_id"] = $user_data['pathologist_id'];
+        $response["message"] = "Pathologist Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // Pathologist failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+38. Staff Insert
+
+http://hms.yogintechnologies.com/webservice/staff_insert.php
+
+$Br_id = $_POST['branch_id'];
+    $Staff_Name = $_POST['staff_name'];
+    $Staff_Email = $_POST['staff_email'];
+    $Staff_dob = $_POST['staff_dob'];
+    $Staff_Gender = $_POST['staff_gender'];
+    $Staff_Phone = $_POST['staff_phone'];
+    $Staff_Addr1 = $_POST['staff_addr1'];
+    $Staff_Addr2= $_POST['staff_addr2'];
+    $Staff_Postal_Code = $_POST['staff_postal_code'];  
+    $Dept_id = $_POST['dept_id'];
+    $Designation_id= $_POST['designation_id'];
+    $Staff_Joining_Date = $_POST['staff_joining_date'];  
+    $Login_uname = $_POST['staff_name'];
+    $Login_name = $_POST['staff_email'];
+    $Login_password = 'staffemp';
+    $Login_type = 'staff';
+
+if ($db->isStaffExisted($Staff_Email)) {
+        // staff already exists
+        $response["response"] = 0;
+        $response["message"] = $Staff_Email. "already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
+        $user = $db->insertStaff($Br_id, $Staff_Name,$Staff_Email,$Staff_dob,$Staff_Gender,$Staff_Phone,$Staff_Addr1,$Staff_Addr2,$Staff_Postal_Code,$Dept_id,$Designation_id,$Staff_Joining_Date);
+        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
+
+        if ($user) {
+            // staff stored successfully
+        $response["response"] = 1;
+        $user = mysql_query("SELECT * from Staff_master WHERE Staff_Email = '$Staff_Email'");
+        $user_data = mysql_fetch_array($user);
+        $no_rows = mysql_num_rows($user);
+  
+        if ($no_rows == 1) {
+            // staff exists
+            //$stmt->close();
+            $user['staff_id'] = $user_data['staff_id'];
+            
+        } else {
+            
+//            return NULL;
+        }
+        $response["staff_id"] = $user_data['staff_id'];
+        $response["message"] = "Staff Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // staff failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+39. Ward Insert
+
+http://hms.yogintechnologies.com/webservice/ward_insert.php
+
+    $Br_id = $_POST['branch_id'];
+    $Ward_No = $_POST['ward_no'];
+    $Ward_Type = $_POST['ward_type'];
+
+if ($db->isWardExisted($Ward_No)) {
+        // Ward already exists
+        $response["response"] = 0;
+        $response["message"] = $Ward_No. " already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
+        $user = $db->insertWard($Br_id, $Ward_No,$Ward_Type);
+
+        if ($user) {
+            // Ward stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Ward Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // Ward failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+40. Ward Type Insert
+
+http://hms.yogintechnologies.com/webservice/wardtype_insert.php
+
+    $Br_id = $_POST['branch_id'];
+    $Ward_Type = $_POST['ward_type'];
+
+if ($db->isWardTypeExisted($Ward_Type)) {
+        // Ward already exists
+        $response["response"] = 0;
+        $response["message"] = $Ward_Type. " already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
+        $user = $db->insertWardType($Br_id,$Ward_Type);
+
+        if ($user) {
+            // Ward stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Ward Type Inserted.";
+        echo json_encode($response);
+        } else {
+            // Ward failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+41. Room Type Insert
+
+http://hms.yogintechnologies.com/webservice/roomtype_insert.php
+
+    $Br_id = $_POST['branch_id'];
+    $Room_Type = $_POST['room_type'];
+
+ if ($db->isRoomTypeExisted($Room_Type)) {
+        // Room already exists
+        $response["response"] = 0;
+        $response["message"] = $Room_Type. " already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
+        $user = $db->insertRoomType($Br_id,$Room_Type);
+
+        if ($user) {
+            // Room stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Room Type Inserted.";
+        echo json_encode($response);
+        } else {
+            // Room failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+42. Room Insert
+
+http://hms.yogintechnologies.com/webservice/room_insert.php
+
+    $Br_id = $_POST['branch_id'];
+    $Room_No = $_POST['room_no'];
+    $Room_Type = $_POST['room_type'];
+    $Room_Charges = $_POST['room_charges'];
+
+if ($db->isRoomExisted($Room_No)) {
+        // Room already exists
+        $response["response"] = 0;
+        $response["message"] = $Room_No. " already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
+        $user = $db->insertRoomDetails($Br_id, $Room_No,$Room_Type,$Room_Charges);
+
+        if ($user) {
+            // Room stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Room Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // Room failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+43. Bed Insert
+
+http://hms.yogintechnologies.com/webservice/bed_insert.php
+
+    $Br_id = $_POST['branch_id'];
+    $Room_No = $_POST['room_no'];
+    $Room_Type = $_POST['room_type'];
+    $Bed_No = $_POST['bed_no'];
+    $Bed_Status = $_POST['bed_status'];  
+
+ if ($db->isBedExisted($Bed_No)) {
+        // Bed already exists
+        $response["response"] = 0;
+        $response["message"] = $Bed_No. " already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
+        $user = $db->insertBedDetails($Br_id, $Room_No,$Room_Type,$Bed_No,$Bed_Status);
+
+        if ($user) {
+            // Bed stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Bed Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // Bed failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
     echo json_encode($response);
 }
