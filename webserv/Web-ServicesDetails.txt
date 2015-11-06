@@ -860,7 +860,7 @@ if (mysql_num_rows($result) > 0) {
 
 http://hms.yogintechnologies.com/webservice/pharmacy_list.php
 
-$BR_ID = $_POST['br_id'];
+$BR_ID = $_POST['BR_ID'];
 
 if (mysql_num_rows($result) > 0) {
      // response
@@ -900,7 +900,7 @@ if (mysql_num_rows($result) > 0) {
 
 http://hms.yogintechnologies.com/webservice/lab_list.php
 
-$BR_ID = $_POST['br_id'];
+$BR_ID = $_POST['BR_ID'];
 
 if (mysql_num_rows($result) > 0) {
      // response

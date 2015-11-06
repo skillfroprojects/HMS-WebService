@@ -4,10 +4,10 @@ $db = new DB_Class();
 
 //$response = array("error" => FALSE);
 
-if (isset($_POST['br_id'])) {
+if (isset($_POST['BR_ID'])) {
 
 // receiving the post params
-$BR_ID = $_POST['br_id'];
+$BR_ID = $_POST['BR_ID'];
         
 if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
 $Price_Type = $Type;
