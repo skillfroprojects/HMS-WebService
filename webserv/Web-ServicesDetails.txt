@@ -1656,3 +1656,196 @@ http://hms.yogintechnologies.com/webservice/bed_insert.php
     $response["message"] = "Required parameters missing!";
     echo json_encode($response);
 }
+
+44. Emergency Insert
+
+http://hms.yogintechnologies.com/webservice/emergency_insert.php
+
+    $Br_ID = $_POST['branch_id'];
+    $Em_Pat_Name = $_POST['em_pat_name'];
+    $Em_Gender = $_POST['em_gender'];
+    $Em_Mode_Of_Arrival = $_POST['em_mode_of_arrival'];
+    $Em_Accompanied_By = $_POST['em_accompanied_by'];
+    $Em_Relatives_Notified = $_POST['em_relatives_notified'];
+    $Em_Priority = $_POST['em_priority'];
+    $Em_Date= $_POST['em_date'];
+    $Em_Time_Of_Arrival = $_POST['em_time_of_arrival'];
+    $Em_Referral_Doctor = $_POST['em_referral_doctor'];
+    $Em_Ward_To_Admit = $_POST['em_ward_to_admit'];
+    $Em_Bed_No = $_POST['em_bed_no'];
+    $Em_Mlc = $_POST['em_mlc'];
+    $Em_Mlc_Details = $_POST['em_mlc_details'];
+
+ if ($user) {
+            // branch stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Duty Roaster Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // branch failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+    else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+45. Lab Test Request Insert
+
+http://hms.yogintechnologies.com/webservice/lab_test_request_insert.php
+
+    $Br_ID = $_POST['branch_id'];
+    $pat_id = $_POST['pat_id'];
+    $lab_id = $_POST['lab_id'];
+    $lab_requestor_id = $_POST['lab_requestor_id'];
+    $lab_requested_by = $_POST['lab_requested_by'];
+    $lab_test_name = $_POST['lab_test_name'];
+    $lab_requested_date = $_POST['lab_requested_date'];
+    $lab_request_completed_date= $_POST['lab_request_completed_date'];
+    $lab_notify_to_doc = $_POST['lab_notify_to_doc'];
+    $lab_notify_to_pat = $_POST['lab_notify_to_pat'];
+    $lab_specimen = $_POST['lab_specimen'];
+    $lab_specimen_collected_by = $_POST['lab_specimen_collected_by'];
+    $lab_sample_no = $_POST['lab_sample_no'];
+    $lab_request_status = $_POST['lab_request_status'];
+    $lab_remarks = $_POST['lab_remarks'];
+    $lab_request_type = $_POST['lab_request_type'];
+
+ if ($user) {
+            // report stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Report Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // report failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+ else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}   
+
+46. Duty Roaster Insert
+
+http://hms.yogintechnologies.com/webservice/dutyroaster_insert.php
+
+    $Schedule_Id = $_POST['schedule_id'];
+    $Schedule_Emp_Type = $_POST['schedule_emp_type'];
+    $Schedule_Emp_Id = $_POST['schedule_emp_id'];
+    $Schedule_Shift_Id = $_POST['schedule_shift_id'];
+    $Schedule_Pat_Id = $_POST['schedule_pat_id'];
+    $Schedule_From_Date = $_POST['schedule_from_date'];
+    $Schedule_To_Date = $_POST['schedule_to_date'];
+
+if ($user) {
+            // branch stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Duty Roaster Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // branch failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+    else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+47. Supplier Insert
+
+http://hms.yogintechnologies.com/webservice/supplier_insert.php
+
+    $Br_Id = $_POST['branch_id'];
+    $Pharma_Id = $_POST['pharma_id'];
+    $Supplier_Name = $_POST['supplier_name'];
+    $Supplier_Email = $_POST['supplier_email'];
+    $Supplier_Phone = $_POST['supplier_phone'];
+    $Supplier_Addr1 = $_POST['supplier_addr1'];
+    $Supplier_Addr2 = $_POST['supplier_addr2'];
+
+if ($db->isSupplierExisted($Supplier_Email)) {
+        // drug already exists
+        $response["response"] = 0;
+        $response["message"] = $Supplier_Email. "already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertSupplier($Br_Id, $Pharma_Id,$Supplier_Name,$Supplier_Email,$Supplier_Phone,$Supplier_Addr1,$Supplier_Addr2);
+        if ($user) {
+            // branch stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Supplier Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // branch failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+48. Drug Insert
+
+http://hms.yogintechnologies.com/webservice/drug_insert.php
+
+    $Drug_Name = $_POST['drug_name'];
+    $NDC_code = $_POST['ndc_code'];
+    $Drug_Brand_Name = $_POST['drug_brand_name'];
+    $Drug_Form = $_POST['drug_form'];
+    $Drug_Mfg_Date = $_POST['drug_mfg_date'];
+    $Drug_Expiry_Date = $_POST['drug_expiry_date'];
+    $Drug_Unit_Price = $_POST['drug_unit_price'];
+    $Drug_Box_Price= $_POST['drug_box_price'];
+    $Drug_Box_Quantity= $_POST['drug_box_quantity'];
+    $Drug_Total_Stock= $_POST['drug_total_stock'];
+    $Supplier_Id= $_POST['supplier_id'];
+    $Available_Stock= $_POST['available_stock'];
+
+ if ($db->isDrugExisted($NDC_code)) {
+        // drug already exists
+        $response["response"] = 0;
+        $response["message"] = $NDC_code. "already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertDrug($Drug_Name, $NDC_code,$Drug_Brand_Name,$Drug_Form,$Drug_Mfg_Date,$Drug_Expiry_Date,$Drug_Unit_Price,$Drug_Box_Price,$Drug_Box_Quantity,$Drug_Total_Stock,$Supplier_Id,$Available_Stock);
+        if ($user) {
+            // branch stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Drug Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // branch failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+

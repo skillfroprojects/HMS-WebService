@@ -113,13 +113,23 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
-    public function insertEmergency($Br_id, $Staff_Name,$Staff_Email,$Staff_dob,$Staff_Gender,$Staff_Phone,$Staff_Addr1,$Staff_Addr2,$Staff_Postal_Code,$Dept_id,$Designation_id,$Staff_Joining_Date) {
+    public function insertEmergency($Br_id, $Em_Pat_Name,$Em_Gender,$Em_Mode_Of_Arrival,$Em_Accompanied_By,$Em_Relatives_Notified,$Em_Priority,$Em_Date,$Em_Time_Of_Arrival,$Em_Referral_Doctor,$Em_Ward_To_Admit,$Em_Bed_No,$Em_Mlc,$Em_Mlc_Details) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
         $reg_device = "";
         $CR_device = "";
         $MD_device = "";
-        $result = mysql_query("INSERT INTO Emergency_Visit_Master(br_id,em_pat_name,em_gender,em_mode_of_arrival,em_accompanied_by,em_relatives_notified,em_priority,em_date,em_time_of_arrival,em_referral_doctor,em_ward_to_admit,em_bed_no,em_mlc,em_mlc_details,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Staff_Name','$Staff_Email','$Staff_dob','$Staff_Gender','$Staff_Phone','$Staff_Addr1','$Staff_Addr2','$Staff_Postal_Code','$Dept_id','$Designation_id','$Staff_Joining_Date', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        $result = mysql_query("INSERT INTO Emergency_Visit_Master(br_id,em_pat_name,em_gender,em_mode_of_arrival,em_accompanied_by,em_relatives_notified,em_priority,em_date,em_time_of_arrival,em_referral_doctor,em_ward_to_admit,em_bed_no,em_mlc,em_mlc_details,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Em_Pat_Name', '$Em_Gender', '$Em_Mode_Of_Arrival', '$Em_Accompanied_By', '$Em_Relatives_Notified', '$Em_Priority', '$Em_Date', '$Em_Time_Of_Arrival', '$Em_Referral_Doctor', '$Em_Ward_To_Admit', '$Em_Bed_No', '$Em_Mlc', '$Em_Mlc_Details', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertTestReports($Br_id, $pat_id,$lab_id,$lab_requestor_id,$lab_requested_by,$lab_test_name,$lab_requested_date,$lab_request_completed_date,$lab_notify_to_doc,$lab_notify_to_pat,$lab_specimen,$lab_specimen_collected_by,$lab_sample_no,$lab_request_status,$lab_remarks,$lab_request_type) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Lab_Report_Request_Master(br_id, pat_id,lab_id,lab_requestor_id,lab_requested_by,lab_test_name,lab_requested_date,lab_request_completed_date,lab_notify_to_doc,lab_notify_to_pat,lab_specimen,lab_specimen_collected_by,lab_sample_no,lab_request_status,lab_remarks,lab_request_type,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$pat_id', '$lab_id', '$lab_requestor_id', '$lab_requested_by', '$lab_test_name', '$lab_requested_date', '$lab_request_completed_date', '$lab_notify_to_doc', '$lab_notify_to_pat', '$lab_specimen', '$lab_specimen_collected_by', '$lab_sample_no', '$lab_request_status', '$lab_remarks', '$lab_request_type', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     
@@ -170,6 +180,36 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         $CR_device = "";
         $MD_device = "";
         $result = mysql_query("INSERT INTO Bed_Master(br_id,room_no,room_type,bed_no,bed_status,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Room_No','$Room_Type', '$Bed_No', '$Bed_Status', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertDrug($Br_Id, $Drug_Name, $NDC_code,$Drug_Brand_Name,$Drug_Form,$Drug_Mfg_Date,$Drug_Expiry_Date,$Drug_Unit_Price,$Drug_Box_Price,$Drug_Box_Quantity,$Drug_Total_Stock,$Supplier_Id,$Available_Stock) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO pharmacy_drug_master(br_id,drug_name,NDC_code,drug_brand_name,drug_form,drug_mfg_date,drug_expiry_date,drug_unit_price,drug_box_price,drug_box_quantity,drug_total_stock,supplier_id,available_stock,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Drug_Name', '$NDC_code', '$Drug_Brand_Name', '$Drug_Form', '$Drug_Mfg_Date', '$Drug_Expiry_Date', '$Drug_Unit_Price', '$Drug_Box_Price', '$Drug_Box_Quantity', '$Drug_Total_Stock', '$Supplier_Id', '$Available_Stock', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertSupplier($Br_Id, $Pharma_Id,$Supplier_Name,$Supplier_Email,$Supplier_Phone,$Supplier_Addr1,$Supplier_Addr2) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO pharmacy_supplier_master(br_id,pharma_id,supplier_name,supplier_email,supplier_phone,supplier_addr1,supplier_addr2,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Pharma_Id', '$Supplier_Name', '$Supplier_Email', '$Supplier_Phone', '$Supplier_Addr1', '$Supplier_Addr2', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+     public function insertDuty($Schedule_Id, $Schedule_Emp_Type,$Schedule_Emp_Id,$Schedule_Shift_Id,$Schedule_Pat_Id,$Schedule_From_Date,$Schedule_To_Date) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO schedule_master(schedule_id,schedule_emp_type,schedule_emp_id,schedule_shift_id,schedule_pat_id,schedule_from_date,schedule_to_date,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Schedule_Id', '$Schedule_Emp_Type', '$Schedule_Emp_Id', '$Schedule_Shift_Id', '$Schedule_Pat_Id', '$Schedule_From_Date', '$Schedule_To_Date', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     
@@ -522,6 +562,44 @@ public function isBranchExisted($Branch_Name) {
             //$stmt->close();
             //echo $user;
             return $Bed_No;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isDrugExisted($NDC_code) {
+        
+        $result = mysql_query("SELECT NDC_code FROM pharmacy_drug_master where NDC_code = '$NDC_code'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $NDC_code;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+     public function isSupplierExisted($Supplier_Email) {
+        
+        $result = mysql_query("SELECT supplier_email FROM pharmacy_supplier_master where supplier_email = '$Supplier_Email'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Supplier_Email;
         } else {
             // user not existed
             //$stmt->close();
