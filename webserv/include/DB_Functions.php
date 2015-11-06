@@ -113,6 +113,16 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
+    public function insertEmergency($Br_id, $Staff_Name,$Staff_Email,$Staff_dob,$Staff_Gender,$Staff_Phone,$Staff_Addr1,$Staff_Addr2,$Staff_Postal_Code,$Dept_id,$Designation_id,$Staff_Joining_Date) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Emergency_Visit_Master(br_id,em_pat_name,em_gender,em_mode_of_arrival,em_accompanied_by,em_relatives_notified,em_priority,em_date,em_time_of_arrival,em_referral_doctor,em_ward_to_admit,em_bed_no,em_mlc,em_mlc_details,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Staff_Name','$Staff_Email','$Staff_dob','$Staff_Gender','$Staff_Phone','$Staff_Addr1','$Staff_Addr2','$Staff_Postal_Code','$Dept_id','$Designation_id','$Staff_Joining_Date', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
     public function insertWard($Br_id, $Ward_No,$Ward_Type) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";

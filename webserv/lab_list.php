@@ -4,10 +4,10 @@ $db = new DB_Class();
 
 //$response = array("error" => FALSE);
 
-if (isset($_POST['BR_ID'])) {
+if (isset($_POST['br_id'])) {
 
 // receiving the post params
-$BR_ID = $_POST['BR_ID'];
+$BR_ID = $_POST['br_id'];
         
 if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
 $Price_Type = $Type;
@@ -27,7 +27,7 @@ $result = mysql_query("SELECT
         laboratory_master.lab_email,
         laboratory_master.lab_landline_no,
         laboratory_master.reg_via,
-        laboratory_master.reg_frm_name,
+        laboratory_master.reg_frm_device,
         laboratory_master.created_date,
         laboratory_master.created_device,
         laboratory_master.created_ip,
@@ -35,7 +35,7 @@ $result = mysql_query("SELECT
         laboratory_master.modify_date,
         laboratory_master.modify_device,
         laboratory_master.modify_ip,
-        laboratory_master.modfy_by
+        laboratory_master.modify_by
         FROM
         laboratory_master
         WHERE
@@ -54,6 +54,7 @@ if (mysql_num_rows($result) > 0) {
                 $lab["ADDRESS"] = $row["lab_addr1"].",".$row["lab_addr2"];
                 $lab["PHONE"] = $row["lab_phone"];
                 $lab["EMAIL"] = $row["lab_email"];
+                $lab["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
                 array_push($response["lab"], $lab);
         
     }

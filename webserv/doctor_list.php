@@ -72,11 +72,9 @@ if (mysql_num_rows($result) > 0) {
                 $doc["DOC_ADDRESS"] = $row["DOC_ADDRESS1"].$row["DOC_ADDRESS2"];
                 $doc["DOC_EMERGENCY_AVAILABILITY"] = $row["DOC_EMERGENCY_AVAILABILITY"];
                 $doc["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
-                array_push($response["doc"], $doc);
-        
+                array_push($response["doc"], $doc);  
     }
     
-
     // echoing JSON response
     echo json_encode($response);
 } else {

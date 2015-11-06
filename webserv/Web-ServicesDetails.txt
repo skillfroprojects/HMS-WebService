@@ -797,12 +797,10 @@ if (mysql_num_rows($result) > 0) {
                 $doc["SP_NAME"] = $row["SP_NAME"];
                 $doc["DOC_ADDRESS"] = $row["DOC_ADDRESS1"].$row["DOC_ADDRESS2"];
                 $doc["DOC_EMERGENCY_AVAILABILITY"] = $row["DOC_EMERGENCY_AVAILABILITY"];
-                        
-                array_push($response["doc"], $doc);
-        
+                $doc["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
+                array_push($response["doc"], $doc);  
     }
     
-
     // echoing JSON response
     echo json_encode($response);
 } else {
@@ -837,7 +835,7 @@ if (mysql_num_rows($result) > 0) {
                 $staff["STAFF_NAME"] = $row["staff_name"];
                 $staff["DESIGNATION"] = $row["designation_name"];
                 $staff["PHONE"] = $row["staff_phone"];
-                        
+                $staff["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";     
                 array_push($response["staff"], $staff);
         
     }
@@ -862,7 +860,7 @@ if (mysql_num_rows($result) > 0) {
 
 http://hms.yogintechnologies.com/webservice/pharmacy_list.php
 
-$BR_ID = $_POST['BR_ID'];
+$BR_ID = $_POST['br_id'];
 
 if (mysql_num_rows($result) > 0) {
      // response
@@ -877,6 +875,7 @@ if (mysql_num_rows($result) > 0) {
                 $pharmacy["ADDRESS"] = $row["pharma_addr1"].",".$row["pharma_addr2"];
                 $pharmacy["PHONE"] = $row["pharma_phone"];
                 $pharmacy["EMAIL"] = $row["pharma_email"];
+                $pharmacy["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
                 array_push($response["pharmacy"], $pharmacy);
         
     }
@@ -901,6 +900,8 @@ if (mysql_num_rows($result) > 0) {
 
 http://hms.yogintechnologies.com/webservice/lab_list.php
 
+$BR_ID = $_POST['br_id'];
+
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
@@ -914,6 +915,7 @@ if (mysql_num_rows($result) > 0) {
                 $lab["ADDRESS"] = $row["lab_addr1"].",".$row["lab_addr2"];
                 $lab["PHONE"] = $row["lab_phone"];
                 $lab["EMAIL"] = $row["lab_email"];
+                $lab["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
                 array_push($response["lab"], $lab);
         
     }

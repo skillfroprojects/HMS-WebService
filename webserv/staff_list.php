@@ -4,15 +4,15 @@ $db = new DB_Class();
 
 //$response = array("error" => FALSE);
 
-if (isset($_GET['BR_ID'])) {
+if (isset($_POST['BR_ID'])) {
 
 // receiving the post params
-$BR_ID = $_GET['BR_ID'];
+$BR_ID = $_POST['BR_ID'];
         
-if (isset($_GET["type"])) { $Type  = $_GET["type"]; } else { $Type='DESC'; }; 
+if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
 $Price_Type = $Type;
-if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; }; 
-if (isset($_GET["page_count"])) { $page_data  = $_GET["page_count"]; } else { $page_data=10; }; 
+if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
+if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=10; }; 
 $start_from = ($page-1) * 10; 
 
 $result = mysql_query("SELECT
@@ -39,21 +39,16 @@ $result = mysql_query("SELECT
         staff_master.modify_device,
         staff_master.modify_ip,
         staff_master.modify_by,
-        designation_master.designation_id,
-        designation_master.designation_name,
-        designation_master.reg_via,
-        designation_master.reg_frm_device,
-        designation_master.created_date,
-        designation_master.created_device,
-        designation_master.created_ip,
-        designation_master.created_by,
-        designation_master.modify_date,
-        designation_master.modify_device,
-        designation_master.modify_ip,
-        designation_master.modify_by
+        schedule_master.schedule_id,
+        schedule_master.schedule_emp_type,
+        schedule_master.schedule_emp_id,
+        schedule_master.schedule_shift_id,
+        schedule_master.schedule_pat_id,
+        schedule_master.schedule_from_date,
+        schedule_master.schedule_to_date
         FROM
         staff_master
-        INNER JOIN designation_master ON staff_master.designation_id = designation_master.designation_id
+        INNER JOIN schedule_master ON schedule_master.schedule_emp_id = staff_master.staff_id
         WHERE
         staff_master.br_id = '$BR_ID' LIMIT 10") or die("Error");
 
@@ -69,7 +64,7 @@ if (mysql_num_rows($result) > 0) {
                 $staff["STAFF_NAME"] = $row["staff_name"];
                 $staff["DESIGNATION"] = $row["designation_name"];
                 $staff["PHONE"] = $row["staff_phone"];
-                        
+                $staff["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";     
                 array_push($response["staff"], $staff);
         
     }
