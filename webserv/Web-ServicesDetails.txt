@@ -972,6 +972,8 @@ if (mysql_num_rows($result) > 0) {
 
 http://hms.yogintechnologies.com/webservice/suppliers_list.php
 
+$BR_ID = $_POST['BR_ID'];
+
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
@@ -1009,7 +1011,7 @@ if (mysql_num_rows($result) > 0) {
 
 http://hms.yogintechnologies.com/webservice/eprescription_list.php
 
-$pat_id = $_GET['pat_id'];
+$pat_id = $_POST['pat_id'];
 
 if (mysql_num_rows($result) > 0) {
      // response
@@ -1849,3 +1851,251 @@ http://hms.yogintechnologies.com/webservice/drug_insert.php
     echo json_encode($response);
 }
 
+49. Supplier List
+
+http://hms.yogintechnologies.com/webservice/supplier_list.php
+
+$BR_ID = $_GET['BR_ID'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["supplier"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $supplier = array();
+                $supplier["PHARMA_NAME"] = $row["pharma_id"];
+                $supplier["SUPPLIER_NAME"] = $row["supplier_name"];
+                $supplier["SUPPLIER_EMAIL"] = $row["supplier_email"];
+                $supplier["SUPPLIER_PHONE"] = $row["supplier_phone"];
+             
+                array_push($response["supplier"], $supplier);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+50. Drug List
+
+http://hms.yogintechnologies.com/webservice/drug_list.php
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["drug"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $drug = array();
+                $drug["Drug_Name"] = $row["drug_name"];
+                $drug["NDC_Code"] = $row["NDC_code"];
+                $drug["Mfg_Date"] = $row["drug_mfg_date"];
+                $drug["Expiry_Date"] = $row["drug_expiry_date"];
+                $drug["Total_Stock"] = $row["drug_total_stock"];
+                array_push($response["drug"], $drug);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+51. Emergency List
+
+http://hms.yogintechnologies.com/webservice/emergency_list.php
+
+$BR_ID = $_POST['BR_ID'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["emergency"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $emergency = array();
+                $emergency["Patient_Name"] = $row["em_pat_name"];
+                $emergency["Priority"] = $row["em_priority"];
+                $emergency["Date_Time"] = $row["em_date"].$row["em_time_of_arrival"];
+                $emergency["Medico_Legal_Details"] = $row["em_mlc"];
+                $emergency["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
+                array_push($response["emergency"], $emergency);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+52. Lab Test Request List
+
+http://hms.yogintechnologies.com/webservice/labtestrequest_list.php
+
+$BR_ID = $_POST['BR_ID'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["test"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $test = array();
+                $test["Patient_Name"] = $row["pat_id"];
+                $test["Lab_Name"] = $row["lab_id"];
+                $test["Test_Name"] = $row["lab_test_name"];
+                $test["Requested_Date"] = $row["lab_requested_date"];
+                $test["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
+                array_push($response["test"], $test);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+53. Pharmacy Insert
+
+http://hms.yogintechnologies.com/webservice/pharmacy_insert.php
+
+    $Br_ID = $_POST['branch_id'];
+    $Pharmacy_Name = $_POST['pharmacy_name'];
+    $Pharmacist_Name = $_POST['pharmacist_name'];
+    $Pharma_Email = $_POST['pharma_email'];
+    $Pharma_DOB = $_POST['pharma_dob'];
+    $Pharma_Gender = $_POST['pharma_gender'];
+    $Pharma_Phone = $_POST['pharma_phone'];
+    $Pharma_Addr1= $_POST['pharma_addr1'];
+    $Pharma_Addr2 = $_POST['pharma_addr2'];
+    $Pharma_Postal_Code = $_POST['pharma_postal_code'];
+    $Pharmacist_Licence_No = $_POST['pharmacist_licence_no'];
+    $Pharma_Store_No = $_POST['pharma_store_no'];    
+    $Login_uname = $_POST['pharmacy_name'];
+    $Login_name = $_POST['pharma_email'];
+    $Br_id = $_POST['branch_id'];  
+    $Login_password = 'pharma';
+    $Login_type = 'pharma';
+
+ if ($db->isPharmacyExisted($Pharma_Email)) {
+        // pharma already exists
+        $response["response"] = 0;
+        $response["message"] = $Pharma_Email. "already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertPharmacy($Br_ID, $Pharmacy_Name,$Pharmacist_Name,$Pharma_Email,$Pharma_DOB,$Pharma_Gender,$Pharma_Phone,$Pharma_Addr1,$Pharma_Addr2,$Pharma_Postal_Code,$Pharmacist_License_No,$Pharma_Store_No);
+        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
+
+        if ($user) {
+            // pharma stored successfully
+        $response["response"] = 1;
+        $user = mysql_query("SELECT * from Pharmacy_master WHERE Pharma_Email = '$Pharma_Email'");
+        $user_data = mysql_fetch_array($user);
+        $no_rows = mysql_num_rows($user);
+  
+        if ($no_rows == 1) {
+            // pharma exists
+            //$stmt->close();
+            $user['pharma_id'] = $user_data['pharma_id'];
+            
+        } else {
+            
+//            return NULL;
+        }
+        $response["pharma_id"] = $user_data['pharma_id'];
+        $response["message"] = "Pharmacy Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // pharma failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+54. InPatient All
+
+http://hms.yogintechnologies.com/webservice/inpatientall.php
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["inpatient"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Inpatient = array();
+        $Inpatient["BR_ID"] = $row["branch_id"];
+        $Inpatient["PATIENT_NAME"] = $row["pat_id"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["inpatient"], $Inpatient);
+    }
+   
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
