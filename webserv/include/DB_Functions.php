@@ -203,13 +203,13 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
-     public function insertDuty($Schedule_Id, $Schedule_Emp_Type,$Schedule_Emp_Id,$Schedule_Shift_Id,$Schedule_Pat_Id,$Schedule_From_Date,$Schedule_To_Date) {
+     public function insertDuty($Schedule_Emp_Type,$Schedule_Emp_Id,$Schedule_Shift_Id,$Schedule_Pat_Id,$Schedule_From_Date,$Schedule_To_Date) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
         $reg_device = "";
         $CR_device = "";
         $MD_device = "";
-        $result = mysql_query("INSERT INTO schedule_master(schedule_id,schedule_emp_type,schedule_emp_id,schedule_shift_id,schedule_pat_id,schedule_from_date,schedule_to_date,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Schedule_Id', '$Schedule_Emp_Type', '$Schedule_Emp_Id', '$Schedule_Shift_Id', '$Schedule_Pat_Id', '$Schedule_From_Date', '$Schedule_To_Date', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        $result = mysql_query("INSERT INTO schedule_master(schedule_emp_type,schedule_emp_id,schedule_shift_id,schedule_pat_id,schedule_from_date,schedule_to_date,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Schedule_Emp_Type', '$Schedule_Emp_Id', '$Schedule_Shift_Id', '$Schedule_Pat_Id', '$Schedule_From_Date', '$Schedule_To_Date', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     
