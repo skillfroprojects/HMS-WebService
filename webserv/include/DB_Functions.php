@@ -35,6 +35,15 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         $result = mysql_query("INSERT INTO Patient_Master (PAT_NAME,PAT_EMAIL,PAT_GENDER,PAT_MOBILE,PAT_ADDR1,PAT_ADDR2,PAT_POSTAL_CODE,PAT_BLOOD_GROUP,CREATED_DATE,CREATED_IP,CREATED_BY,MODIFY_DATE,MODIFY_IP,MODIFY_BY) VALUES('$Pat_Name', '$Pat_Email','$Pat_Gender','$Pat_Mobile','$Pat_Addr1','$Pat_Addr2','$Pat_Postal_Code','$Pat_Blood_Group','$CR_Date','100','Admin','$CR_Date','100','Amin')");
         return $result;
     }
+    public function insertPatient($BR_ID,$PAT_TITLE,$PAT_NAME,$PAT_EMAIL,$PAT_GENDER,$PAT_MOBILE,$PAT_ADDR1,$PAT_ADDR2,$PAT_STATE,$PAT_POSTAL_CODE,$PAT_BLOOD_GROUP,$PAT_HEIGHT,$PAT_WEIGHT,$PAT_MARITAL_STATUS,$PAT_EMP_STATUS,$PAT_REF_PHYSICIAN,$PAT_REF_PHYSICIAN_NO,$PAT_RELATIVE_NAME,$PAT_RELATION_TO_PATIENT,$PAT_RELATIVE_ADDR,$PAT_RELATIVE_STATE,$PAT_RELATIVE_PINCODE,$PAT_RELATIVE_PHONE,$PAT_INS_NAME,$PAT_INS_COMPANY,$PAT_INS_ID,$PAT_INS_COMPANY_NO,$PAT_POLICY_ID,$PAT_GROUP_NAME,$PAT_INS_PARTY,$PAT_PROOF_NAME,$PAT_PROOF_NO,$PAT_REL_WITH_PARTY,$PAT_HEALTH_HISTORY_ID,$PAT_CANCER_DETAILS,$PAT_OTHER_MED_PROB,$PAT_PAST_SURGERIES_ID,$PAT_OTHER_SURGERIES,$PAT_TOBACCO,$PAT_SMOKING,$PAT_ALCOHOL,$PAT_FAMILY_MEMBER,$PAT_HISTORY_ID) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Patient_Master(BR_ID,PAT_TITLE,PAT_NAME,PAT_EMAIL,PAT_GENDER,PAT_MOBILE,PAT_ADDR1,PAT_ADDR2,PAT_STATE,PAT_POSTAL_CODE,PAT_BLOOD_GROUP,PAT_HEIGHT,PAT_WEIGHT,PAT_MARITAL_STATUS,PAT_EMP_STATUS,PAT_REF_PHYSICIAN,PAT_REF_PHYSICIAN_NO,PAT_RELATIVE_NAME,PAT_RELATION_TO_PATIENT,PAT_RELATIVE_ADDR,PAT_RELATIVE_STATE,PAT_RELATIVE_PINCODE,PAT_RELATIVE_PHONE,PAT_INS_NAME,PAT_INS_COMPANY,PAT_INS_ID,PAT_INS_COMPANY_NO,PAT_POLICY_ID,PAT_GROUP_NAME,PAT_INS_PARTY,PAT_PROOF_NAME,PAT_PROOF_NO,PAT_REL_WITH_PARTY,PAT_HEALTH_HISTORY_ID,PAT_CANCER_DETAILS,PAT_OTHER_MED_PROB,PAT_PAST_SURGERIES_ID,PAT_OTHER_SURGERIES,PAT_TOBACCO,PAT_SMOKING,PAT_ALCOHOL,PAT_FAMILY_MEMBER,PAT_HISTORY_ID,PAT_REG_VIA, PAT_REG_FRM_DEVICE,CREATED_DATE,CREATED_DEVICE,CREATED_IP,CREATED_BY,MODIFY_DATE,MODIFY_DEVICE,MODIFY_IP,MODIFY_BY) VALUES('$BR_ID','$PAT_TITLE','$PAT_NAME','$PAT_EMAIL','$PAT_GENDER','$PAT_MOBILE','$PAT_ADDR1','$PAT_ADDR2','$PAT_STATE','$PAT_POSTAL_CODE','$PAT_BLOOD_GROUP','$PAT_HEIGHT','$PAT_WEIGHT','$PAT_MARITAL_STATUS','$PAT_EMP_STATUS','$PAT_REF_PHYSICIAN','$PAT_REF_PHYSICIAN_NO','$PAT_RELATIVE_NAME','$PAT_RELATION_TO_PATIENT','$PAT_RELATIVE_ADDR','$PAT_RELATIVE_STATE','$PAT_RELATIVE_PINCODE','$PAT_RELATIVE_PHONE','$PAT_INS_NAME','$PAT_INS_COMPANY','$PAT_INS_ID','$PAT_INS_COMPANY_NO','$PAT_POLICY_ID','$PAT_GROUP_NAME','$PAT_INS_PARTY','$PAT_PROOF_NAME','$PAT_PROOF_NO','$PAT_REL_WITH_PARTY','$PAT_HEALTH_HISTORY_ID','$PAT_CANCER_DETAILS','$PAT_OTHER_MED_PROB','$PAT_PAST_SURGERIES_ID','$PAT_OTHER_SURGERIES','$PAT_TOBACCO','$PAT_SMOKING','$PAT_ALCOHOL','$PAT_FAMILY_MEMBER','$PAT_HISTORY_ID', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
     public function insertBranch($Branch_Name, $Hospital_ID,$Branch_Location,$Branch_Addr1,$Branch_Addr2,$Branch_Postal_Code,$Branch_Email,$Branch_Phone,$Branch_Phone_Other) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
@@ -287,9 +296,9 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
     /**
      * Check user is existed or not
      */
-    public function isUserExisted($Pat_Email) {
+    public function isUserExisted($PAT_EMAIL) {
         
-        $result = mysql_query("SELECT PAT_EMAIL FROM Patient_master where PAT_EMAIL = '$Pat_Email'");
+        $result = mysql_query("SELECT PAT_EMAIL FROM Patient_master where PAT_EMAIL = '$PAT_EMAIL'");
         $user_data = mysql_fetch_array($result);
         $no_rows_res = mysql_num_rows($result);
         //$num_rows = mysql_num_rows($result);                
@@ -297,7 +306,7 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
             // user existed 
             //$stmt->close();
             //echo $user;
-            return $Pat_Email;
+            return $PAT_EMAIL;
         } else {
             // user not existed
             //$stmt->close();

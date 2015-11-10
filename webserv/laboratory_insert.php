@@ -4,7 +4,7 @@ include_once 'include/DB_Functions.php';
 $db = new DB_Functions();
 
 // json response array
-$response = array("error" => FALSE);
+//$response = array("error" => FALSE);
 
 if (isset($_POST['lab_name']) && isset($_POST['lab_email'])) {
 
