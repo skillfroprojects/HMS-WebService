@@ -107,14 +107,11 @@ $result = mysql_query("SELECT
         staff_master.modify_by
         FROM
         prescription_master
-        INNER JOIN doctor_master ON prescription_master.doc_id = doctor_master.DOC_NAME
-        INNER JOIN patient_master ON prescription_master.pat_id = patient_master.PAT_NAME
-        INNER JOIN staff_master ON prescription_master.staff_id = staff_master.staff_name
+        INNER JOIN doctor_master ON prescription_master.doc_id = doctor_master.DOC_ID
+        INNER JOIN patient_master ON prescription_master.pat_id = patient_master.PAT_ID
+        INNER JOIN staff_master ON prescription_master.staff_id = staff_master.staff_id
         WHERE
-        prescription_master.pat_id = '$pat_id' AND
-        prescription_master.doc_id = doctor_master.DOC_ID AND
-        prescription_master.pat_id = patient_master.PAT_ID AND
-        prescription_master.staff_id = staff_master.staff_id LIMIT 10") or die("Error");
+        prescription_master.pat_id = '$pat_id' LIMIT 10") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
      // response
@@ -125,9 +122,9 @@ if (mysql_num_rows($result) > 0) {
        
         // temp user array
         $eprescription = array();
-                $eprescription["DOCTOR_NAME"] = $row["doc_id"];
-                $eprescription["PATIENT_NAME"] = $row["pat_id"];
-                $eprescription["STAFF_NAME"] = $row["staff_id"];
+                $eprescription["DOCTOR_NAME"] = $row["DOC_NAME"];
+                $eprescription["PATIENT_NAME"] = $row["PAT_NAME"];
+                $eprescription["STAFF_NAME"] = $row["staff_name"];
                 $eprescription["PRESCRIPTION_DATE"] = $row["presc_date"];
                 $eprescription["PRESC_NOOFDAYS"] = $row["presc_no_of_days"];
                 $eprescription["DRUG_NAME"] = $row["drug_name"];

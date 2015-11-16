@@ -63,7 +63,7 @@ if (isset($_POST['pat_name']) && isset($_POST['pat_email'])) {
     if ($db->isUserExisted($PAT_EMAIL)) {
         // user already exists
         $response["response"] = 0;
-        $response["error_msg"] = $PAT_EMAIL. "already exists";
+        $response["message"] = $PAT_EMAIL. "already exists";
         echo json_encode($response);
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
@@ -94,13 +94,13 @@ if (isset($_POST['pat_name']) && isset($_POST['pat_email'])) {
             // user registeration failed 
             
             $response["response"] = 3;
-            $response["error_msg"] = "Unknown error occurred in registration!";
+            $response["message"] = "Unknown error occurred in registration!";
             echo json_encode($response);
         }
     }
 } else {
     $response["response"] = 4;
-    $response["error_msg"] = "Required parameters is missing!";
+    $response["message"] = "Required parameters is missing!";
     echo json_encode($response);
 }
 

@@ -1022,9 +1022,9 @@ if (mysql_num_rows($result) > 0) {
        
         // temp user array
         $eprescription = array();
-                $eprescription["DOCTOR_NAME"] = $row["doc_id"];
-                $eprescription["PATIENT_NAME"] = $row["pat_id"];
-                $eprescription["STAFF_NAME"] = $row["staff_id"];
+                $eprescription["DOCTOR_NAME"] = $row["DOC_NAME"];
+                $eprescription["PATIENT_NAME"] = $row["PAT_NAME"];
+                $eprescription["STAFF_NAME"] = $row["staff_name"];
                 $eprescription["PRESCRIPTION_DATE"] = $row["presc_date"];
                 $eprescription["PRESC_NOOFDAYS"] = $row["presc_no_of_days"];
                 $eprescription["DRUG_NAME"] = $row["drug_name"];
@@ -1035,7 +1035,6 @@ if (mysql_num_rows($result) > 0) {
                 $eprescription["ROOM_NO"] = $row["room_no"];
                 $eprescription["BED_NO"] = $row["bed_no"];
                 array_push($response["eprescription"], $eprescription);
-        
     }
     
     // echoing JSON response
@@ -1058,48 +1057,7 @@ if (mysql_num_rows($result) > 0) {
 
 http://hms.yogintechnologies.com/webservice/appointment_list.php
 
-<?php
-include 'include/Config.php';
-$db = new DB_Class();
-
-$response = array("error" => FALSE);
-
-if (isset($_POST['DOC_NAME'])) {
-
-// receiving the post params
-$DOC_NAME = $_POST['DOC_NAME'];
-        
-if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
-$Price_Type = $Type;
-if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
-if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=10; }; 
-$start_from = ($page-1) * 10; 
-
-$result = mysql_query("SELECT
-        appointment_master.APP_ID,
-        appointment_master.APP_DATE,
-        appointment_master.APP_TIME,
-        appointment_master.APP_TOKEN_NO,
-        appointment_master.DOC_NAME,
-        appointment_master.PAT_NAME,
-        appointment_master.PAT_EMAIL,
-        appointment_master.PAT_MOBILE,
-        appointment_master.PAT_ID,
-        appointment_master.BR_NAME,
-        appointment_master.APP_REG_VIA,
-        appointment_master.APP_REG_FRM_DEVICE,
-        appointment_master.APP_CREATED_DATE,
-        appointment_master.APP_CREATED_DEVICE,
-        appointment_master.APP_CREATED_IP,
-        appointment_master.APP_CREATED_BY,
-        appointment_master.APP_MODIFY_DATE,
-        appointment_master.APP_MODIFY_DEVICE,
-        appointment_master.APP_MODIFT_IP,
-        appointment_master.APP_MODIFY_BY
-        FROM
-        appointment_master
-        WHERE
-        appointment_master.DOC_NAME = $DOC_NAME LIMIT 10") or die("Error");
+$DOC_ID = $_POST['DOC_ID'];
 
 if (mysql_num_rows($result) > 0) {
      // response
@@ -1137,7 +1095,7 @@ if (mysql_num_rows($result) > 0) {
 
 http://hms.yogintechnologies.com/webservice/outpatient_list.php
 
-$DOC_NAME = $_POST['DOC_NAME'];
+$DOC_ID = $_POST['DOC_ID'];
 
 if (mysql_num_rows($result) > 0) {
      // response
@@ -1185,7 +1143,7 @@ if (mysql_num_rows($result) > 0) {
        
         // temp user array
         $inpatient = array();
-                $inpatient["PAT_NAME"] = $row["pat_id"];
+                $inpatient["PAT_NAME"] = $row["PAT_NAME"];
                 $inpatient["ROOM_TYPE"] = $row["room_type"];
                 $inpatient["ROOM_NO"] = $row["room_no"];  
                 $inpatient["BED_NO"] = $row["bed_no"];  

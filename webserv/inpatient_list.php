@@ -35,9 +35,64 @@ $result = mysql_query("SELECT
         bed_allocation_master.modify_date,
         bed_allocation_master.modify_device,
         bed_allocation_master.modify_ip,
-        bed_allocation_master.modify_by
+        bed_allocation_master.modify_by,
+        patient_master.PAT_ID,
+        patient_master.PAT_NAME,
+        patient_master.BR_ID,
+        patient_master.PAT_TITLE,
+        patient_master.PAT_EMAIL,
+        patient_master.PAT_GENDER,
+        patient_master.PAT_MOBILE,
+        patient_master.PAT_ADDR1,
+        patient_master.PAT_ADDR2,
+        patient_master.PAT_STATE,
+        patient_master.PAT_POSTAL_CODE,
+        patient_master.PAT_BLOOD_GROUP,
+        patient_master.PAT_HEIGHT,
+        patient_master.PAT_WEIGHT,
+        patient_master.PAT_MARITAL_STATUS,
+        patient_master.PAT_EMP_STATUS,
+        patient_master.PAT_REF_PHYSICIAN,
+        patient_master.PAT_REF_PHYSICIAN_NO,
+        patient_master.PAT_RELATIVE_NAME,
+        patient_master.PAT_RELATION_TO_PATIENT,
+        patient_master.PAT_RELATIVE_ADDR,
+        patient_master.PAT_RELATIVE_STATE,
+        patient_master.PAT_RELATIVE_PINCODE,
+        patient_master.PAT_RELATIVE_PHONE,
+        patient_master.PAT_INS_NAME,
+        patient_master.PAT_INS_COMPANY,
+        patient_master.PAT_INS_ID,
+        patient_master.PAT_INS_COMPANY_NO,
+        patient_master.PAT_POLICY_ID,
+        patient_master.PAT_GROUP_NAME,
+        patient_master.PAT_INS_PARTY,
+        patient_master.PAT_PROOF_NAME,
+        patient_master.PAT_PROOF_NO,
+        patient_master.PAT_REL_WITH_PARTY,
+        patient_master.PAT_HEALTH_HISTORY_ID,
+        patient_master.PAT_CANCER_DETAILS,
+        patient_master.PAT_OTHER_MED_PROB,
+        patient_master.PAT_PAST_SURGERIES_ID,
+        patient_master.PAT_OTHER_SURGERIES,
+        patient_master.PAT_TOBACCO,
+        patient_master.PAT_SMOKING,
+        patient_master.PAT_ALCOHOL,
+        patient_master.PAT_FAMILY_MEMBER,
+        patient_master.PAT_HISTORY_ID,
+        patient_master.PAT_REG_VIA,
+        patient_master.PAT_REG_FRM_DEVICE,
+        patient_master.CREATED_DATE,
+        patient_master.CREATED_DEVICE,
+        patient_master.CREATED_IP,
+        patient_master.CREATED_BY,
+        patient_master.MODIFY_DATE,
+        patient_master.MODIFY_DEVICE,
+        patient_master.MODIFY_IP,
+        patient_master.MODIFY_BY
         FROM
         bed_allocation_master
+        INNER JOIN patient_master ON bed_allocation_master.pat_id = patient_master.PAT_ID
         WHERE
         bed_allocation_master.doc_id = '$doc_id' LIMIT 10") or die("Error");
 
@@ -50,7 +105,7 @@ if (mysql_num_rows($result) > 0) {
        
         // temp user array
         $inpatient = array();
-                $inpatient["PAT_NAME"] = $row["pat_id"];
+                $inpatient["PAT_NAME"] = $row["PAT_NAME"];
                 $inpatient["ROOM_TYPE"] = $row["room_type"];
                 $inpatient["ROOM_NO"] = $row["room_no"];  
                 $inpatient["BED_NO"] = $row["bed_no"];  
