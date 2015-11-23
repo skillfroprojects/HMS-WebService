@@ -20,6 +20,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $response["br_id"] = $user["Br_id"];
         $response["login_uname"] = $user["Login_uname"];
         $response["login_name"] = $user["Login_name"];
+        $response["login_user_id"] = $user["Login_user_id"];        
         $response["login_type"] = $user["Login_type"];
         $response["message"] = "Login Success.";
         echo json_encode($response);
