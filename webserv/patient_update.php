@@ -68,10 +68,10 @@ if (isset($_POST['pat_id'])) {
         $response["message"] = "Profile Updated Successfully.";
         echo json_encode($response);
         } else {
-            // user failed to store
+            // user failed to update
             
             $response["response"] = 2;
-            $response["message"] = "Unknown error occurred in registration!";
+            $response["message"] = "Unknown error occurred in updation!";
             echo json_encode($response);
         }
 } else {

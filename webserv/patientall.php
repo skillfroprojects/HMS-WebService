@@ -9,8 +9,8 @@ $result = mysql_query("SELECT
     FROM
     patient_master
     WHERE
-    patient_master.BR_ID = '$PAT_ID' AND
-    patient_master.PAT_ID = '$BR_ID'") or die("Error");
+    patient_master.BR_ID = '$BR_ID' AND
+    patient_master.PAT_ID = '$PAT_ID'") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
      // response
@@ -73,7 +73,7 @@ if (mysql_num_rows($result) > 0) {
         //$services["SERV_PRICE"] = $row["SERV_PRICE"];
         // push single product into final response array
         //array_push($response["inpatient"], $Inpatient);
-         echo json_encode($response);
+         //echo json_encode($response);
     }
    
     // echoing JSON response

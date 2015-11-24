@@ -202,6 +202,33 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
+    public function insertBedAllocation($Br_id,$Admission_Date,$Discharge_Date,$Room_Type_Id,$Bed_No,$Pat_Id,$Doctor_Id,$Staff_Id) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Bed_Allocation_Master(br_id,admission_date,discharge_date,room_type_id,bed_no,pat_id,doctor_id,staff_id,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_id', '$Admission_Date', '$Discharge_Date', '$Room_Type_Id', '$Bed_No', '$Pat_Id', '$Doctor_Id', '$Staff_Id', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function updateBedStatus($Bed_No,$Bed_Status) {
+        
+        $result = mysql_query("Update Bed_Master set bed_status= '$Bed_Status'  where bed_no = '$Bed_No'");
+        return $result;
+    }
+    
+    public function updateBedTransfer($Bed_Allocation_Id,$Admission_Date,$Discharge_Date,$Room_Type_Id,$Bed_No,$Pat_Id,$Doctor_Id,$Staff_Id,$Bed_Transfer_Reason) {
+        
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("Update Bed_Allocation_Master set admission_date= '$Admission_Date',discharge_date = '$Discharge_Date', room_type_id = '$Room_Type_Id',bed_no = '$Bed_No',pat_id = '$Pat_Id',doctor_id = '$Doctor_Id',staff_id = '$Staff_Id' ,bed_transfer_reason = '$Bed_Transfer_Reason' ,reg_via = '$reg_via',reg_frm_device = '$reg_device',created_date = '$CR_Date',created_device = '$CR_device',created_ip = '100',created_by = 'Admin',modify_date= '$CR_Date',modify_device = '$MD_device',modify_ip = '100',modify_by = 'Admin' where bed_allocation_id = '$Bed_Allocation_Id'");
+        return $result;
+    }
+    
     public function insertDrug($Br_Id, $Drug_Name, $NDC_code,$Drug_Brand_Name,$Drug_Form,$Drug_Mfg_Date,$Drug_Expiry_Date,$Drug_Unit_Price,$Drug_Box_Price,$Drug_Box_Quantity,$Drug_Total_Stock,$Supplier_Id,$Available_Stock) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
@@ -581,6 +608,25 @@ public function isBranchExisted($Branch_Name) {
             //$stmt->close();
             //echo $user;
             return $Bed_No;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isBedAllocated($Pat_Id) {
+        
+        $result = mysql_query("SELECT pat_id FROM bed_allocation_master where pat_id = '$Pat_Id'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Pat_Id;
         } else {
             // user not existed
             //$stmt->close();

@@ -3,9 +3,15 @@
 /**
  * Database config variables
  */
+//
+//define("DB_HOST", "localhost");
+//define("DB_USER", "mysql");
+//define("DB_PASSWORD", "mysql");
+//define("DB_DATABASE", "hms");
+
 define("DB_HOST", "localhost");
-define("DB_USER", "mysql");
-define("DB_PASSWORD", "mysql");
+define("DB_USER", "root");
+define("DB_PASSWORD", "");
 define("DB_DATABASE", "hms");
 
 class DB_Class {

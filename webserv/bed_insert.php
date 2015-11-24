@@ -13,7 +13,7 @@ if (isset($_POST['room_type'])) {
     $Room_No = $_POST['room_no'];
     $Room_Type = $_POST['room_type'];
     $Bed_No = $_POST['bed_no'];
-    $Bed_Status = $_POST['bed_status'];    
+    $Bed_Status = '0';    
     
     // check if Bed already exists 
     if ($db->isBedExisted($Bed_No)) {
