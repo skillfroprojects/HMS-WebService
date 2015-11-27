@@ -2,9 +2,9 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
-if (isset($_GET['room_type'])) {
+if (isset($_POST['room_type'])) {
 
-    $Room_Type = $_GET['room_type'];
+    $Room_Type = $_POST['room_type'];
     
 $result = mysql_query("SELECT * FROM bed_master WHERE bed_master.room_type = '$Room_Type' AND bed_master.bed_status = '0'") or die("Error");
 

@@ -4,6 +4,7 @@ $db = new DB_Class();
 
 $PAT_ID = $_GET['pat_id'];
 $BR_ID = $_GET['br_id'];
+
 $result = mysql_query("SELECT
 bed_allocation_master.bed_transfer_reason,
 bed_allocation_master.pat_id,

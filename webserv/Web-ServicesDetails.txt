@@ -1,4 +1,4 @@
-1. Appointment
+ 1. Appointment
 
 http://hms.yogintechnologies.com/webservice/appointment.php
 
@@ -2159,3 +2159,611 @@ if (isset($_POST['pat_name']) && isset($_POST['pat_email'])) {
     $response["error_msg"] = "Required parameters is missing!";
     echo json_encode($response);
 }
+
+27/11/2015
+
+56. Anesthetist All
+
+http://hms.yogintechnologies.com/webservice/anesthetistall.php
+
+$ANA_SCHEDULE_ID = $_POST['ana_schedule_id'];
+$BR_ID = $_POST['br_id'];
+
+if (mysql_num_rows($result) > 0) 
+    {
+     // response
+    $response["response"] = 1;
+    $response["message"] = "Data Fetched";
+
+    //$response["inpatient"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        //$Inpatient = array();
+        $response["BR_ID"] = $row["br_id"];
+        $response["ANA_PAT_ID"] = $row["ana_pat_id"];
+        $response["ANA_BED_NP"] = $row["ana_bed_no"];
+        $response["ANA_DATE"] = $row["ana_date"];
+        $response["ANA_TIME"] = $row["ana_time"];
+        $response["ANA_AVAILABLE_ANESTHETIST"] = $row["ana_available_anesthetist"];
+        
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        //array_push($response["inpatient"], $Inpatient);
+         //echo json_encode($response);
+    }
+   
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+
+57. Available Bed All
+
+http://hms.yogintechnologies.com/webservice/availablebedall.php
+
+if (isset($_POST['room_type'])) {
+
+    $Room_Type = $_POST['room_type'];
+    
+$result = mysql_query("SELECT * FROM bed_master WHERE bed_master.room_type = '$Room_Type' AND bed_master.bed_status = '0'") or die("Error");
+
+    if (mysql_num_rows($result) > 0) {
+         // response
+        $response["response"] = 1;
+        $response["bednumber"] = array();
+
+        while ($row = mysql_fetch_array($result)) {
+            // temp user array
+            $Bednumber = array();
+            $Bednumber["bed_no"] = $row["bed_no"];
+            //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+            // push single product into final response array
+            array_push($response["bednumber"], $Bednumber);
+        }
+
+        // echoing JSON response
+        echo json_encode($response);
+    } else {
+        // no products found
+        $response["response"] = 0;
+        $response["message"] = "No data found";
+
+        // echo no users JSON
+        echo json_encode($response);
+    }
+}
+else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+58. bedallocation_insert
+
+http://hms.yogintechnologies.com/webservice/bedallocation_insert.php
+
+if (isset($_POST['bed_no']) && isset($_POST['pat_id'])) {
+
+    // receiving the post params
+    $Br_id = $_POST['br_id'];
+    $Admission_Date = $_POST['admission_date'];
+    $Discharge_Date = $_POST['discharge_date'];
+    $Room_Type_Id = $_POST['room_type_id'];
+    $Bed_No = $_POST['bed_no'];
+    $Pat_Id = $_POST['pat_id']; 
+    $Doctor_Id = $_POST['doctor_id'];
+    $Staff_Id = $_POST['staff_id'];
+    $Bed_Status = '1';
+    
+    // check if patient already exists 
+    if ($db->isBedAllocated($Pat_Id)) {
+        // Bed already allocated
+        $response["response"] = 0;
+        $response["message"] = $Pat_Id. " already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertBedAllocation($Br_id,$Admission_Date,$Discharge_Date,$Room_Type_Id,$Bed_No,$Pat_Id,$Doctor_Id,$Staff_Id);
+        $users = $db->updateBedStatus($Bed_No,$Bed_Status);
+        if ($user) {
+            // Bed allocated successfully
+        $response["response"] = 1;
+        $response["message"] = "Bed Allocated.";
+        echo json_encode($response);
+        } else {
+            // Bed allocation failed
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+59. Bed transfer Update
+
+http://hms.yogintechnologies.com/webservice/bedtransfer_update.php
+
+if (isset($_POST['bed_no']) && isset($_POST['pat_id'])) {
+
+    // receiving the post params
+    $Bed_Allocation_Id = $_POST['bed_allocation_id'];
+    $Admission_Date = $_POST['admission_date'];
+    $Discharge_Date = $_POST['discharge_date'];
+    $Room_Type_Id = $_POST['room_type_id'];
+    $Bed_No = $_POST['bed_no'];
+    $Pat_Id = $_POST['pat_id']; 
+    $Doctor_Id = $_POST['doctor_id'];
+    $Staff_Id = $_POST['staff_id'];
+    $Bed_Transfer_Reason = $_POST['bed_transfer_reason'];
+        
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->updateBedTransfer($Bed_Allocation_Id,$Admission_Date,$Discharge_Date,$Room_Type_Id,$Bed_No,$Pat_Id,$Doctor_Id,$Staff_Id,$Bed_Transfer_Reason);
+
+        if ($user) {
+            // Bed Transfered successfully
+        $response["response"] = 1;
+        $response["message"] = "Bed Transfered Successfully.";
+        echo json_encode($response);
+        } else {
+            // Bed not available
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in updation!";
+            echo json_encode($response);
+        }
+   
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+60. Bed transfer All
+
+http://hms.yogintechnologies.com/webservice/bedtransferall.php
+
+$PAT_ID = $_GET['pat_id'];
+$BR_ID = $_GET['br_id'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["message"] = "Data Fetched";
+
+    //$response["inpatient"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        //$Inpatient = array();
+        
+        $response["Br_id"] = $row["br_id"];
+        $response["Admission_Date"] = $row["admission_date"];
+        $response["Discharge_Date"] = $row["discharge_date"];
+        $response["Room_Type"] = $row["room_type"];
+        $response["Bed_No"] = $row["bed_no"];
+        $response["Pat_Id"] = $row["pat_id"];
+        $response["Doctor_Name"] = $row["DOC_NAME"];
+        $response["Staff_Name"] = $row["staff_name"];
+        // push single product into final response array
+        //array_push($response["inpatient"], $Inpatient);
+         //echo json_encode($response);
+    }
+   
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+
+61. Patient Update
+
+http://hms.yogintechnologies.com/webservice/patient_update.php
+
+if (isset($_POST['pat_id'])) {
+
+    // recieving the post params
+    $PAT_ID = $_POST['pat_id'];   
+    $PAT_TITLE = $_POST['pat_title'];
+    $PAT_NAME = $_POST['pat_name'];                    
+    $PAT_EMAIL = $_POST['pat_email'];
+    $PAT_GENDER = $_POST['pat_gender'];
+    $PAT_MOBILE = $_POST['pat_mobile'];
+    $PAT_ADDR1 = $_POST['pat_addri'];
+    $PAT_ADDR2 = $_POST['pat_addr2'];
+    $PAT_STATE = $_POST['pat_state'];
+    $PAT_POSTAL_CODE = $_POST['pat_postal_code'];
+    $PAT_BLOOD_GROUP = $_POST['pat_blood_group'];
+    $PAT_HEIGHT = $_POST['pat_height'];
+    $PAT_HEIGHT_UNIT = $_POST['pat_height_unit'];
+    $PAT_WEIGHT = $_POST['pat_weight'];
+    $PAT_WEIGHT_UNIT = $_POST['pat_weight_unit'];
+    $PAT_MARITAL_STATUS = $_POST['pat_marital_status'];
+    $PAT_EMP_STATUS = $_POST['pat_emp_status'];
+    $PAT_REF_PHYSICIAN = $_POST['pat_ref_physician'];
+    $PAT_REF_PHYSICIAN_NO = $_POST['pat_ref_physician_no'];
+    $PAT_RELATIVE_NAME = $_POST['pat_relative_name'];
+    $PAT_RELATION_TO_PATIENT = $_POST['pat_relation_to_patient'];
+    $PAT_RELATIVE_ADDR = $_POST['pat_relative_addr'];
+    $PAT_RELATIVE_STATE = $_POST['pat_relative_state'];
+    $PAT_RELATIVE_PINCODE = $_POST['pat_relative_pincode'];
+    $PAT_RELATIVE_PHONE = $_POST['pat_relative_phone'];
+    $PAT_INS_NAME = $_POST['Pat_ins_name'];
+    $PAT_INS_COMPANY = $_POST['pat_ins_company'];
+    $PAT_INS_ID = $_POST['pat_ins_id'];
+    $PAT_INS_COMPANY_NO = $_POST['pat_ins_company_no'];
+    $PAT_POLICY_ID = $_POST['pat_policy_id'];
+    $PAT_GROUP_NAME = $_POST['pat_group_name'];
+    $PAT_INS_PARTY = $_POST['pat_ins_party'];
+    $PAT_PROOF_NAME = $_POST['pat_proof_name'];
+    $PAT_PROOF_NO = $_POST['pat_proof_no'];
+    $PAT_REL_WITH_PARTY = $_POST['pat_rel_with_party'];
+    $PAT_HEALTH_HISTORY_ID = $_POST['pat_health_history_id'];
+    $PAT_CANCER_DETAILS = $_POST['pat_cancer_details'];
+    $PAT_OTHER_MED_PROB = $_POST['pat_other_med_prob'];
+    $PAT_PAST_SURGERIES_ID = $_POST['pat_past_surgeries_id'];
+    $PAT_OTHER_SURGERIES = $_POST['pat_other_surgeries'];
+    $PAT_TOBACCO = $_POST['pat_tobacco'];
+    $PAT_SMOKING = $_POST['pat_smoking'];
+    $PAT_ALCOHOL = $_POST['pat_alcohol'];
+    $PAT_FAMILY_MEMBER = $_POST['pat_family_member'];
+    $PAT_HISTORY_ID = $_POST['pat_history_id'];
+    $Br_id = $_POST['br_id'];
+    $Login_uname = $_POST['pat_name'];
+    $Login_name = $_POST['pat_email'];
+    $Login_password = 'patient';
+    $Login_type = 'patient';
+    
+
+    $user = $db->updatePatient($PAT_ID,$PAT_TITLE,$PAT_NAME,$PAT_EMAIL,$PAT_GENDER,$PAT_MOBILE,$PAT_ADDR1,$PAT_ADDR2,$PAT_STATE,$PAT_POSTAL_CODE,$PAT_BLOOD_GROUP,$PAT_HEIGHT,$PAT_HEIGHT_UNIT,$PAT_WEIGHT,$PAT_WEIGHT_UNIT,$PAT_MARITAL_STATUS,$PAT_EMP_STATUS,$PAT_REF_PHYSICIAN,$PAT_REF_PHYSICIAN_NO,$PAT_RELATIVE_NAME,$PAT_RELATION_TO_PATIENT,$PAT_RELATIVE_ADDR,$PAT_RELATIVE_STATE,$PAT_RELATIVE_PINCODE,$PAT_RELATIVE_PHONE,$PAT_INS_NAME,$PAT_INS_COMPANY,$PAT_INS_ID,$PAT_INS_COMPANY_NO,$PAT_POLICY_ID,$PAT_GROUP_NAME,$PAT_INS_PARTY,$PAT_PROOF_NAME,$PAT_PROOF_NO,$PAT_REL_WITH_PARTY,$PAT_HEALTH_HISTORY_ID,$PAT_CANCER_DETAILS,$PAT_OTHER_MED_PROB,$PAT_PAST_SURGERIES_ID,$PAT_OTHER_SURGERIES,$PAT_TOBACCO,$PAT_SMOKING,$PAT_ALCOHOL,$PAT_FAMILY_MEMBER,$PAT_HISTORY_ID);
+        if ($user) {
+            // user stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Profile Updated Successfully.";
+        echo json_encode($response);
+        } else {
+            // user failed to update
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in updation!";
+            echo json_encode($response);
+        }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+62. Patient All
+
+http://hms.yogintechnologies.com/webservice/patientall.php
+
+$PAT_ID = $_POST['PAT_ID'];
+$BR_ID = $_POST['BR_ID'];
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["message"] = "Data Fetched";
+
+    //$response["inpatient"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        //$Inpatient = array();
+        $response["BR_ID"] = $row["BR_ID"];
+        $response["PATIENT_ID"] = $row["PAT_ID"];
+        $response["PAT_TITLE"] = $row["PAT_TITLE"];
+        $response["PATIENT_NAME"] = $row["PAT_NAME"];
+        $response["PAT_EMAIL"] = $row["PAT_EMAIL"];
+        $response["PAT_GENDER"] = $row["PAT_GENDER"];
+        $response["PAT_MOBILE"] = $row["PAT_MOBILE"];
+        $response["PAT_ADDR1"] = $row["PAT_ADDR1"];
+        $response["PAT_ADDR1"] = $row["PAT_ADDR1"];
+        $response["PAT_ADDR2"] = $row["PAT_ADDR2"];
+        $response["PAT_STATE"] = $row["PAT_STATE"];
+        $response["PAT_POSTAL_CODE"] = $row["PAT_POSTAL_CODE"];
+        $response["PAT_BLOOD_GROUP"] = $row["PAT_BLOOD_GROUP"];
+        $response["PAT_HEIGHT"] = $row["PAT_HEIGHT"];
+        $response["PAT_HEIGHT_UNIT"] = $row["PAT_HEIGHT_UNIT"];
+        $response["PAT_WEIGHT"] = $row["PAT_WEIGHT"];
+        $response["PAT_WEIGHT_UNIT"] = $row["PAT_WEIGHT_UNIT"];
+        $response["PAT_MARITAL_STATUS"] = $row["PAT_MARITAL_STATUS"];
+        $response["PAT_EMP_STATUS"] = $row["PAT_EMP_STATUS"];
+        $response["PAT_REF_PHYSICIAN"] = $row["PAT_REF_PHYSICIAN"];
+        $response["PAT_REF_PHYSICIAN_NO"] = $row["PAT_REF_PHYSICIAN_NO"];
+        $response["PAT_RELATIVE_NAME"] = $row["PAT_RELATIVE_NAME"];
+        $response["PAT_RELATION_TO_PATIENT"] = $row["PAT_RELATION_TO_PATIENT"];
+        $response["PAT_RELATIVE_ADDR"] = $row["PAT_RELATIVE_ADDR"];
+        $response["PAT_RELATIVE_STATE"] = $row["PAT_RELATIVE_STATE"];
+        $response["PAT_RELATIVE_PINCODE"] = $row["PAT_RELATIVE_PINCODE"];
+        $response["PAT_RELATIVE_PHONE"] = $row["PAT_RELATIVE_PHONE"];
+        $response["PAT_INS_NAME"] = $row["PAT_INS_NAME"];
+        $response["PAT_INS_COMPANY"] = $row["PAT_INS_COMPANY"];
+        $response["PAT_INS_ID"] = $row["PAT_INS_ID"];
+        $response["PAT_INS_COMPANY_NO"] = $row["PAT_INS_COMPANY_NO"];
+        $response["PAT_POLICY_ID"] = $row["PAT_POLICY_ID"];
+        $response["PAT_GROUP_NAME"] = $row["PAT_GROUP_NAME"];
+        $response["PAT_INS_PARTY"] = $row["PAT_INS_PARTY"];
+        $response["PAT_PROOF_NAME"] = $row["PAT_PROOF_NAME"];
+        $response["PAT_PROOF_NO"] = $row["PAT_PROOF_NO"];
+        $response["PAT_REL_WITH_PARTY"] = $row["PAT_REL_WITH_PARTY"];
+        $response["PAT_HEALTH_HISTORY_ID"] = $row["PAT_HEALTH_HISTORY_ID"];
+        $response["PAT_CANCER_DETAILS"] = $row["PAT_CANCER_DETAILS"];
+        $response["PAT_OTHER_MED_PROB"] = $row["PAT_OTHER_MED_PROB"];
+        $response["PAT_PAST_SURGERIES_ID"] = $row["PAT_PAST_SURGERIES_ID"];
+        $response["PAT_OTHER_SURGERIES"] = $row["PAT_OTHER_SURGERIES"];
+        $response["PAT_TOBACCO"] = $row["PAT_TOBACCO"];
+        $response["PAT_SMOKING"] = $row["PAT_SMOKING"];
+        $response["PAT_ALCOHOL"] = $row["PAT_ALCOHOL"];
+        $response["PAT_FAMILY_MEMBER"] = $row["PAT_FAMILY_MEMBER"];
+        $response["PAT_HISTORY_ID"] = $row["PAT_HISTORY_ID"];
+    
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        //array_push($response["inpatient"], $Inpatient);
+         //echo json_encode($response);
+    }
+   
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+
+63. Patient All
+
+http://hms.yogintechnologies.com/webservice/patientall.php
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["message"] = "Data Fetched";
+
+    //$response["inpatient"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        //$Inpatient = array();
+        $response["BR_ID"] = $row["BR_ID"];
+        $response["PATIENT_ID"] = $row["PAT_ID"];
+        $response["PAT_TITLE"] = $row["PAT_TITLE"];
+        $response["PATIENT_NAME"] = $row["PAT_NAME"];
+        $response["PAT_EMAIL"] = $row["PAT_EMAIL"];
+        $response["PAT_GENDER"] = $row["PAT_GENDER"];
+        $response["PAT_MOBILE"] = $row["PAT_MOBILE"];
+        $response["PAT_ADDR1"] = $row["PAT_ADDR1"];
+        $response["PAT_ADDR1"] = $row["PAT_ADDR1"];
+        $response["PAT_ADDR2"] = $row["PAT_ADDR2"];
+        $response["PAT_STATE"] = $row["PAT_STATE"];
+        $response["PAT_POSTAL_CODE"] = $row["PAT_POSTAL_CODE"];
+        $response["PAT_BLOOD_GROUP"] = $row["PAT_BLOOD_GROUP"];
+        $response["PAT_HEIGHT"] = $row["PAT_HEIGHT"];
+        $response["PAT_HEIGHT_UNIT"] = $row["PAT_HEIGHT_UNIT"];
+        $response["PAT_WEIGHT"] = $row["PAT_WEIGHT"];
+        $response["PAT_WEIGHT_UNIT"] = $row["PAT_WEIGHT_UNIT"];
+        $response["PAT_MARITAL_STATUS"] = $row["PAT_MARITAL_STATUS"];
+        $response["PAT_EMP_STATUS"] = $row["PAT_EMP_STATUS"];
+        $response["PAT_REF_PHYSICIAN"] = $row["PAT_REF_PHYSICIAN"];
+        $response["PAT_REF_PHYSICIAN_NO"] = $row["PAT_REF_PHYSICIAN_NO"];
+        $response["PAT_RELATIVE_NAME"] = $row["PAT_RELATIVE_NAME"];
+        $response["PAT_RELATION_TO_PATIENT"] = $row["PAT_RELATION_TO_PATIENT"];
+        $response["PAT_RELATIVE_ADDR"] = $row["PAT_RELATIVE_ADDR"];
+        $response["PAT_RELATIVE_STATE"] = $row["PAT_RELATIVE_STATE"];
+        $response["PAT_RELATIVE_PINCODE"] = $row["PAT_RELATIVE_PINCODE"];
+        $response["PAT_RELATIVE_PHONE"] = $row["PAT_RELATIVE_PHONE"];
+        $response["PAT_INS_NAME"] = $row["PAT_INS_NAME"];
+        $response["PAT_INS_COMPANY"] = $row["PAT_INS_COMPANY"];
+        $response["PAT_INS_ID"] = $row["PAT_INS_ID"];
+        $response["PAT_INS_COMPANY_NO"] = $row["PAT_INS_COMPANY_NO"];
+        $response["PAT_POLICY_ID"] = $row["PAT_POLICY_ID"];
+        $response["PAT_GROUP_NAME"] = $row["PAT_GROUP_NAME"];
+        $response["PAT_INS_PARTY"] = $row["PAT_INS_PARTY"];
+        $response["PAT_PROOF_NAME"] = $row["PAT_PROOF_NAME"];
+        $response["PAT_PROOF_NO"] = $row["PAT_PROOF_NO"];
+        $response["PAT_REL_WITH_PARTY"] = $row["PAT_REL_WITH_PARTY"];
+        $response["PAT_HEALTH_HISTORY_ID"] = $row["PAT_HEALTH_HISTORY_ID"];
+        $response["PAT_CANCER_DETAILS"] = $row["PAT_CANCER_DETAILS"];
+        $response["PAT_OTHER_MED_PROB"] = $row["PAT_OTHER_MED_PROB"];
+        $response["PAT_PAST_SURGERIES_ID"] = $row["PAT_PAST_SURGERIES_ID"];
+        $response["PAT_OTHER_SURGERIES"] = $row["PAT_OTHER_SURGERIES"];
+        $response["PAT_TOBACCO"] = $row["PAT_TOBACCO"];
+        $response["PAT_SMOKING"] = $row["PAT_SMOKING"];
+        $response["PAT_ALCOHOL"] = $row["PAT_ALCOHOL"];
+        $response["PAT_FAMILY_MEMBER"] = $row["PAT_FAMILY_MEMBER"];
+        $response["PAT_HISTORY_ID"] = $row["PAT_HISTORY_ID"];
+    
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        //array_push($response["inpatient"], $Inpatient);
+         //echo json_encode($response);
+    }
+   
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 0;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+
+63. Pharmacy Insert
+
+http://hms.yogintechnologies.com/webservice/pharmacy_insert.php
+
+if (isset($_POST['pharmacy_name']) && isset($_POST['pharma_email'])) {
+
+    // receiving the post params
+    $Br_ID = $_POST['branch_id'];
+    $Pharmacy_Name = $_POST['pharmacy_name'];
+    $Pharmacist_Name = $_POST['pharmacist_name'];
+    $Pharma_Email = $_POST['pharma_email'];
+    $Pharma_DOB = $_POST['pharma_dob'];
+    $Pharma_Gender = $_POST['pharma_gender'];
+    $Pharma_Phone = $_POST['pharma_phone'];
+    $Pharma_Addr1= $_POST['pharma_addr1'];
+    $Pharma_Addr2 = $_POST['pharma_addr2'];
+    $Pharma_Postal_Code = $_POST['pharma_postal_code'];
+    $Pharmacist_Licence_No = $_POST['pharmacist_licence_no'];
+    $Pharma_Store_No = $_POST['pharma_store_no'];    
+    $Login_uname = $_POST['pharmacy_name'];
+    $Login_name = $_POST['pharma_email'];
+    $Br_id = $_POST['branch_id'];  
+    $Login_password = 'pharma';
+    $Login_type = 'pharma';
+
+    
+    // check if pharma already exists 
+    if ($db->isPharmacyExisted($Pharma_Email)) {
+        // pharma already exists
+        $response["response"] = 0;
+        $response["message"] = $Pharma_Email. "already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertPharmacy($Br_ID, $Pharmacy_Name,$Pharmacist_Name,$Pharma_Email,$Pharma_DOB,$Pharma_Gender,$Pharma_Phone,$Pharma_Addr1,$Pharma_Addr2,$Pharma_Postal_Code,$Pharmacist_License_No,$Pharma_Store_No);
+        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
+
+        if ($user) {
+            // pharma stored successfully
+        $response["response"] = 1;
+        $user = mysql_query("SELECT * from Pharmacy_master WHERE Pharma_Email = '$Pharma_Email'");
+        $user_data = mysql_fetch_array($user);
+        $no_rows = mysql_num_rows($user);
+  
+        if ($no_rows == 1) {
+            // pharma exists
+            //$stmt->close();
+            $user['pharma_id'] = $user_data['pharma_id'];
+            
+        } else {
+            
+//            return NULL;
+        }
+        $response["pharma_id"] = $user_data['pharma_id'];
+        $response["message"] = "Pharmacy Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // pharma failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+63. Children Insert
+
+http://hms.yogintechnologies.com/webservice/children_insert.php
+
+if (isset($_POST['child_name']) && isset($_POST['child_mother_email']) && isset($_POST['child_father_email'])) {
+
+    // recieving the post params
+    $Br_Id = $_POST['br_id'];
+    $Child_Name = $_POST['child_name'];
+    $Child_Dob = $_POST['child_dob'];                    
+    $Child_Gender = $_POST['child_gender'];
+    $Child_Resides_With = $_POST['child_resides_with'];
+    $Child_Mail_To = $_POST['child_mail_to'];
+    $Child_Ins_Subscriber_Name = $_POST['child_ins_subscriber_name'];
+    $Child_Ins_No = $_POST['child_ins_no'];
+    $Child_Ins_Member_Id = $_POST['child_ins_member_id'];
+    $Child_Mother_Name = $_POST['child_mother_name'];
+    $Child_Mother_Dob = $_POST['child_mother_dob'];
+    $Child_Mother_Addr = $_POST['child_mother_addr'];
+    $Child_Mother_Postal_Code = $_POST['child_mother_postal_code'];
+    $Child_Mother_Phone = $_POST['child_mother_phone'];
+    $Child_Mother_Email = $_POST['child_mother_email'];
+    $Child_Father_Name = $_POST['child_father_name'];
+    $Child_Father_Dob = $_POST['child_father_dob'];
+    $Child_Father_Addr = $_POST['child_father_addr'];
+    $Child_Father_Postal_Code = $_POST['child_father_postal_code'];
+    $Child_Father_Phone = $_POST['child_father_phone'];
+    $Child_Father_Email = $_POST['child_father_email'];
+    $Child_Emer_Name = $_POST['child_emer_name'];
+    $Child_Emer_Relation = $_POST['child_emer_relation'];
+    $Child_Emer_Phone = $_POST['child_emer_phone'];     
+    $Br_id = $_POST['br_id'];
+    $Login_uname = $_POST['pat_name'];
+    $Login_name = $_POST['pat_email'];
+    $Login_password = 'patient';
+    $Login_type = 'patient';
+    $Login_user_id = $_POST['pat_id'];
+    
+
+    // check if user already exists with the same email
+    if ($db->isChildExisted($Child_Name,$Child_Mother_Email,$Child_Father_Email)) {
+        // user already exists
+        $response["response"] = 0;
+        $response["message"] = $Child_Name . "already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertChild($Br_Id,$Child_Name,$Child_Dob,$Child_Gender,$Child_Resides_With,$Child_Mail_To,$Child_Ins_Subscriber_Name,$Child_Ins_No,$Child_Ins_Member_Id,$Child_Mother_Name,$Child_Mother_Dob,$Child_Mother_Addr,$Child_Mother_Postal_Code,$Child_Mother_Phone,$Child_Mother_Email,$Child_Father_Name,$Child_Father_Dob,$Child_Father_Addr,$Child_Father_Postal_Code,$Child_Father_Phone,$Child_Father_Email,$Child_Emer_Name,$Child_Emer_Relation,$Child_Emer_Phone);
+        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_user_id,$Login_type,$Br_id);
+
+        if ($user) {
+            // user stored successfully
+        $response["response"] = 1;
+        $user = mysql_query("SELECT * from Children_master WHERE (child_name = '$Child_Name' AND child_mother_email = '$Child_Mother_Email') OR (child_name = '$Child_Name' AND child_father_email = '$Child_Father_Email')");
+        $user_data = mysql_fetch_array($user);
+        $no_rows = mysql_num_rows($user);
+  
+        if ($no_rows == 1) {
+            // user exists
+            //$stmt->close();
+            $user['Child_Id'] = $user_data['child_id'];
+            $user['Br_Id'] = $user_data['br_id'];
+            
+        } else {
+            
+//            return NULL;
+        }
+        $response["Child_Id"] = $user_data['child_id'];
+        $response["Br_Id"] = $user_data['br_id'];
+        $response["message"] = "Child successfully Registered.";
+        echo json_encode($response);
+        
+        } else {
+            // user registeration failed 
+            
+            $response["response"] = 3;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 4;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
