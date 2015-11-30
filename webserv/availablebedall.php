@@ -17,6 +17,10 @@ $result = mysql_query("SELECT * FROM bed_master WHERE bed_master.room_type = '$R
             // temp user array
             $Bednumber = array();
             $Bednumber["bed_no"] = $row["bed_no"];
+            $Bednumber["br_id"] = $row["br_id"];
+            $Bednumber["room_no"] = $row["room_no"];
+            $Bednumber["room_type"] = $row["room_type"];
+            $Bednumber["bed_status"] = $row["bed_status"];
             //$services["SERV_PRICE"] = $row["SERV_PRICE"];
             // push single product into final response array
             array_push($response["bednumber"], $Bednumber);
@@ -24,7 +28,7 @@ $result = mysql_query("SELECT * FROM bed_master WHERE bed_master.room_type = '$R
 
         // echoing JSON response
         echo json_encode($response);
-    } else {
+    }  else {
         // no products found
         $response["response"] = 0;
         $response["message"] = "No data found";
@@ -32,10 +36,12 @@ $result = mysql_query("SELECT * FROM bed_master WHERE bed_master.room_type = '$R
         // echo no users JSON
         echo json_encode($response);
     }
-}
-else {
-    $response["response"] = 3;
-    $response["message"] = "Required parameters is missing!";
-    echo json_encode($response);
+}else {
+        // no products found
+        $response["response"] = 2;
+        $response["message"] = "Required Parameters Missing";
+
+        // echo no users JSON
+        echo json_encode($response);
 }
 ?>

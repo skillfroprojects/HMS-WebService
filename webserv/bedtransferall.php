@@ -1,7 +1,7 @@
 <?php
 include 'include/Config.php';
 $db = new DB_Class();
-
+if (isset($_POST['br_id']) && isset($_POST['pat_id'])) {
 $PAT_ID = $_GET['pat_id'];
 $BR_ID = $_GET['br_id'];
 
@@ -51,12 +51,21 @@ if (mysql_num_rows($result) > 0) {
    
     // echoing JSON response
     echo json_encode($response);
-} else {
-    // no products found
-    $response["response"] = 0;
-    $response["message"] = "No data found";
+} 
+ else {
+        // no products found
+        $response["response"] = 0;
+        $response["message"] = "No data found";
 
-    // echo no users JSON
-    echo json_encode($response);
+        // echo no users JSON
+        echo json_encode($response);
+    }
+}else {
+        // no products found
+        $response["response"] = 2;
+        $response["message"] = "Required Parameters Missing";
+
+        // echo no users JSON
+        echo json_encode($response);
 }
 ?>

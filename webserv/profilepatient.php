@@ -2,6 +2,7 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
+if (isset($_POST['BR_ID']) && isset($_POST['PAT_ID'])) {
 $PAT_ID = $_POST['PAT_ID'];
 $BR_ID = $_POST['BR_ID'];
 $result = mysql_query("SELECT
@@ -78,7 +79,8 @@ if (mysql_num_rows($result) > 0) {
    
     // echoing JSON response
     echo json_encode($response);
-} else {
+}
+}else {
     // no products found
     $response["response"] = 0;
     $response["message"] = "No data found";

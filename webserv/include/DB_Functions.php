@@ -35,13 +35,13 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         $result = mysql_query("INSERT INTO Patient_Master (PAT_NAME,PAT_EMAIL,PAT_GENDER,PAT_MOBILE,PAT_ADDR1,PAT_ADDR2,PAT_POSTAL_CODE,PAT_BLOOD_GROUP,CREATED_DATE,CREATED_IP,CREATED_BY,MODIFY_DATE,MODIFY_IP,MODIFY_BY) VALUES('$Pat_Name', '$Pat_Email','$Pat_Gender','$Pat_Mobile','$Pat_Addr1','$Pat_Addr2','$Pat_Postal_Code','$Pat_Blood_Group','$CR_Date','100','Admin','$CR_Date','100','Amin')");
         return $result;
     }
-    public function insertPatient($BR_ID,$PAT_TITLE,$PAT_NAME,$PAT_EMAIL,$PAT_GENDER,$PAT_MOBILE,$PAT_ADDR1,$PAT_ADDR2,$PAT_STATE,$PAT_POSTAL_CODE,$PAT_BLOOD_GROUP,$PAT_HEIGHT,$PAT_HEIGHT_UNIT,$PAT_WEIGHT,$PAT_WEIGHT_UNIT,$PAT_MARITAL_STATUS,$PAT_EMP_STATUS,$PAT_REF_PHYSICIAN,$PAT_REF_PHYSICIAN_NO,$PAT_RELATIVE_NAME,$PAT_RELATION_TO_PATIENT,$PAT_RELATIVE_ADDR,$PAT_RELATIVE_STATE,$PAT_RELATIVE_PINCODE,$PAT_RELATIVE_PHONE,$PAT_INS_NAME,$PAT_INS_COMPANY,$PAT_INS_ID,$PAT_INS_COMPANY_NO,$PAT_POLICY_ID,$PAT_GROUP_NAME,$PAT_INS_PARTY,$PAT_PROOF_NAME,$PAT_PROOF_NO,$PAT_REL_WITH_PARTY,$PAT_HEALTH_HISTORY_ID,$PAT_CANCER_DETAILS,$PAT_OTHER_MED_PROB,$PAT_PAST_SURGERIES_ID,$PAT_OTHER_SURGERIES,$PAT_TOBACCO,$PAT_SMOKING,$PAT_ALCOHOL,$PAT_FAMILY_MEMBER,$PAT_HISTORY_ID) {
+    public function insertPatient($BR_ID,$PAT_TITLE,$PAT_TYPE,$PAT_NAME,$PAT_EMAIL,$PAT_GENDER,$PAT_MOBILE,$PAT_ADDR1,$PAT_ADDR2,$PAT_STATE,$PAT_POSTAL_CODE,$PAT_BLOOD_GROUP,$PAT_HEIGHT,$PAT_HEIGHT_UNIT,$PAT_WEIGHT,$PAT_WEIGHT_UNIT,$PAT_MARITAL_STATUS,$PAT_EMP_STATUS,$PAT_REF_PHYSICIAN,$PAT_REF_PHYSICIAN_NO,$PAT_RELATIVE_NAME,$PAT_RELATION_TO_PATIENT,$PAT_RELATIVE_ADDR,$PAT_RELATIVE_STATE,$PAT_RELATIVE_PINCODE,$PAT_RELATIVE_PHONE,$PAT_INS_NAME,$PAT_INS_COMPANY,$PAT_INS_ID,$PAT_INS_COMPANY_NO,$PAT_POLICY_ID,$PAT_GROUP_NAME,$PAT_INS_PARTY,$PAT_PROOF_NAME,$PAT_PROOF_NO,$PAT_REL_WITH_PARTY,$PAT_HEALTH_HISTORY_ID,$PAT_CANCER_DETAILS,$PAT_OTHER_MED_PROB,$PAT_PAST_SURGERIES_ID,$PAT_OTHER_SURGERIES,$PAT_TOBACCO,$PAT_SMOKING,$PAT_ALCOHOL,$PAT_FAMILY_MEMBER,$PAT_HISTORY_ID) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
         $reg_device = "";
         $CR_device = "";
         $MD_device = "";
-        $result = mysql_query("INSERT INTO Patient_Master(BR_ID,PAT_TITLE,PAT_NAME,PAT_EMAIL,PAT_GENDER,PAT_MOBILE,PAT_ADDR1,PAT_ADDR2,PAT_STATE,PAT_POSTAL_CODE,PAT_BLOOD_GROUP,PAT_HEIGHT,PAT_HEIGHT_UNIT,PAT_WEIGHT,PAT_WEIGHT_UNIT,PAT_MARITAL_STATUS,PAT_EMP_STATUS,PAT_REF_PHYSICIAN,PAT_REF_PHYSICIAN_NO,PAT_RELATIVE_NAME,PAT_RELATION_TO_PATIENT,PAT_RELATIVE_ADDR,PAT_RELATIVE_STATE,PAT_RELATIVE_PINCODE,PAT_RELATIVE_PHONE,PAT_INS_NAME,PAT_INS_COMPANY,PAT_INS_ID,PAT_INS_COMPANY_NO,PAT_POLICY_ID,PAT_GROUP_NAME,PAT_INS_PARTY,PAT_PROOF_NAME,PAT_PROOF_NO,PAT_REL_WITH_PARTY,PAT_HEALTH_HISTORY_ID,PAT_CANCER_DETAILS,PAT_OTHER_MED_PROB,PAT_PAST_SURGERIES_ID,PAT_OTHER_SURGERIES,PAT_TOBACCO,PAT_SMOKING,PAT_ALCOHOL,PAT_FAMILY_MEMBER,PAT_HISTORY_ID,PAT_REG_VIA, PAT_REG_FRM_DEVICE,CREATED_DATE,CREATED_DEVICE,CREATED_IP,CREATED_BY,MODIFY_DATE,MODIFY_DEVICE,MODIFY_IP,MODIFY_BY) VALUES('$BR_ID','$PAT_TITLE','$PAT_NAME','$PAT_EMAIL','$PAT_GENDER','$PAT_MOBILE','$PAT_ADDR1','$PAT_ADDR2','$PAT_STATE','$PAT_POSTAL_CODE','$PAT_BLOOD_GROUP','$PAT_HEIGHT','$PAT_HEIGHT_UNIT','$PAT_WEIGHT','$PAT_WEIGHT_UNIT','$PAT_MARITAL_STATUS','$PAT_EMP_STATUS','$PAT_REF_PHYSICIAN','$PAT_REF_PHYSICIAN_NO','$PAT_RELATIVE_NAME','$PAT_RELATION_TO_PATIENT','$PAT_RELATIVE_ADDR','$PAT_RELATIVE_STATE','$PAT_RELATIVE_PINCODE','$PAT_RELATIVE_PHONE','$PAT_INS_NAME','$PAT_INS_COMPANY','$PAT_INS_ID','$PAT_INS_COMPANY_NO','$PAT_POLICY_ID','$PAT_GROUP_NAME','$PAT_INS_PARTY','$PAT_PROOF_NAME','$PAT_PROOF_NO','$PAT_REL_WITH_PARTY','$PAT_HEALTH_HISTORY_ID','$PAT_CANCER_DETAILS','$PAT_OTHER_MED_PROB','$PAT_PAST_SURGERIES_ID','$PAT_OTHER_SURGERIES','$PAT_TOBACCO','$PAT_SMOKING','$PAT_ALCOHOL','$PAT_FAMILY_MEMBER','$PAT_HISTORY_ID', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        $result = mysql_query("INSERT INTO Patient_Master(BR_ID,PAT_TITLE,PAT_TYPE,PAT_NAME,PAT_EMAIL,PAT_GENDER,PAT_MOBILE,PAT_ADDR1,PAT_ADDR2,PAT_STATE,PAT_POSTAL_CODE,PAT_BLOOD_GROUP,PAT_HEIGHT,PAT_HEIGHT_UNIT,PAT_WEIGHT,PAT_WEIGHT_UNIT,PAT_MARITAL_STATUS,PAT_EMP_STATUS,PAT_REF_PHYSICIAN,PAT_REF_PHYSICIAN_NO,PAT_RELATIVE_NAME,PAT_RELATION_TO_PATIENT,PAT_RELATIVE_ADDR,PAT_RELATIVE_STATE,PAT_RELATIVE_PINCODE,PAT_RELATIVE_PHONE,PAT_INS_NAME,PAT_INS_COMPANY,PAT_INS_ID,PAT_INS_COMPANY_NO,PAT_POLICY_ID,PAT_GROUP_NAME,PAT_INS_PARTY,PAT_PROOF_NAME,PAT_PROOF_NO,PAT_REL_WITH_PARTY,PAT_HEALTH_HISTORY_ID,PAT_CANCER_DETAILS,PAT_OTHER_MED_PROB,PAT_PAST_SURGERIES_ID,PAT_OTHER_SURGERIES,PAT_TOBACCO,PAT_SMOKING,PAT_ALCOHOL,PAT_FAMILY_MEMBER,PAT_HISTORY_ID,PAT_REG_VIA, PAT_REG_FRM_DEVICE,CREATED_DATE,CREATED_DEVICE,CREATED_IP,CREATED_BY,MODIFY_DATE,MODIFY_DEVICE,MODIFY_IP,MODIFY_BY) VALUES('$BR_ID','$PAT_TITLE', '$PAT_TYPE','$PAT_NAME','$PAT_EMAIL','$PAT_GENDER','$PAT_MOBILE','$PAT_ADDR1','$PAT_ADDR2','$PAT_STATE','$PAT_POSTAL_CODE','$PAT_BLOOD_GROUP','$PAT_HEIGHT','$PAT_HEIGHT_UNIT','$PAT_WEIGHT','$PAT_WEIGHT_UNIT','$PAT_MARITAL_STATUS','$PAT_EMP_STATUS','$PAT_REF_PHYSICIAN','$PAT_REF_PHYSICIAN_NO','$PAT_RELATIVE_NAME','$PAT_RELATION_TO_PATIENT','$PAT_RELATIVE_ADDR','$PAT_RELATIVE_STATE','$PAT_RELATIVE_PINCODE','$PAT_RELATIVE_PHONE','$PAT_INS_NAME','$PAT_INS_COMPANY','$PAT_INS_ID','$PAT_INS_COMPANY_NO','$PAT_POLICY_ID','$PAT_GROUP_NAME','$PAT_INS_PARTY','$PAT_PROOF_NAME','$PAT_PROOF_NO','$PAT_REL_WITH_PARTY','$PAT_HEALTH_HISTORY_ID','$PAT_CANCER_DETAILS','$PAT_OTHER_MED_PROB','$PAT_PAST_SURGERIES_ID','$PAT_OTHER_SURGERIES','$PAT_TOBACCO','$PAT_SMOKING','$PAT_ALCOHOL','$PAT_FAMILY_MEMBER','$PAT_HISTORY_ID', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     public function insertChild($Br_Id,$Child_Name,$Child_Dob,$Child_Gender,$Child_Resides_With,$Child_Mail_To,$Child_Ins_Subscriber_Name,$Child_Ins_No,$Child_Ins_Member_Id,$Child_Mother_Name,$Child_Mother_Dob,$Child_Mother_Addr,$Child_Mother_Postal_Code,$Child_Mother_Phone,$Child_Mother_Email,$Child_Father_Name,$Child_Father_Dob,$Child_Father_Addr,$Child_Father_Postal_Code,$Child_Father_Phone,$Child_Father_Email,$Child_Emer_Name,$Child_Emer_Relation,$Child_Emer_Phone) {
@@ -91,13 +91,33 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         $result = mysql_query("INSERT INTO Specialization_Master (SP_NAME, REG_VIA, REG_FRM_DEVICE,CREATED_DATE, CREATED_DEVICE, CREATED_IP, CREATED_BY, MODIFY_DATE, MODIFY_DEVICE, MODIFY_IP, MODIFY_BY) VALUES('$Sp_Name', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
-     public function insertDoctor($Br_ID, $Doc_Name,$Doc_Email,$Doc_Date_Of_Birth,$Doc_Gender,$Doc_Mobile,$Doc_Address1,$Doc_Address2,$Doc_Postal_Code,$Doc_Qualification, $Doc_Emergency_Availability,$Sp_ID, $Doc_Med_Licence_no) {
+    public function insertDoctor($Br_ID, $Doc_Name,$Doc_Email,$Doc_Date_Of_Birth,$Doc_Gender,$Doc_Mobile,$Doc_Address1,$Doc_Address2,$Doc_Postal_Code,$Doc_Qualification, $Doc_Emergency_Availability,$Sp_ID, $Doc_Med_Licence_no) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
         $reg_device = "";
         $CR_device = "";
         $MD_device = "";
         $result = mysql_query("INSERT INTO Doctor_Master(BR_ID,DOC_NAME,DOC_EMAIL,DOC_DATE_OF_BIRTH,DOC_GENDER,DOC_MOBILE,DOC_ADDRESS1,DOC_ADDRESS2,DOC_POSTAL_CODE,DOC_QUALIFICATION, DOC_EMERGENCY_AVAILABILITY,SP_ID, DOC_MED_LICENCE_NO, DOC_REG_VIA, DOC_REG_FRM_DEVICE,DOC_CREATED_DATE, DOC_CREATED_DEVICE,DOC_CREATED_IP,DOC_CREATED_BY,DOC_MODIFY_DATE, DOC_MODIFY_DEVICE,DOC_MODIFY_IP,DOC_MODIFY_BY) VALUES('$Br_ID','$Doc_Name','$Doc_Email','$Doc_Date_Of_Birth','$Doc_Gender','$Doc_Mobile','$Doc_Address1','$Doc_Address2','$Doc_Postal_Code','$Doc_Qualification', '$Doc_Emergency_Availability','$Sp_ID', '$Doc_Med_Licence_no', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertAnesthetist($Br_Id,$Ana_Pat_Id,$Ana_Bed_No,$Ana_Date,$Ana_Time,$Ana_Available_Anesthetist) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Anesthetist_Schedule_Master(br_id,ana_pat_id,ana_bed_no,ana_date,ana_time,ana_available_anesthetist,reg_via,reg_frm_device,created_date,created_device, created_ip,created_by, modify_date, modify_device, modify_ip,modify_by) VALUES('$Br_Id', '$Ana_Pat_Id', '$Ana_Bed_No', '$Ana_Date', '$Ana_Time', '$Ana_Available_Anesthetist', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertVaccine($Br_Id,$Vaccine_Child_Age,$Vaccine_Name,$Vaccine_Dosage,$Vaccine_Protects_Against,$Vaccine_Recommended_Days) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Vaccine_Details_Master(br_id,vaccine_child_age,vaccine_name,vaccine_dosage,vaccine_protects_against,vaccine_recommended_days,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by,modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Vaccine_Child_Age', '$Vaccine_Name', '$Vaccine_Dosage', '$Vaccine_Protects_Against', '$Vaccine_Recommended_Days', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     
@@ -224,6 +244,12 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
     public function updateBedStatus($Bed_No,$Bed_Status) {
         
         $result = mysql_query("Update Bed_Master set bed_status= '$Bed_Status'  where bed_no = '$Bed_No'");
+        return $result;
+    }
+    
+    public function updatePatientType($Pat_Id,$PAT_TYPE) {
+        
+        $result = mysql_query("Update Patient_Master set PAT_TYPE= '$PAT_TYPE'  where PAT_ID = '$Pat_Id'");
         return $result;
     }
     
@@ -397,6 +423,45 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
             return FALSE;
         }
     }
+    
+    public function isAnesthetistScheduled($Ana_Available_Anesthetist,$Ana_Date,$Ana_Time) {
+        
+        $result = mysql_query("SELECT ana_available_anesthetist FROM Anesthetist_Schedule_Master where ana_available_anesthetist = '$Ana_Available_Anesthetist' AND ana_date = '$Ana_Date' AND ana_time = '$Ana_Time'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Ana_Available_Anesthetist;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isVaccineDetails($Vaccine_Child_Age) {
+        
+        $result = mysql_query("SELECT vaccine_child_age FROM Vaccine_Details_Master where vaccine_child_age = '$Vaccine_Child_Age'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Vaccine_Child_Age;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
     public function isSpecializeExisted($Sp_Name) {
         
         $result = mysql_query("SELECT sp_name FROM Specialization_master where sp_name = '$Sp_Name'");

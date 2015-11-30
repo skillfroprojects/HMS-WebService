@@ -2,15 +2,18 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
-$ANA_SCHEDULE_ID = $_POST['ana_schedule_id'];
-$BR_ID = $_POST['br_id'];
+if (isset($_POST['br_id']) && isset($_POST['ana_available_anesthetist'])) {
+
+    $BR_ID = $_POST['br_id'];
+    $ANA_AVAILABLE_ANESTHETIST = $_POST['ana_available_anesthetist'];
+
 $result = mysql_query("SELECT
     *
     FROM
     anesthetist_schedule_master
     WHERE
     anesthetist_schedule_master.br_id = '$BR_ID' AND
-    anesthetist_schedule_master.ana_schedule_id = '$ANA_SCHEDULE_ID'") or die("Error");
+    anesthetist_schedule_master.ana_available_anesthetist = '$ANA_AVAILABLE_ANESTHETIST'") or die("Error");
 
 if (mysql_num_rows($result) > 0) 
     {
@@ -38,12 +41,21 @@ if (mysql_num_rows($result) > 0)
    
     // echoing JSON response
     echo json_encode($response);
-} else {
-    // no products found
-    $response["response"] = 0;
-    $response["message"] = "No data found";
+}
+ else {
+        // no products found
+        $response["response"] = 0;
+        $response["message"] = "No data found";
 
-    // echo no users JSON
-    echo json_encode($response);
+        // echo no users JSON
+        echo json_encode($response);
+    }
+}else {
+        // no products found
+        $response["response"] = 2;
+        $response["message"] = "Required Parameters Missing";
+
+        // echo no users JSON
+        echo json_encode($response);
 }
 ?>

@@ -18,7 +18,7 @@ if (isset($_POST['bed_no']) && isset($_POST['pat_id'])) {
     $Doctor_Id = $_POST['doctor_id'];
     $Staff_Id = $_POST['staff_id'];
     $Bed_Status = '1';
-    
+    $PAT_TYPE = 'InPatient';
     // check if patient already exists 
     if ($db->isBedAllocated($Pat_Id)) {
         // Bed already allocated
@@ -29,6 +29,7 @@ if (isset($_POST['bed_no']) && isset($_POST['pat_id'])) {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         $user = $db->insertBedAllocation($Br_id,$Admission_Date,$Discharge_Date,$Room_Type_Id,$Bed_No,$Pat_Id,$Doctor_Id,$Staff_Id);
         $users = $db->updateBedStatus($Bed_No,$Bed_Status);
+        $userss = $db->updatePatientType($Pat_Id,$PAT_TYPE);
         if ($user) {
             // Bed allocated successfully
         $response["response"] = 1;
