@@ -1,9 +1,9 @@
 <?php
 include 'include/Config.php';
 $db = new DB_Class();
-if (isset($_GET['br_id'])) {
+if (isset($_POST['br_id'])) {
 
-    $BR_ID = $_GET['br_id'];
+    $BR_ID = $_POST['br_id'];
     $result = mysql_query("Select * from room_type_master where room_type_master.br_id = '$BR_ID'") or die("Error");
 
     if (mysql_num_rows($result) > 0) {

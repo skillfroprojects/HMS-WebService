@@ -35,7 +35,6 @@ if (isset($_POST['lab_name']) && isset($_POST['lab_email'])) {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
         $user = $db->insertLaboratory($Br_ID, $Lab_Name,$Lab_Timing,$Lab_Addr1,$Lab_Addr2,$Lab_Postal_Code,$Lab_Phone,$Lab_Email,$Lab_Landline_No);
-        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
 
         if ($user) {
             // lab stored successfully
@@ -47,13 +46,17 @@ if (isset($_POST['lab_name']) && isset($_POST['lab_email'])) {
         if ($no_rows == 1) {
             // lab exists
             //$stmt->close();
-            $user['lab_id'] = $user_data['lab_id'];
+            $Login_user_id = $user_data['lab_id'];
+            $user['LAB_ID'] = $user_data['lab_id'];
+            $user['BR_ID'] = $user_data['br_id'];
+            $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_user_id,$Login_type,$Br_id);
             
         } else {
             
 //            return NULL;
         }
         $response["lab_id"] = $user_data['lab_id'];
+        $response['BR_ID'] = $user_data['br_id'];
         $response["message"] = "Laboratory Details Inserted.";
         echo json_encode($response);
         } else {

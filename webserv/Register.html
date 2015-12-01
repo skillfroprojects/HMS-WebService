@@ -21,16 +21,22 @@ and open the template in the editor.
 
             <div id="main-body">
                 <br/><br/>
-                <form method="POST" action="bedallocation_insert.php"  id="register_form" name="reg">
+                <form method="POST" action="vaccineschedule_insert.php"  id="register_form" name="reg">
                     <div class="head">
                     </div>
                     
-                    <label>Branch</label><br/>  
-                    <input type="text" name="br_id"  /><br/><br/>   
-                    <label>Child Age</label><br/>
-                    <input type="text" name="bed_no"  /><br/><br/>   
+                    <label>Child Name</label><br/>  
+                    <input type="text" name="vac_child_id"  /><br/><br/>   
                     <label>Vaccine</label><br/>
-                    <input type="text" name="pat_id"  /><br/><br/> 
+                    <input type="text" name="vac_name"  /><br/><br/> 
+                    <label>Doctor</label><br/>  
+                    <input type="text" name="vac_doc_id"  /><br/><br/>
+                    <label>Branch</label><br/>
+                    <input type="text" name="br_id"  /><br/><br/> 
+                    <label>Date</label><br/>  
+                    <input type="text" name="vac_app_date"  /><br/><br/>
+                    <label>Time</label><br/>
+                    <input type="text" name="vac_app_time"  /><br/><br/> 
                     
 
                     <input type="submit" name="register_btn" onclick="return(submitregistration());" value="Register"/><br/><br/>

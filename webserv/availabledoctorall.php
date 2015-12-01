@@ -2,19 +2,18 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
-if (isset($_GET['br_id']) && isset($_GET['sp_id'])) {
+if (isset($_POST['br_id'])  && isset($_POST['sp_id'])) {
 
-    $BR_ID = $_GET['br_id'];
-    $SP_ID = $_GET['sp_id'];
+    $BR_ID = $_POST['br_id'];
+    $SP_ID = $_POST['sp_id'];
     
 $result = mysql_query("SELECT
 doctor_master.DOC_ID,
 doctor_master.DOC_NAME
 FROM
 doctor_master
-INNER JOIN specialization_master ON doctor_master.SP_ID = specialization_master.SP_ID
 WHERE
-specialization_master.SP_ID = '$SP_ID' AND
+FIND_IN_SET('$SP_ID',doctor_master.SP_ID) AND
 doctor_master.BR_ID = '$BR_ID'") or die("Error");
 
     if (mysql_num_rows($result) > 0) {

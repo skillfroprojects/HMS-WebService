@@ -37,7 +37,6 @@ if (isset($_POST['staff_name']) && isset($_POST['staff_email'])) {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
         $user = $db->insertStaff($Br_id, $Staff_Name,$Staff_Email,$Staff_dob,$Staff_Gender,$Staff_Phone,$Staff_Addr1,$Staff_Addr2,$Staff_Postal_Code,$Dept_id,$Designation_id,$Staff_Joining_Date);
-        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
 
         if ($user) {
             // staff stored successfully
@@ -49,13 +48,17 @@ if (isset($_POST['staff_name']) && isset($_POST['staff_email'])) {
         if ($no_rows == 1) {
             // staff exists
             //$stmt->close();
+            $Login_user_id = $user_data['staff_id'];
             $user['staff_id'] = $user_data['staff_id'];
+            $user['BR_ID'] = $user_data['br_id'];
+            $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_user_id,$Login_type,$Br_id);
             
         } else {
             
 //            return NULL;
         }
         $response["staff_id"] = $user_data['staff_id'];
+        $response['BR_ID'] = $user_data['br_id'];
         $response["message"] = "Staff Details Inserted.";
         echo json_encode($response);
         } else {

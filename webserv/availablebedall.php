@@ -2,11 +2,12 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
-if (isset($_POST['room_type'])) {
+if (isset($_POST['room_type']) && isset($_POST['br_id'])) {
 
     $Room_Type = $_POST['room_type'];
+    $Br_Id = $_POST['br_id'];
     
-$result = mysql_query("SELECT * FROM bed_master WHERE bed_master.room_type = '$Room_Type' AND bed_master.bed_status = '0'") or die("Error");
+$result = mysql_query("SELECT * FROM bed_master WHERE bed_master.room_type = '$Room_Type' AND bed_master.bed_status = '0' AND bed_master.br_id = '$Br_Id'") or die("Error");
 
     if (mysql_num_rows($result) > 0) {
          // response

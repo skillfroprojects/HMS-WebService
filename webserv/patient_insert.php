@@ -60,8 +60,6 @@ if (isset($_POST['pat_name']) && isset($_POST['pat_email'])) {
     $Login_name = $_POST['pat_email'];
     $Login_password = 'patient';
     $Login_type = 'patient';
-    $Login_user_id = $_POST['pat_id'];
-    
 
     // check if user already exists with the same email
     if ($db->isUserExisted($PAT_EMAIL)) {
@@ -72,21 +70,22 @@ if (isset($_POST['pat_name']) && isset($_POST['pat_email'])) {
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         $user = $db->insertPatient($BR_ID,$PAT_TITLE,$PAT_TYPE,$PAT_NAME,$PAT_EMAIL,$PAT_GENDER,$PAT_MOBILE,$PAT_ADDR1,$PAT_ADDR2,$PAT_STATE,$PAT_POSTAL_CODE,$PAT_BLOOD_GROUP,$PAT_HEIGHT,$PAT_HEIGHT_UNIT,$PAT_WEIGHT,$PAT_WEIGHT_UNIT,$PAT_MARITAL_STATUS,$PAT_EMP_STATUS,$PAT_REF_PHYSICIAN,$PAT_REF_PHYSICIAN_NO,$PAT_RELATIVE_NAME,$PAT_RELATION_TO_PATIENT,$PAT_RELATIVE_ADDR,$PAT_RELATIVE_STATE,$PAT_RELATIVE_PINCODE,$PAT_RELATIVE_PHONE,$PAT_INS_NAME,$PAT_INS_COMPANY,$PAT_INS_ID,$PAT_INS_COMPANY_NO,$PAT_POLICY_ID,$PAT_GROUP_NAME,$PAT_INS_PARTY,$PAT_PROOF_NAME,$PAT_PROOF_NO,$PAT_REL_WITH_PARTY,$PAT_HEALTH_HISTORY_ID,$PAT_CANCER_DETAILS,$PAT_OTHER_MED_PROB,$PAT_PAST_SURGERIES_ID,$PAT_OTHER_SURGERIES,$PAT_TOBACCO,$PAT_SMOKING,$PAT_ALCOHOL,$PAT_FAMILY_MEMBER,$PAT_HISTORY_ID);
-        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_user_id,$Login_type,$Br_id);
-
+        
         if ($user) {
             // user stored successfully
         $response["response"] = 1;
         $user = mysql_query("SELECT * from Patient_master WHERE PAT_EMAIL = '$PAT_EMAIL'");
         $user_data = mysql_fetch_array($user);
         $no_rows = mysql_num_rows($user);
-  
+        
         if ($no_rows == 1) {
             // user exists
             //$stmt->close();
+            $Login_user_id = $user_data['PAT_ID'];
             $user['PAT_ID'] = $user_data['PAT_ID'];
             $user['BR_ID'] = $user_data['BR_ID'];
-            
+            $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_user_id,$Login_type,$Br_id);
+
         } else {
             
 //            return NULL;

@@ -22,10 +22,8 @@ if (isset($_POST['em_pat_name'])) {
     $Em_Ward_To_Admit = $_POST['em_ward_to_admit'];
     $Em_Bed_No = $_POST['em_bed_no'];
     $Em_Mlc = $_POST['em_mlc'];
-    $Em_Mlc_Details = $_POST['em_mlc_details'];
-    
-    
-    
+    $Em_Mlc_Details = $_POST['em_mlc_details']; 
+ 
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
         $user = $db->insertEmergency($Br_id, $Em_Pat_Name,$Em_Gender,$Em_Mode_Of_Arrival,$Em_Accompanied_By,$Em_Relatives_Notified,$Em_Priority,$Em_Date,$Em_Time_Of_Arrival,$Em_Referral_Doctor,$Em_Ward_To_Admit,$Em_Bed_No,$Em_Mlc,$Em_Mlc_Details);

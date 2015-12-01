@@ -12,16 +12,15 @@ if (isset($_POST['pathologist_name']) && isset($_POST['pathologist_email'])) {
     $Br_id = $_POST['branch_id'];
     $pathologist_name = $_POST['pathologist_name'];
     $lab_id = $_POST['lab_id'];
-    $lab_email = $_POST['lab_email'];
+    //$lab_email = $_POST['lab_email'];
     $pathologist_addr1 = $_POST['pathologist_addr1'];
     $pathologist_addr2 = $_POST['pathologist_addr2'];
     $pathologist_postal_code = $_POST['pathologist_postal_code'];
     $pathologist_phone= $_POST['pathologist_phone'];
     $pathologist_email = $_POST['pathologist_email'];
     $pathologist_other_no = $_POST['pathologist_other_no'];  
-    $Login_uname = $_POST['pathologist_name'];
-    $Login_name = $_POST['pathologist_email'];
-    $Login_password = 'pathologist';
+    $Login_uname = $_POST['pathologist_name']; 
+    $Login_password = 'laboratory';
     $Login_type = 'laboratory';
 
     
@@ -34,9 +33,20 @@ if (isset($_POST['pathologist_name']) && isset($_POST['pathologist_email'])) {
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
-        $user = $db->insertPathologist($Br_id, $pathologist_name,$lab_id,$lab_email,$pathologist_addr1,$pathologist_addr2,$pathologist_postal_code,$pathologist_phone,$pathologist_email,$pathologist_other_no);
-        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
-
+        $user = $db->insertPathologist($Br_id, $pathologist_name,$lab_id,$pathologist_addr1,$pathologist_addr2,$pathologist_postal_code,$pathologist_phone,$pathologist_email,$pathologist_other_no);
+        $user1 = mysql_query("SELECT * from Laboratory_master WHERE lab_id = '$lab_id'");
+        $user_data1 = mysql_fetch_array($user1);
+        $no_rows1 = mysql_num_rows($user1);
+  
+        if ($no_rows1 == 1) {
+            // Pathologist exists
+            //$stmt->close();
+            $Login_name = $user_data1['lab_email'];            
+        } else {
+            
+//            return NULL;
+        }
+        
         if ($user) {
             // Pathologist stored successfully
         $response["response"] = 1;
@@ -47,13 +57,17 @@ if (isset($_POST['pathologist_name']) && isset($_POST['pathologist_email'])) {
         if ($no_rows == 1) {
             // Pathologist exists
             //$stmt->close();
+            $Login_user_id = $user_data['pathologist_id'];
             $user['pathologist_id'] = $user_data['pathologist_id'];
-            
+            $user['BR_ID'] = $user_data['br_id'];
+            $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_user_id,$Login_type,$Br_id);
+                        
         } else {
             
 //            return NULL;
         }
         $response["pathologist_id"] = $user_data['pathologist_id'];
+        $response['BR_ID'] = $user_data['br_id'];
         $response["message"] = "Pathologist Details Inserted.";
         echo json_encode($response);
         } else {

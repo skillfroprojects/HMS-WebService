@@ -37,7 +37,6 @@ if (isset($_POST['pharmacy_name']) && isset($_POST['pharma_email'])) {
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         $user = $db->insertPharmacy($Br_ID, $Pharmacy_Name,$Pharmacist_Name,$Pharma_Email,$Pharma_DOB,$Pharma_Gender,$Pharma_Phone,$Pharma_Addr1,$Pharma_Addr2,$Pharma_Postal_Code,$Pharmacist_License_No,$Pharma_Store_No);
-        $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_type,$Br_id);
 
         if ($user) {
             // pharma stored successfully
@@ -49,13 +48,17 @@ if (isset($_POST['pharmacy_name']) && isset($_POST['pharma_email'])) {
         if ($no_rows == 1) {
             // pharma exists
             //$stmt->close();
+            $Login_user_id = $user_data['pharma_id'];
             $user['pharma_id'] = $user_data['pharma_id'];
+            $user['BR_ID'] = $user_data['br_id'];
+            $users = $db->loginUser($Login_uname,$Login_name,$Login_password,$Login_user_id,$Login_type,$Br_id);
             
         } else {
             
 //            return NULL;
         }
         $response["pharma_id"] = $user_data['pharma_id'];
+        $response['BR_ID'] = $user_data['br_id'];
         $response["message"] = "Pharmacy Details Inserted.";
         echo json_encode($response);
         } else {
