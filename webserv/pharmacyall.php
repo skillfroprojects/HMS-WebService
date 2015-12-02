@@ -1,6 +1,7 @@
 <?php
 include 'include/Config.php';
 $db = new DB_Class();
+
 if (isset($_POST['br_id'])) {
 
     $BR_ID = $_POST['br_id'];
@@ -29,7 +30,7 @@ if (mysql_num_rows($result) > 0) {
         $Pharmacy["pharma_postal_code"] = $row["pharma_postal_code"];
         $Pharmacy["pharmacist_licence_no"] = $row["pharmacist_licence_no"];
         $Pharmacy["pharma_store_no"] = $row["pharma_store_no"];
-        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+
         // push single product into final response array
         array_push($response["pharmacy"], $Pharmacy);
     }

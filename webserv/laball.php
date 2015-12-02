@@ -1,11 +1,12 @@
 <?php
 include 'include/Config.php';
 $db = new DB_Class();
+
 if (isset($_POST['br_id'])) {
 
     $BR_ID = $_POST['br_id'];
 
-$result = mysql_query("Select DISTINCT * from laboratory_master where laboratory_master.br_id = '$BR_ID'") or die("Error");
+$result = mysql_query("Select * from laboratory_master where laboratory_master.br_id = '$BR_ID'") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
     // response
@@ -25,7 +26,7 @@ if (mysql_num_rows($result) > 0) {
         $Laboratory["lab_phone"] = $row["lab_phone"];
         $Laboratory["lab_email"] = $row["lab_email"];
         $Laboratory["lab_landline_no"] = $row["lab_landline_no"];
-        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+
         // push single product into final response array
         array_push($response["laboratory"], $Laboratory);
     }
@@ -35,7 +36,7 @@ if (mysql_num_rows($result) > 0) {
 } 
  else {
         // no products found
-        $response["response"] = 0;
+        $response["response"] = 2;
         $response["message"] = "No data found";
 
         // echo no users JSON
@@ -43,7 +44,7 @@ if (mysql_num_rows($result) > 0) {
     }
 }else {
         // no products found
-        $response["response"] = 2;
+        $response["response"] = 3;
         $response["message"] = "Required Parameters Missing";
 
         // echo no users JSON

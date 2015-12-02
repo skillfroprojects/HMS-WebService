@@ -1,6 +1,7 @@
 <?php
 include 'include/Config.php';
 $db = new DB_Class();
+
 if (isset($_POST['br_id'])) {
 
 $BR_ID = $_POST['br_id'];

@@ -15,7 +15,8 @@ if (isset($_POST['BR_ID']) && isset($_POST['PAT_TYPE'])) {
 
     if (mysql_num_rows($result) > 0) {
          // response
-        
+        $response["response"] = 1;
+        $response["message"] = "Data Fetched";
         $response["inpatient"] = array();
 
         while ($row = mysql_fetch_array($result)) {

@@ -39,7 +39,8 @@ if (isset($_POST['br_id'])) {
 
     if (mysql_num_rows($result) > 0) {
          // response
-        
+        $response["response"] = 1;
+        $response["message"] = "Data Fetched";
         $response["child"] = array();
 
         while ($row = mysql_fetch_array($result)) {

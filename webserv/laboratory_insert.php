@@ -5,7 +5,6 @@ $db = new DB_Functions();
 
 // json response array
 //$response = array("error" => FALSE);
-
 if (isset($_POST['lab_name']) && isset($_POST['lab_email'])) {
 
     // receiving the post params

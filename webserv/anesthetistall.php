@@ -7,13 +7,13 @@ if (isset($_POST['br_id']) && isset($_POST['ana_available_anesthetist'])) {
     $BR_ID = $_POST['br_id'];
     $ANA_AVAILABLE_ANESTHETIST = $_POST['ana_available_anesthetist'];
 
-$result = mysql_query("SELECT
-    *
-    FROM
-    anesthetist_schedule_master
-    WHERE
-    anesthetist_schedule_master.br_id = '$BR_ID' AND
-    anesthetist_schedule_master.ana_available_anesthetist = '$ANA_AVAILABLE_ANESTHETIST'") or die("Error");
+    $result = mysql_query("SELECT
+        *
+        FROM
+        anesthetist_schedule_master
+        WHERE
+        anesthetist_schedule_master.br_id = '$BR_ID' AND
+        anesthetist_schedule_master.ana_available_anesthetist = '$ANA_AVAILABLE_ANESTHETIST'") or die("Error");
 
 if (mysql_num_rows($result) > 0) 
     {

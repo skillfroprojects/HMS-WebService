@@ -4,10 +4,11 @@ $db = new DB_Class();
 
 //$response = array("error" => FALSE);
 
-if (isset($_POST['BR_ID'])) {
+if (isset($_POST['br_id']) && isset($_POST['staff_id'])) {
 
 // receiving the post params
-$BR_ID = $_POST['BR_ID'];
+$BR_ID = $_POST['br_id'];
+$STAFF_ID = $_POST['staff_id'];
         
 if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
 $Price_Type = $Type;
@@ -26,31 +27,16 @@ $result = mysql_query("SELECT
         staff_master.staff_addr1,
         staff_master.staff_addr2,
         staff_master.staff_postal_code,
-        staff_master.dept_id,
-        staff_master.designation_id,
         staff_master.staff_joining_date,
-        staff_master.reg_via,
-        staff_master.reg_frm_device,
-        staff_master.created_date,
-        staff_master.created_device,
-        staff_master.created_ip,
-        staff_master.created_by,
-        staff_master.modify_date,
-        staff_master.modify_device,
-        staff_master.modify_ip,
-        staff_master.modify_by,
-        schedule_master.schedule_id,
-        schedule_master.schedule_emp_type,
-        schedule_master.schedule_emp_id,
-        schedule_master.schedule_shift_id,
-        schedule_master.schedule_pat_id,
-        schedule_master.schedule_from_date,
-        schedule_master.schedule_to_date
+        designation_master.designation_name,
+        department_master.dept_name
         FROM
         staff_master
-        INNER JOIN schedule_master ON schedule_master.schedule_emp_id = staff_master.staff_id
+        INNER JOIN designation_master ON staff_master.designation_id = designation_master.designation_id
+        INNER JOIN department_master ON staff_master.dept_id = department_master.dept_id
         WHERE
-        staff_master.br_id = '$BR_ID' LIMIT 10") or die("Error");
+        staff_master.br_id = '$BR_ID' AND
+        staff_master.staff_id = '$STAFF_ID'") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
      // response
@@ -61,9 +47,17 @@ if (mysql_num_rows($result) > 0) {
        
         // temp user array
         $staff = array();
-                $staff["STAFF_NAME"] = $row["staff_name"];
-                $staff["DESIGNATION"] = $row["designation_name"];
-                $staff["PHONE"] = $row["staff_phone"];
+                $staff["staff_id"] = $row["staff_id"];
+                $staff["staff_name"] = $row["staff_name"];
+                $staff["staff_email"] = $row["staff_email"];
+                $staff["staff_dob"] = $row["staff_dob"];
+                $staff["staff_gender"] = $row["staff_gender"];
+                $staff["staff_phone"] = $row["staff_phone"];
+                $staff["staff_addr"] = $row["staff_addr1"].$row["staff_addr2"];
+                $staff["staff_postal_code"] = $row["staff_postal_code"];
+                $staff["staff_joining_date"] = $row["staff_joining_date"];
+                $staff["dept_name"] = $row["dept_name"];
+                $staff["designation_name"] = $row["designation_name"];
                 $staff["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";     
                 array_push($response["staff"], $staff);
         
