@@ -37,21 +37,19 @@ $start_from = ($page-1) * 10;
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
-    $response["pathologist"] = array();
+    $response["message"] = "Data Fetched";
     
     while ($row = mysql_fetch_array($result)) {
        
         // temp user array
-        $Pathologist = array();
-                $Pathologist["pathologist_id"] = $row["pathologist_id"];
-                $Pathologist["pathologist_name"] = $row["pathologist_name"];
-                $Pathologist["pathologist_addr"] = $row["pathologist_addr1"].$row["pathologist_addr2"];
-                $Pathologist["pathologist_postal_code"] = $row["pathologist_postal_code"];
-                $Pathologist["pathologist_phone"] = $row["pathologist_phone"];
-                $Pathologist["pathologist_email"] = $row["pathologist_email"];
-                $Pathologist["pathologist_other_no"] = $row["pathologist_other_no"];
-                $Pathologist["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
-                array_push($response["pathologist"], $Pathologist);
+                $response["pathologist_id"] = $row["pathologist_id"];
+                $response["pathologist_name"] = $row["pathologist_name"];
+                $response["pathologist_addr"] = $row["pathologist_addr1"].$row["pathologist_addr2"];
+                $response["pathologist_postal_code"] = $row["pathologist_postal_code"];
+                $response["pathologist_phone"] = $row["pathologist_phone"];
+                $response["pathologist_email"] = $row["pathologist_email"];
+                $response["pathologist_other_no"] = $row["pathologist_other_no"];
+                $response["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
         
     }
     

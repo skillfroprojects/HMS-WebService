@@ -18,6 +18,7 @@ if (mysql_num_rows($result) > 0) {
         // temp user array
         $Doctor = array();
         $Doctor["BR_ID"] = $row["BR_ID"];
+        $Doctor["DOC_ID"] = $row["DOC_ID"];
         $Doctor["DOC_Name"] = $row["DOC_NAME"];
         $Doctor["DOC_EMAIL"] = $row["DOC_EMAIL"];
         $Doctor["DOC_MOBILE"] = $row["DOC_MOBILE"];

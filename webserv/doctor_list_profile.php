@@ -63,26 +63,23 @@ if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
     $response["message"] = "Data Fetched.";
-    $response["doc"] = array();
     
     while ($row = mysql_fetch_array($result)) {
        
         // temp user array
-        $doc = array();
-                $doc["DOC_ID"] = $row["DOC_ID"];
-                $doc["DOC_NAME"] = $row["DOC_NAME"];
-                $doc["DOC_EMAIL"] = $row["DOC_EMAIL"];
-                $doc["DOC_DATE_OF_BIRTH"] = $row["DOC_DATE_OF_BIRTH"];
-                $doc["DOC_GENDER"] = $row["DOC_GENDER"];
-                $doc["DOC_MOBILE"] = $row["DOC_MOBILE"];
-                $doc["DOC_ADDRESS"] = $row["DOC_ADDRESS1"].$row["DOC_ADDRESS2"];
-                $doc["DOC_POSTAL_CODE"] = $row["DOC_POSTAL_CODE"];
-                $doc["DOC_QUALIFICATION"] = $row["DOC_QUALIFICATION"];
-                $doc["DOC_EMERGENCY_AVAILABILITY"] = $row["DOC_EMERGENCY_AVAILABILITY"];
-                $doc["SP_NAME"] = $row["SP_NAME"];
-                $doc["DOC_MED_LICENCE_NO"] = $row["DOC_MED_LICENCE_NO"];
-                $doc["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
-                array_push($response["doc"], $doc);  
+                $response["DOC_ID"] = $row["DOC_ID"];
+                $response["DOC_NAME"] = $row["DOC_NAME"];
+                $response["DOC_EMAIL"] = $row["DOC_EMAIL"];
+                $response["DOC_DATE_OF_BIRTH"] = $row["DOC_DATE_OF_BIRTH"];
+                $response["DOC_GENDER"] = $row["DOC_GENDER"];
+                $response["DOC_MOBILE"] = $row["DOC_MOBILE"];
+                $response["DOC_ADDRESS"] = $row["DOC_ADDRESS1"].$row["DOC_ADDRESS2"];
+                $response["DOC_POSTAL_CODE"] = $row["DOC_POSTAL_CODE"];
+                $response["DOC_QUALIFICATION"] = $row["DOC_QUALIFICATION"];
+                $response["DOC_EMERGENCY_AVAILABILITY"] = $row["DOC_EMERGENCY_AVAILABILITY"];
+                $response["SP_NAME"] = $row["SP_NAME"];
+                $response["DOC_MED_LICENCE_NO"] = $row["DOC_MED_LICENCE_NO"];
+                $response["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
     }
     
     // echoing JSON response

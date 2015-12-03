@@ -57,6 +57,7 @@ if (mysql_num_rows($result) > 0) {
         // temp user array
         $Doctor = array();
         $Doctor["BR_ID"] = $row["BR_ID"];
+        $Doctor["DOC_ID"] = $row["DOC_ID"];
         $Doctor["DOC_Name"] = $row["DOC_NAME"];
         $Doctor["DOC_EMAIL"] = $row["DOC_EMAIL"];
         $Doctor["DOC_MOBILE"] = $row["DOC_MOBILE"];
@@ -86,11 +87,11 @@ else {
 
 http://hms.yogintechnologies.com/webservice/doctor_list_profile.php
 
-if (isset($_GET['br_id']) && isset($_GET['doc_id'])) {
+if (isset($_POST['br_id']) && isset($_POST['doc_id'])) {
 
 // receiving the post params
-$BR_ID = $_GET['br_id'];
-$DOC_ID = $_GET['doc_id'];
+$BR_ID = $_POST['br_id'];
+$DOC_ID = $_POST['doc_id'];
         
 if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
 $Price_Type = $Type;
@@ -139,32 +140,29 @@ $result = mysql_query("SELECT
         doctor_master
         INNER JOIN specialization_master ON doctor_master.SP_ID = specialization_master.SP_ID
         WHERE
-        doctor_master.BR_ID = '$BR_ID' AND doctor_master.DOC_ID = '$DOC_ID' LIMIT 10") or die("Error");
+        doctor_master.BR_ID = '$BR_ID' AND doctor_master.DOC_ID = '$DOC_ID'") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
     $response["message"] = "Data Fetched.";
-    $response["doc"] = array();
     
     while ($row = mysql_fetch_array($result)) {
        
         // temp user array
-        $doc = array();
-                $doc["DOC_ID"] = $row["DOC_ID"];
-                $doc["DOC_NAME"] = $row["DOC_NAME"];
-                $doc["DOC_EMAIL"] = $row["DOC_EMAIL"];
-                $doc["DOC_DATE_OF_BIRTH"] = $row["DOC_DATE_OF_BIRTH"];
-                $doc["DOC_GENDER"] = $row["DOC_GENDER"];
-                $doc["DOC_MOBILE"] = $row["DOC_MOBILE"];
-                $doc["DOC_ADDRESS"] = $row["DOC_ADDRESS1"].$row["DOC_ADDRESS2"];
-                $doc["DOC_POSTAL_CODE"] = $row["DOC_POSTAL_CODE"];
-                $doc["DOC_QUALIFICATION"] = $row["DOC_QUALIFICATION"];
-                $doc["DOC_EMERGENCY_AVAILABILITY"] = $row["DOC_EMERGENCY_AVAILABILITY"];
-                $doc["SP_NAME"] = $row["SP_NAME"];
-                $doc["DOC_MED_LICENCE_NO"] = $row["DOC_MED_LICENCE_NO"];
-                $doc["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
-                array_push($response["doc"], $doc);  
+                $response["DOC_ID"] = $row["DOC_ID"];
+                $response["DOC_NAME"] = $row["DOC_NAME"];
+                $response["DOC_EMAIL"] = $row["DOC_EMAIL"];
+                $response["DOC_DATE_OF_BIRTH"] = $row["DOC_DATE_OF_BIRTH"];
+                $response["DOC_GENDER"] = $row["DOC_GENDER"];
+                $response["DOC_MOBILE"] = $row["DOC_MOBILE"];
+                $response["DOC_ADDRESS"] = $row["DOC_ADDRESS1"].$row["DOC_ADDRESS2"];
+                $response["DOC_POSTAL_CODE"] = $row["DOC_POSTAL_CODE"];
+                $response["DOC_QUALIFICATION"] = $row["DOC_QUALIFICATION"];
+                $response["DOC_EMERGENCY_AVAILABILITY"] = $row["DOC_EMERGENCY_AVAILABILITY"];
+                $response["SP_NAME"] = $row["SP_NAME"];
+                $response["DOC_MED_LICENCE_NO"] = $row["DOC_MED_LICENCE_NO"];
+                $response["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
     }
     
     // echoing JSON response
@@ -281,25 +279,23 @@ $result = mysql_query("SELECT
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
-    $response["staff"] = array();
+    $response["message"] = "Data Fetched";
     
     while ($row = mysql_fetch_array($result)) {
        
         // temp user array
-        $staff = array();
-                $staff["staff_id"] = $row["staff_id"];
-                $staff["staff_name"] = $row["staff_name"];
-                $staff["staff_email"] = $row["staff_email"];
-                $staff["staff_dob"] = $row["staff_dob"];
-                $staff["staff_gender"] = $row["staff_gender"];
-                $staff["staff_phone"] = $row["staff_phone"];
-                $staff["staff_addr"] = $row["staff_addr1"].$row["staff_addr2"];
-                $staff["staff_postal_code"] = $row["staff_postal_code"];
-                $staff["staff_joining_date"] = $row["staff_joining_date"];
-                $staff["dept_name"] = $row["dept_name"];
-                $staff["designation_name"] = $row["designation_name"];
-                $staff["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";     
-                array_push($response["staff"], $staff);
+                $response["staff_id"] = $row["staff_id"];
+                $response["staff_name"] = $row["staff_name"];
+                $response["staff_email"] = $row["staff_email"];
+                $response["staff_dob"] = $row["staff_dob"];
+                $response["staff_gender"] = $row["staff_gender"];
+                $response["staff_phone"] = $row["staff_phone"];
+                $response["staff_addr"] = $row["staff_addr1"].$row["staff_addr2"];
+                $response["staff_postal_code"] = $row["staff_postal_code"];
+                $response["staff_joining_date"] = $row["staff_joining_date"];
+                $response["dept_name"] = $row["dept_name"];
+                $response["designation_name"] = $row["designation_name"];
+                $response["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";     
         
     }
     
@@ -416,25 +412,23 @@ $start_from = ($page-1) * 10;
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
-    $response["pharmacy"] = array();
+    $response["message"] = "Data Fetched";
     
     while ($row = mysql_fetch_array($result)) {
        
         // temp user array
-        $pharmacy = array();
-                $pharmacy["pharma_id"] = $row["pharma_id"];
-                $pharmacy["pharmacy_name"] = $row["pharmacy_name"];
-                $pharmacy["pharmacist_name"] = $row["pharmacist_name"];
-                $pharmacy["pharma_email"] = $row["pharma_email"];
-                $pharmacy["pharma_dob"] = $row["pharma_dob"];
-                $pharmacy["pharma_gender"] = $row["pharma_gender"];
-                $pharmacy["pharma_phone"] = $row["pharma_phone"];
-                $pharmacy["pharma_addr"] = $row["pharma_addr1"].",".$row["pharma_addr2"];
-                $pharmacy["pharma_postal_code"] = $row["pharma_postal_code"];
-                $pharmacy["pharmacist_licence_no"] = $row["pharmacist_licence_no"];
-                $pharmacy["pharma_store_no"] = $row["pharma_store_no"];
-                $pharmacy["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
-                array_push($response["pharmacy"], $pharmacy);
+                $response["pharma_id"] = $row["pharma_id"];
+                $response["pharmacy_name"] = $row["pharmacy_name"];
+                $response["pharmacist_name"] = $row["pharmacist_name"];
+                $response["pharma_email"] = $row["pharma_email"];
+                $response["pharma_dob"] = $row["pharma_dob"];
+                $response["pharma_gender"] = $row["pharma_gender"];
+                $response["pharma_phone"] = $row["pharma_phone"];
+                $response["pharma_addr"] = $row["pharma_addr1"].",".$row["pharma_addr2"];
+                $response["pharma_postal_code"] = $row["pharma_postal_code"];
+                $response["pharmacist_licence_no"] = $row["pharmacist_licence_no"];
+                $response["pharma_store_no"] = $row["pharma_store_no"];
+                $response["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
         
     }
     
@@ -610,21 +604,19 @@ $start_from = ($page-1) * 10;
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
-    $response["pathologist"] = array();
+    $response["message"] = "Data Fetched";
     
     while ($row = mysql_fetch_array($result)) {
        
         // temp user array
-        $Pathologist = array();
-                $Pathologist["pathologist_id"] = $row["pathologist_id"];
-                $Pathologist["pathologist_name"] = $row["pathologist_name"];
-                $Pathologist["pathologist_addr"] = $row["pathologist_addr1"].$row["pathologist_addr2"];
-                $Pathologist["pathologist_postal_code"] = $row["pathologist_postal_code"];
-                $Pathologist["pathologist_phone"] = $row["pathologist_phone"];
-                $Pathologist["pathologist_email"] = $row["pathologist_email"];
-                $Pathologist["pathologist_other_no"] = $row["pathologist_other_no"];
-                $Pathologist["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
-                array_push($response["pathologist"], $Pathologist);
+                $response["pathologist_id"] = $row["pathologist_id"];
+                $response["pathologist_name"] = $row["pathologist_name"];
+                $response["pathologist_addr"] = $row["pathologist_addr1"].$row["pathologist_addr2"];
+                $response["pathologist_postal_code"] = $row["pathologist_postal_code"];
+                $response["pathologist_phone"] = $row["pathologist_phone"];
+                $response["pathologist_email"] = $row["pathologist_email"];
+                $response["pathologist_other_no"] = $row["pathologist_other_no"];
+                $response["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
         
     }
     

@@ -39,25 +39,23 @@ $start_from = ($page-1) * 10;
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
-    $response["pharmacy"] = array();
+    $response["message"] = "Data Fetched";
     
     while ($row = mysql_fetch_array($result)) {
        
         // temp user array
-        $pharmacy = array();
-                $pharmacy["pharma_id"] = $row["pharma_id"];
-                $pharmacy["pharmacy_name"] = $row["pharmacy_name"];
-                $pharmacy["pharmacist_name"] = $row["pharmacist_name"];
-                $pharmacy["pharma_email"] = $row["pharma_email"];
-                $pharmacy["pharma_dob"] = $row["pharma_dob"];
-                $pharmacy["pharma_gender"] = $row["pharma_gender"];
-                $pharmacy["pharma_phone"] = $row["pharma_phone"];
-                $pharmacy["pharma_addr"] = $row["pharma_addr1"].",".$row["pharma_addr2"];
-                $pharmacy["pharma_postal_code"] = $row["pharma_postal_code"];
-                $pharmacy["pharmacist_licence_no"] = $row["pharmacist_licence_no"];
-                $pharmacy["pharma_store_no"] = $row["pharma_store_no"];
-                $pharmacy["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
-                array_push($response["pharmacy"], $pharmacy);
+                $response["pharma_id"] = $row["pharma_id"];
+                $response["pharmacy_name"] = $row["pharmacy_name"];
+                $response["pharmacist_name"] = $row["pharmacist_name"];
+                $response["pharma_email"] = $row["pharma_email"];
+                $response["pharma_dob"] = $row["pharma_dob"];
+                $response["pharma_gender"] = $row["pharma_gender"];
+                $response["pharma_phone"] = $row["pharma_phone"];
+                $response["pharma_addr"] = $row["pharma_addr1"].",".$row["pharma_addr2"];
+                $response["pharma_postal_code"] = $row["pharma_postal_code"];
+                $response["pharmacist_licence_no"] = $row["pharmacist_licence_no"];
+                $response["pharma_store_no"] = $row["pharma_store_no"];
+                $response["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
         
     }
     

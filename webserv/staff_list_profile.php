@@ -41,25 +41,23 @@ $result = mysql_query("SELECT
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
-    $response["staff"] = array();
+    $response["message"] = "Data Fetched";
     
     while ($row = mysql_fetch_array($result)) {
        
         // temp user array
-        $staff = array();
-                $staff["staff_id"] = $row["staff_id"];
-                $staff["staff_name"] = $row["staff_name"];
-                $staff["staff_email"] = $row["staff_email"];
-                $staff["staff_dob"] = $row["staff_dob"];
-                $staff["staff_gender"] = $row["staff_gender"];
-                $staff["staff_phone"] = $row["staff_phone"];
-                $staff["staff_addr"] = $row["staff_addr1"].$row["staff_addr2"];
-                $staff["staff_postal_code"] = $row["staff_postal_code"];
-                $staff["staff_joining_date"] = $row["staff_joining_date"];
-                $staff["dept_name"] = $row["dept_name"];
-                $staff["designation_name"] = $row["designation_name"];
-                $staff["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";     
-                array_push($response["staff"], $staff);
+                $response["staff_id"] = $row["staff_id"];
+                $response["staff_name"] = $row["staff_name"];
+                $response["staff_email"] = $row["staff_email"];
+                $response["staff_dob"] = $row["staff_dob"];
+                $response["staff_gender"] = $row["staff_gender"];
+                $response["staff_phone"] = $row["staff_phone"];
+                $response["staff_addr"] = $row["staff_addr1"].$row["staff_addr2"];
+                $response["staff_postal_code"] = $row["staff_postal_code"];
+                $response["staff_joining_date"] = $row["staff_joining_date"];
+                $response["dept_name"] = $row["dept_name"];
+                $response["designation_name"] = $row["designation_name"];
+                $response["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";     
         
     }
     
