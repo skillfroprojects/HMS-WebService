@@ -6,30 +6,29 @@ $db = new DB_Functions();
 // json response array
 //$response = array("error" => FALSE);
 
-if (isset($_POST['dept_name']) && isset($_POST['dept_email'])) {
+if (isset($_POST['dept_id']) && isset($_POST['designation_name'])) {
 
     // receiving the post params
     $Br_ID = $_POST['br_id'];
-    $Dept_Name = $_POST['dept_name'];
-    $Dept_Email = $_POST['dept_email'];
-    $Dept_Phone = $_POST['dept_phone'];
-    $Dept_Desc = $_POST['dept_desc'];
-    // check if department already exists 
-    if ($db->isDepartmentExisted($Dept_Name,$Dept_Email)) {
+    $Dept_Id = $_POST['dept_id'];
+    $Designation_Name = $_POST['designation_name'];
+    
+    // check if Designation already exists 
+    if ($db->isDesignationExist($Designation_Name)) {
         // department already exists
         $response["response"] = 0;
-        $response["message"] = $Dept_Name. " already exists";
+        $response["message"] = $Designation_Name. " already exists";
         echo json_encode($response);
-    } else {
+    }else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
-        $user = $db->insertDepartment($Br_ID, $Dept_Name,$Dept_Email,$Dept_Phone,$Dept_Desc);
+        $user = $db->insertDesignation($Br_ID,$Dept_Id,$Designation_Name);
         if ($user) {
-            // department stored successfully
+            // Designation Details stored successfully
         $response["response"] = 1;
-        $response["message"] = "Department Details Inserted.";
+        $response["message"] = "Designation Details Inserted.";
         echo json_encode($response);
         } else {
-            // department failed to store
+            // Designation Details failed to store
             
             $response["response"] = 2;
             $response["message"] = "Unknown error occurred in registration!";

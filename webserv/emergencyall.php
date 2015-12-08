@@ -4,17 +4,21 @@ $db = new DB_Class();
 
 //$response = array("error" => FALSE);
 
-if (isset($_POST['br_id']) && isset($_POST['em_id'])) {
+if (isset($_POST['br_id'])) {
 
 // receiving the post params
 $BR_ID = $_POST['br_id'];
-$EM_ID = $_POST['em_id'];
+$DOC_ID = $_POST['doc_id'];
         
 if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
 $Price_Type = $Type;
 if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
 if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=10; }; 
 $start_from = ($page-1) * 10; 
+
+if (isset($_POST['doc_id'])) {
+    $DOCTOR_ID = "AND emergency_visit_master.em_referral_doctor = '$DOC_ID'";
+}
 
 $result = mysql_query("SELECT
 doctor_master.DOC_NAME,
@@ -37,32 +41,34 @@ FROM
 emergency_visit_master
 INNER JOIN doctor_master ON emergency_visit_master.em_referral_doctor = doctor_master.DOC_ID
 WHERE
-emergency_visit_master.br_id = '$BR_ID' AND emergency_visit_master.em_id = '$EM_ID'") or die("Error");
+emergency_visit_master.br_id = '$BR_ID' $DOCTOR_ID") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
-    $response["message"] = "Data Fetched Successfully";
+    $response["emergency"] = array();
     
     while ($row = mysql_fetch_array($result)) {
        
         // temp user array
-        $response["br_id"] = $row["br_id"];
-        $response["em_id"] = $row["em_id"];
-        $response["em_pat_name"] = $row["em_pat_name"];
-        $response["em_gender"] = $row["em_gender"];
-        $response["em_mode_of_arrival"] = $row["em_mode_of_arrival"];
-        $response["em_accompanied_by"] = $row["em_accompanied_by"];
-        $response["em_relatives_notified"] = $row["em_relatives_notified"];
-        $response["em_priority"] = $row["em_priority"];
-        $response["Date_Time"] = $row["em_date"].$row["em_time_of_arrival"];
-        $response["em_referral_doctor"] = $row["em_referral_doctor"];
-        $response["DOC_NAME"] = $row["DOC_NAME"];
-        $response["em_ward_to_admit"] = $row["em_ward_to_admit"];
-        $response["em_bed_no"] = $row["em_bed_no"];
-        $response["em_mlc"] = $row["em_mlc"];
-        $response["em_mlc_details"] = $row["em_mlc_details"];
-        $response["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
+        $emergency = array();
+        $emergency["br_id"] = $row["br_id"];
+        $emergency["em_id"] = $row["em_id"];
+        $emergency["em_pat_name"] = $row["em_pat_name"];
+        $emergency["em_gender"] = $row["em_gender"];
+        $emergency["em_mode_of_arrival"] = $row["em_mode_of_arrival"];
+        $emergency["em_accompanied_by"] = $row["em_accompanied_by"];
+        $emergency["em_relatives_notified"] = $row["em_relatives_notified"];
+        $emergency["em_priority"] = $row["em_priority"];
+        $emergency["Date_Time"] = $row["em_date"].$row["em_time_of_arrival"];
+        $emergency["em_referral_doctor"] = $row["em_referral_doctor"];
+        $emergency["DOC_NAME"] = $row["DOC_NAME"];
+        $emergency["em_ward_to_admit"] = $row["em_ward_to_admit"];
+        $emergency["em_bed_no"] = $row["em_bed_no"];
+        $emergency["em_mlc"] = $row["em_mlc"];
+        $emergency["em_mlc_details"] = $row["em_mlc_details"];
+        $emergency["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
+        array_push($response["emergency"], $emergency);  
     }
     
     // echoing JSON response

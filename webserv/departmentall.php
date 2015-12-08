@@ -17,13 +17,16 @@ if (mysql_num_rows($result) > 0) {
     while ($row = mysql_fetch_array($result)) {
         // temp user array
         $Department = array();
-        $Department["BR_ID"] = $row["BR_ID"];
+        $Department["br_id"] = $row["br_id"];
+        $Department["dept_id"] = $row["dept_id"];
         $Department["dept_name"] = $row["dept_name"];
+        $Department["dept_email"] = $row["dept_email"];
+        $Department["dept_phone"] = $row["dept_phone"];
+        $Department["dept_desc"] = $row["dept_desc"];
         //$services["SERV_PRICE"] = $row["SERV_PRICE"];
         // push single product into final response array
         array_push($response["department"], $Department);
     }
-    
     // echoing JSON response
     echo json_encode($response);
 } else {
@@ -33,7 +36,7 @@ if (mysql_num_rows($result) > 0) {
 
     // echo no users JSON
     echo json_encode($response);
-}
+    }
 }
 else {
     $response["response"] = 3;

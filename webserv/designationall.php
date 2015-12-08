@@ -5,7 +5,7 @@ $db = new DB_Class();
 if (isset($_POST['br_id'])) {
 
 $BR_ID = $_POST['br_id'];
-$result = mysql_query("Select DISTINCT * from designation_master where designation_master.br_id = '$BR_ID'") or die("Error");
+$result = mysql_query("Select * from designation_master where designation_master.br_id = '$BR_ID'") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
     // response

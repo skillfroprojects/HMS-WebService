@@ -635,3 +635,634 @@ if (mysql_num_rows($result) > 0) {
     $response["message"] = "Required parameters is missing!";
     echo json_encode($response);
 }
+
+11. Designation_Insert
+
+http://hms.yogintechnologies.com/webservice/designation_insert.php
+
+if (isset($_POST['dept_id']) && isset($_POST['designation_name'])) {
+
+    // receiving the post params
+    $Br_ID = $_POST['br_id'];
+    $Dept_Id = $_POST['dept_id'];
+    $Designation_Name = $_POST['designation_name'];
+    
+    // check if Designation already exists 
+    if ($db->isDesignationExist($Designation_Name)) {
+        // department already exists
+        $response["response"] = 0;
+        $response["message"] = $Designation_Name. " already exists";
+        echo json_encode($response);
+    }else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertDesignation($Br_ID,$Dept_Id,$Designation_Name);
+        if ($user) {
+            // Designation Details stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Designation Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // Designation Details failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+12. Designation_All
+
+http://hms.yogintechnologies.com/webservice/designationall.php
+
+if (isset($_POST['br_id'])) {
+
+$BR_ID = $_POST['br_id'];
+$result = mysql_query("Select * from designation_master where designation_master.br_id = '$BR_ID'") or die("Error");
+
+if (mysql_num_rows($result) > 0) {
+    // response
+    $response["response"] = 1;
+    $response["designation"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Designation = array();
+        $Designation["desc_id"] = $row["designation_id"];
+        $Designation["br_id"] = $row["br_id"];
+        $Designation["desc_name"] = $row["designation_name"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["designation"], $Designation);
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+}
+ else {
+        // no products found
+        $response["response"] = 0;
+        $response["message"] = "No data found";
+
+        // echo no users JSON
+        echo json_encode($response);
+    }
+}else {
+        // no products found
+        $response["response"] = 2;
+        $response["message"] = "Required Parameters Missing";
+
+        // echo no users JSON
+        echo json_encode($response);
+}
+
+13. Department_Insert
+
+http://hms.yogintechnologies.com/webservice/department_insert.php
+
+if (isset($_POST['dept_name']) && isset($_POST['dept_email'])) {
+
+    // receiving the post params
+    $Br_ID = $_POST['br_id'];
+    $Dept_Name = $_POST['dept_name'];
+    $Dept_Email = $_POST['dept_email'];
+    $Dept_Phone = $_POST['dept_phone'];
+    $Dept_Desc = $_POST['dept_desc'];
+    // check if department already exists 
+    if ($db->isDepartmentExisted($Dept_Name,$Dept_Email)) {
+        // department already exists
+        $response["response"] = 0;
+        $response["message"] = $Dept_Name. " already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertDepartment($Br_ID, $Dept_Name,$Dept_Email,$Dept_Phone,$Dept_Desc);
+        if ($user) {
+            // department stored successfully
+        $response["response"] = 1;
+        $response["message"] = "Department Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // department failed to store
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+14. Department_All
+
+http://hms.yogintechnologies.com/webservice/departmentall.php
+
+if (isset($_GET['br_id'])) {
+
+    $BR_ID = $_GET['br_id'];
+
+$result = mysql_query("Select * from department_master where br_id = '$BR_ID'") or die("Error");
+
+if (mysql_num_rows($result) > 0) {
+   // response
+    $response["response"] = 1;
+    $response["department"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Department = array();
+        $Department["br_id"] = $row["br_id"];
+        $Department["dept_id"] = $row["dept_id"];
+        $Department["dept_name"] = $row["dept_name"];
+        $Department["dept_email"] = $row["dept_email"];
+        $Department["dept_phone"] = $row["dept_phone"];
+        $Department["dept_desc"] = $row["dept_desc"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["department"], $Department);
+    }
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+    }
+}
+else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+15. Appointment_Insert
+
+http://hms.yogintechnologies.com/webservice/appointment.php
+
+if (isset($_POST['appointment_date']) && isset($_POST['appointment_time'])) {
+
+    // receiving the post params
+    $Br_Id = $_POST['br_id'];
+    $App_Date = $_POST['appointment_date'];
+    $App_Time = $_POST['appointment_time'];
+    $Doc_ID = $_POST['doctor_id'];
+    $Pat_ID = $_POST['patient_id'];
+    $Pat_Email = $_POST['patient_email'];
+    $Pat_Mobile = $_POST['patient_mobile'];     
+ 
+    // check if user is already existed with the same email
+    if ($db->isappointmentExisted($Doc_ID,$App_Date,$App_Time)) {
+        // user already existed
+        $response["response"] = 0;
+        $response["error_msg"] = "Appointment already Booked for " . $App_Time;
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->register_appointment($Br_Id,$App_Date,$App_Time,$Doc_ID,$Pat_ID,$Pat_Email,$Pat_Mobile);
+        if ($user) {
+            // user stored successfully
+        $response["response"] = 1;
+        $user = mysql_query("SELECT * from Appointment_master WHERE Pat_Email = '$Pat_Email'");
+        $user_data = mysql_fetch_array($user);
+        $no_rows = mysql_num_rows($user);
+  
+        if ($no_rows == 1) {
+            // user existed 
+            //$stmt->close();
+            $user['APP_ID'] = $user_data['APP_ID'];
+            
+        } else {
+            
+//            return NULL;
+        }
+        $response["APP_ID"] = $user_data['APP_ID'];
+        $response["message"] = "Appointment booked responsefully.";
+        echo json_encode($response);
+        } else {
+            // user failed to store
+            
+            $response["response"] = 2;
+            $response["error_msg"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["error_msg"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+16. Appointment_All
+
+http://hms.yogintechnologies.com/webservice/appointmentall.php
+
+if (isset($_POST['br_id'])) {
+
+// receiving the post params
+$BR_ID = $_POST['br_id'];
+$DOC_ID = $_POST['doc_id'];
+$PAT_ID = $_POST['pat_id'];
+        
+if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
+$Price_Type = $Type;
+if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
+if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=10; }; 
+$start_from = ($page-1) * 10; 
+
+if (isset($_POST['doc_id'])) {
+    $DOCTOR_ID = "AND appointment_master.DOC_ID = '$DOC_ID'";
+}else if (isset($_POST['pat_id'])) {
+    $PATIENT_ID = "AND appointment_master.PAT_ID = '$PAT_ID'";
+}
+
+$result = mysql_query("SELECT
+    appointment_master.APP_DATE,
+    appointment_master.APP_TIME,
+    doctor_master.DOC_NAME,
+    patient_master.PAT_NAME,
+    appointment_master.DOC_ID,
+    appointment_master.PAT_ID,
+    appointment_master.PAT_EMAIL,
+    appointment_master.PAT_MOBILE,
+    appointment_master.BR_ID,
+    appointment_master.APP_ID
+    FROM
+    appointment_master
+    INNER JOIN doctor_master ON appointment_master.DOC_ID = doctor_master.DOC_ID
+    INNER JOIN patient_master ON appointment_master.PAT_ID = patient_master.PAT_ID
+    WHERE
+    appointment_master.BR_ID = '$BR_ID' $DOCTOR_ID $PATIENT_ID") or die("Error");
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["appointment"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $appointment = array();
+                $appointment["APP_ID"] = $row["APP_ID"];
+                $appointment["BR_ID"] = $row["BR_ID"];
+                $appointment["PAT_ID"] = $row["PAT_ID"];
+                $appointment["PAT_NAME"] = $row["PAT_NAME"];
+                $appointment["DOC_ID"] = $row["DOC_ID"];
+                $appointment["DOC_NAME"] = $row["DOC_NAME"];
+                $appointment["APP_DATE"] = $row["APP_DATE"];
+                $appointment["APP_TIME"] = $row["APP_TIME"];
+                $appointment["PAT_EMAIL"] = $row["PAT_EMAIL"];
+                $appointment["PAT_MOBILE"] = $row["PAT_MOBILE"];
+                array_push($response["appointment"], $appointment);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+17. Appointment_List
+
+http://hms.yogintechnologies.com/webservice/appointment_list.php
+
+if (isset($_POST['br_id']) && isset($_POST['app_id'])) {
+
+// receiving the post params
+$BR_ID = $_POST['br_id'];
+$APP_ID = $_POST['app_id'];
+
+if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
+$Price_Type = $Type;
+if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
+if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=10; }; 
+$start_from = ($page-1) * 10; 
+
+$result = mysql_query("SELECT
+    appointment_master.APP_DATE,
+    appointment_master.APP_TIME,
+    doctor_master.DOC_NAME,
+    patient_master.PAT_NAME,
+    appointment_master.DOC_ID,
+    appointment_master.PAT_ID,
+    appointment_master.PAT_EMAIL,
+    appointment_master.PAT_MOBILE,
+    appointment_master.BR_ID,
+    appointment_master.APP_ID
+    FROM
+    appointment_master
+    INNER JOIN doctor_master ON appointment_master.DOC_ID = doctor_master.DOC_ID
+    INNER JOIN patient_master ON appointment_master.PAT_ID = patient_master.PAT_ID
+    WHERE
+    appointment_master.BR_ID = '$BR_ID' AND appointment_master.APP_ID = '$APP_ID'") or die("Error");
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["message"] = "Data Fetched Successfully";
+    
+    while ($row = mysql_fetch_array($result)) {
+
+            $response["APP_ID"] = $row["APP_ID"];
+            $response["BR_ID"] = $row["BR_ID"];
+            $response["PAT_ID"] = $row["PAT_ID"];
+            $response["PAT_NAME"] = $row["PAT_NAME"];
+            $response["DOC_ID"] = $row["DOC_ID"];
+            $response["DOC_NAME"] = $row["DOC_NAME"];
+            $response["APP_DATE"] = $row["APP_DATE"];
+            $response["APP_TIME"] = $row["APP_TIME"];
+            $response["PAT_EMAIL"] = $row["PAT_EMAIL"];
+            $response["PAT_MOBILE"] = $row["PAT_MOBILE"];
+    }
+    
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+18. Emergency_All
+
+http://hms.yogintechnologies.com/webservice/emergencyall.php
+
+if (isset($_POST['br_id'])) {
+
+// receiving the post params
+$BR_ID = $_POST['br_id'];
+$DOC_ID = $_POST['doc_id'];
+        
+if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
+$Price_Type = $Type;
+if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
+if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=10; }; 
+$start_from = ($page-1) * 10; 
+
+if (isset($_POST['doc_id'])) {
+    $DOCTOR_ID = "AND emergency_visit_master.em_referral_doctor = '$DOC_ID'";
+}
+
+$result = mysql_query("SELECT
+doctor_master.DOC_NAME,
+emergency_visit_master.em_id,
+emergency_visit_master.br_id,
+emergency_visit_master.em_pat_name,
+emergency_visit_master.em_gender,
+emergency_visit_master.em_mode_of_arrival,
+emergency_visit_master.em_accompanied_by,
+emergency_visit_master.em_relatives_notified,
+emergency_visit_master.em_priority,
+emergency_visit_master.em_date,
+emergency_visit_master.em_time_of_arrival,
+emergency_visit_master.em_referral_doctor,
+emergency_visit_master.em_ward_to_admit,
+emergency_visit_master.em_bed_no,
+emergency_visit_master.em_mlc,
+emergency_visit_master.em_mlc_details
+FROM
+emergency_visit_master
+INNER JOIN doctor_master ON emergency_visit_master.em_referral_doctor = doctor_master.DOC_ID
+WHERE
+emergency_visit_master.br_id = '$BR_ID' $DOCTOR_ID") or die("Error");
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["emergency"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $emergency = array();
+        $emergency["br_id"] = $row["br_id"];
+        $emergency["em_id"] = $row["em_id"];
+        $emergency["em_pat_name"] = $row["em_pat_name"];
+        $emergency["em_gender"] = $row["em_gender"];
+        $emergency["em_mode_of_arrival"] = $row["em_mode_of_arrival"];
+        $emergency["em_accompanied_by"] = $row["em_accompanied_by"];
+        $emergency["em_relatives_notified"] = $row["em_relatives_notified"];
+        $emergency["em_priority"] = $row["em_priority"];
+        $emergency["Date_Time"] = $row["em_date"].$row["em_time_of_arrival"];
+        $emergency["em_referral_doctor"] = $row["em_referral_doctor"];
+        $emergency["DOC_NAME"] = $row["DOC_NAME"];
+        $emergency["em_ward_to_admit"] = $row["em_ward_to_admit"];
+        $emergency["em_bed_no"] = $row["em_bed_no"];
+        $emergency["em_mlc"] = $row["em_mlc"];
+        $emergency["em_mlc_details"] = $row["em_mlc_details"];
+        $emergency["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
+        array_push($response["emergency"], $emergency);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+19. Emergency_List
+
+http://hms.yogintechnologies.com/webservice/emergency_list.php
+
+if (isset($_POST['br_id']) && isset($_POST['em_id'])) {
+
+// receiving the post params
+$BR_ID = $_POST['br_id'];
+$EM_ID = $_POST['em_id'];
+        
+if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
+$Price_Type = $Type;
+if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
+if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=10; }; 
+$start_from = ($page-1) * 10; 
+
+$result = mysql_query("SELECT
+doctor_master.DOC_NAME,
+emergency_visit_master.em_id,
+emergency_visit_master.br_id,
+emergency_visit_master.em_pat_name,
+emergency_visit_master.em_gender,
+emergency_visit_master.em_mode_of_arrival,
+emergency_visit_master.em_accompanied_by,
+emergency_visit_master.em_relatives_notified,
+emergency_visit_master.em_priority,
+emergency_visit_master.em_date,
+emergency_visit_master.em_time_of_arrival,
+emergency_visit_master.em_referral_doctor,
+emergency_visit_master.em_ward_to_admit,
+emergency_visit_master.em_bed_no,
+emergency_visit_master.em_mlc,
+emergency_visit_master.em_mlc_details
+FROM
+emergency_visit_master
+INNER JOIN doctor_master ON emergency_visit_master.em_referral_doctor = doctor_master.DOC_ID
+WHERE
+emergency_visit_master.br_id = '$BR_ID' AND emergency_visit_master.em_id = '$EM_ID'") or die("Error");
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["message"] = "Data Fetched Successfully";
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $response["br_id"] = $row["br_id"];
+        $response["em_id"] = $row["em_id"];
+        $response["em_pat_name"] = $row["em_pat_name"];
+        $response["em_gender"] = $row["em_gender"];
+        $response["em_mode_of_arrival"] = $row["em_mode_of_arrival"];
+        $response["em_accompanied_by"] = $row["em_accompanied_by"];
+        $response["em_relatives_notified"] = $row["em_relatives_notified"];
+        $response["em_priority"] = $row["em_priority"];
+        $response["Date_Time"] = $row["em_date"].$row["em_time_of_arrival"];
+        $response["em_referral_doctor"] = $row["em_referral_doctor"];
+        $response["DOC_NAME"] = $row["DOC_NAME"];
+        $response["em_ward_to_admit"] = $row["em_ward_to_admit"];
+        $response["em_bed_no"] = $row["em_bed_no"];
+        $response["em_mlc"] = $row["em_mlc"];
+        $response["em_mlc_details"] = $row["em_mlc_details"];
+        $response["IMAGE"] = "http://hms.yogintechnologies.com/webservice/man_logo.png";
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+20. Meal_Plan_Insert
+
+http://hms.yogintechnologies.com/webservice/mealplan_insert.php
+
+if (isset($_POST['meal_plan_name']) && isset($_POST['disease_type']) && isset($_POST['meal_calorie_level'])) {
+
+    // receiving the post params
+    $Br_Id = $_POST['br_id'];
+    $Meal_Plan_Name = $_POST['meal_plan_name'];
+    $Disease_Type = $_POST['disease_type'];
+    $Meal_Calorie_Level = $_POST['meal_calorie_level'];
+    $Meal_Plan_Breakfast = $_POST['meal_plan_breakfast'];
+    $Meal_Plan_Lunch = $_POST['meal_plan_lunch'];
+    $Meal_Plan_Afternoon_Snack = $_POST['meal_plan_afternoon_snack'];
+    $Meal_Plan_Dinner = $_POST['meal_plan_dinner'];
+    $Meal_Plan_Price = $_POST['meal_plan_price'];
+        
+    // check if Meal Plan already exists 
+    if ($db->isMealPlanExists($Meal_Plan_Name)) {
+     
+        $response["response"] = 0;
+        $response["message"] = $Meal_Plan_Name. " already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertMealPlan($Br_Id,$Meal_Plan_Name,$Disease_Type,$Meal_Calorie_Level,$Meal_Plan_Breakfast,$Meal_Plan_Lunch,$Meal_Plan_Afternoon_Snack,$Meal_Plan_Dinner,$Meal_Plan_Price);
+        // Meal Plan Details Inserted successfully
+        if ($user) {
+            
+        $response["response"] = 1;
+        $response["message"] = "Meal Plan Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // Meal Plan Details failed to insert
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+21. Diet_Prescription_Insert
+
+http://hms.yogintechnologies.com/webservice/diet_prescription_insert.php
+
+if (isset($_POST['diet_pat_id']) && isset($_POST['diet_meal_plan_id']) && isset($_POST['diet_bed_allocation_id'])) {
+
+    // receiving the post params
+    $Br_Id = $_POST['br_id'];
+    $Diet_Pat_Id = $_POST['diet_pat_id'];
+    $Diet_Meal_Plan_Id = $_POST['diet_meal_plan_id'];
+    $Diet_Date_From = $_POST['diet_date_from'];
+    $Diet_Date_To = $_POST['diet_date_to'];
+    $Diet_Bed_Allocation_Id = $_POST['diet_bed_allocation_id'];
+    
+    // check if Diet Prescription already exists 
+    if ($db->isDietPrescriptionExists($Diet_Pat_Id,$Diet_Date_From,$Diet_Date_To)) {
+     
+        $response["response"] = 0;
+        $response["message"] = "Diet Already Prescribed";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertDietPrescription($Br_Id,$Diet_Pat_Id,$Diet_Meal_Plan_Id,$Diet_Date_From,$Diet_Date_To,$Diet_Bed_Allocation_Id);
+        // Diet Prescribed successfully
+        if ($user) {
+            
+        $response["response"] = 1;
+        $response["message"] = "Diet Prescribed.";
+        echo json_encode($response);
+        } else {
+            // Diet Prescription failed 
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+

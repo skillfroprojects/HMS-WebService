@@ -4,33 +4,30 @@ include_once 'include/DB_Functions.php';
 $db = new DB_Functions();
 
 // json response array
-$response = array("error" => FALSE);
+//$response = array("error" => FALSE);
 
-if (isset($_POST['patient_name']) && isset($_POST['patient_email'])) {
+if (isset($_POST['appointment_date']) && isset($_POST['appointment_time'])) {
 
     // receiving the post params
+    $Br_Id = $_POST['br_id'];
     $App_Date = $_POST['appointment_date'];
     $App_Time = $_POST['appointment_time'];
-    $Doc_Name = $_POST['doctor_name'];
-    $Pat_Name = $_POST['patient_name'];
+    $Doc_ID = $_POST['doctor_id'];
+    $Pat_ID = $_POST['patient_id'];
     $Pat_Email = $_POST['patient_email'];
-    $Pat_Mobile = $_POST['patient_mobile'];
-    $Br_Name = $_POST['branch_name'];
-    
-    //$Pat_Password = $_POST['password'];
-    //$password = $_POST['password'];
-
+    $Pat_Mobile = $_POST['patient_mobile'];     
+ 
     // check if user is already existed with the same email
-    if ($db->isappointmentExisted($App_Time)) {
+    if ($db->isappointmentExisted($Doc_ID,$App_Date,$App_Time)) {
         // user already existed
         $response["response"] = 0;
         $response["error_msg"] = "Appointment already Booked for " . $App_Time;
         echo json_encode($response);
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
-        $user = $db->register_appointment($App_Date,$App_Time,$Doc_Name,$Pat_Name,$Pat_Email,$Pat_Mobile,$Br_Name);
+        $user = $db->register_appointment($Br_Id,$App_Date,$App_Time,$Doc_ID,$Pat_ID,$Pat_Email,$Pat_Mobile);
         if ($user) {
-            // user stored responsefully
+            // user stored successfully
         $response["response"] = 1;
         $user = mysql_query("SELECT * from Appointment_master WHERE Pat_Email = '$Pat_Email'");
         $user_data = mysql_fetch_array($user);

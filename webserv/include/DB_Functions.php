@@ -73,13 +73,23 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
-    public function insertDepartment($Br_ID, $Dept_Name,$Dept_Email,$Dept_Phone) {
+    public function insertDepartment($Br_ID, $Dept_Name,$Dept_Email,$Dept_Phone,$Dept_Desc) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
         $reg_device = "";
         $CR_device = "";
         $MD_device = "";
-        $result = mysql_query("INSERT INTO Department_Master(br_id,dept_name,dept_email,dept_phone,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_ID','$Dept_Name','$Dept_Email','$Dept_Phone', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        $result = mysql_query("INSERT INTO Department_Master(br_id,dept_name,dept_email,dept_phone,dept_desc,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_ID','$Dept_Name','$Dept_Email','$Dept_Phone','$Dept_Desc', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertDesignation($Br_ID,$Dept_Id,$Designation_Name) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Designation_Master(br_id,dept_id,designation_name,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by,modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_ID','$Dept_Id','$Designation_Name','$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     public function insertSpecialization($Sp_Name) {
@@ -294,7 +304,7 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
-     public function insertDuty($Schedule_Emp_Type,$Schedule_Emp_Id,$Schedule_Shift_Id,$Schedule_Pat_Id,$Schedule_From_Date,$Schedule_To_Date) {
+    public function insertDuty($Schedule_Emp_Type,$Schedule_Emp_Id,$Schedule_Shift_Id,$Schedule_Pat_Id,$Schedule_From_Date,$Schedule_To_Date) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
         $reg_device = "";
@@ -304,15 +314,39 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
+    public function insertMealPlan($Br_Id,$Meal_Plan_Name,$Disease_Type,$Meal_Calorie_Level,$Meal_Plan_Breakfast,$Meal_Plan_Lunch,$Meal_Plan_Afternoon_Snack,$Meal_Plan_Dinner,$Meal_Plan_Price) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Meal_Plan_master(br_id,meal_plan_name,disease_type,meal_calorie_level,meal_plan_breakfast,meal_plan_lunch,meal_plan_afternoon_snack,meal_plan_dinner,meal_plan_price,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Meal_Plan_Name', '$Disease_Type', '$Meal_Calorie_Level', '$Meal_Plan_Breakfast', '$Meal_Plan_Lunch', '$Meal_Plan_Afternoon_Snack', '$Meal_Plan_Dinner', '$Meal_Plan_Price', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertDietPrescription($Br_Id,$Diet_Pat_Id,$Diet_Meal_Plan_Id,$Diet_Date_From,$Diet_Date_To,$Diet_Bed_Allocation_Id) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO Diet_Prescription_master(br_id,diet_pat_id,diet_meal_plan_id,diet_date_from,diet_date_to,diet_bed_allocation_id,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Diet_Pat_Id', '$Diet_Meal_Plan_Id', '$Diet_Date_From', '$Diet_Date_To', '$Diet_Bed_Allocation_Id', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
     public function updateUser($Cust_UserID,$Cust_Name,$Cust_Email,$Cust_Phone) {
         
         $result = mysql_query("Update Customer_master set Cust_Name = '$Cust_Name', Cust_Phone ='$Cust_Phone', Cust_Email = '$Cust_Email' where Cust_ID = '$Cust_UserID' ");
         return $result;
     }
     
-    public function register_appointment($App_Date,$App_Time,$Doc_Name,$Pat_Name,$Pat_Email,$Pat_Mobile,$Br_Name) {
-
-        $result = mysql_query("INSERT INTO appointment_master(APP_DATE,APP_TIME,DOC_NAME,PAT_NAME,PAT_EMAIL,PAT_MOBILE,BR_NAME) VALUES('$App_Date','$App_Time','$Doc_Name','$Pat_Name','$Pat_Email','$Pat_Mobile','$Br_Name')");
+    public function register_appointment($Br_Id,$App_Date,$App_Time,$Doc_ID,$Pat_ID,$Pat_Email,$Pat_Mobile){
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO appointment_master(BR_ID,APP_DATE,APP_TIME,DOC_ID,PAT_ID,PAT_EMAIL,PAT_MOBILE,APP_REG_VIA,APP_REG_FRM,APP_CREATED_DATE,APP_CREATED_DEVICE,APP_CREATED_IP,APP_CREATED_BY,APP_MODIFY_DATE,APP_MODIFY_DEVICE,APP_MODIFY_IP,APP_MODIFY_BY) VALUES('$Br_Id','$App_Date','$App_Time','$Doc_ID','$Pat_ID','$Pat_Email','$Pat_Mobile', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
         
     }
@@ -510,9 +544,9 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         }
     }
     
-    public function isappointmentExisted($App_Time) {
+    public function isappointmentExisted($Doc_ID,$App_Date,$App_Time) {
         
-        $result = mysql_query("SELECT APP_TIME FROM Appointment_master where APP_TIME = 'APP_TIME'");
+        $result = mysql_query("SELECT appointment_master.APP_DATE, appointment_master.APP_TIME, doctor_master.DOC_NAME FROM appointment_master INNER JOIN doctor_master ON appointment_master.DOC_ID = doctor_master.DOC_ID WHERE appointment_master.APP_DATE = '$App_Date' AND appointment_master.APP_TIME = '$App_Time' AND appointment_master.DOC_ID = '$Doc_ID'");
         $user_data = mysql_fetch_array($result);
         $no_rows_res = mysql_num_rows($result);
         //$num_rows = mysql_num_rows($result);                
@@ -547,9 +581,9 @@ public function isBranchExisted($Branch_Name) {
         }
     }
     
-    public function isDepartmentExisted($Dept_Name) {
+    public function isDepartmentExisted($Dept_Name,$Dept_Email) {
         
-        $result = mysql_query("SELECT dept_name FROM department_master where dept_name = '$Dept_Name'");
+        $result = mysql_query("SELECT dept_name FROM department_master where dept_name = '$Dept_Name' AND dept_email = '$Dept_Email'");
         $user_data = mysql_fetch_array($result);
         $no_rows_res = mysql_num_rows($result);
         //$num_rows = mysql_num_rows($result);                
@@ -561,6 +595,24 @@ public function isBranchExisted($Branch_Name) {
         } else {
             // user not existed
             //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isDesignationExist($Designation_Name) {
+        
+        $result = mysql_query("SELECT designation_name FROM designation_master where designation_name = '$Designation_Name'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Designation_Name;
+        } else {
+            
             //echo $user;
             return FALSE;
         }
@@ -775,7 +827,7 @@ public function isBranchExisted($Branch_Name) {
         }
     }
     
-     public function isSupplierExisted($Supplier_Email) {
+    public function isSupplierExisted($Supplier_Email) {
         
         $result = mysql_query("SELECT supplier_email FROM pharmacy_supplier_master where supplier_email = '$Supplier_Email'");
         $user_data = mysql_fetch_array($result);
@@ -786,6 +838,44 @@ public function isBranchExisted($Branch_Name) {
             //$stmt->close();
             //echo $user;
             return $Supplier_Email;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isMealPlanExists($Meal_Plan_Name) {
+        
+        $result = mysql_query("SELECT meal_plan_name FROM Meal_Plan_master where meal_plan_name = '$Meal_Plan_Name'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Meal_Plan_Name;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+            
+    public function isDietPrescriptionExists($Diet_Pat_Id,$Diet_Date_From,$Diet_Date_To) {
+        
+        $result = mysql_query("SELECT diet_pat_id FROM Diet_Prescription_master where diet_pat_id = '$Diet_Pat_Id' AND diet_date_from = '$Diet_Date_From' AND diet_date_to = '$Diet_Date_To'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Diet_Pat_Id;
         } else {
             // user not existed
             //$stmt->close();
