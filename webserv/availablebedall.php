@@ -2,12 +2,12 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
-if (isset($_POST['room_type']) && isset($_POST['br_id'])) {
+if (isset($_POST['room_type_id']) && isset($_POST['br_id'])) {
 
-    $Room_Type = $_POST['room_type'];
+    $Room_Type = $_POST['room_type_id'];
     $Br_Id = $_POST['br_id'];
     
-$result = mysql_query("SELECT * FROM bed_master WHERE bed_master.room_type = '$Room_Type' AND bed_master.bed_status = '0' AND bed_master.br_id = '$Br_Id'") or die("Error");
+$result = mysql_query("SELECT * FROM bed_master WHERE bed_master.room_type_id = '$Room_Type' AND bed_master.bed_status = '0' AND bed_master.br_id = '$Br_Id'") or die("Error");
 
     if (mysql_num_rows($result) > 0) {
          // response
@@ -19,8 +19,8 @@ $result = mysql_query("SELECT * FROM bed_master WHERE bed_master.room_type = '$R
             $Bednumber = array();
             $Bednumber["bed_no"] = $row["bed_no"];
             $Bednumber["br_id"] = $row["br_id"];
-            $Bednumber["room_no"] = $row["room_no"];
-            $Bednumber["room_type"] = $row["room_type"];
+            $Bednumber["room_id"] = $row["room_id"];
+            $Bednumber["room_type_id"] = $row["room_type_id"];
             $Bednumber["bed_status"] = $row["bed_status"];
             //$services["SERV_PRICE"] = $row["SERV_PRICE"];
             // push single product into final response array

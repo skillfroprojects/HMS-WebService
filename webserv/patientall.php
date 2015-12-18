@@ -41,6 +41,8 @@ if (isset($_POST['BR_ID']) && isset($_POST['PAT_TYPE'])) {
             $Inpatient["PAT_WEIGHT_UNIT"] = $row["PAT_WEIGHT_UNIT"];
             $Inpatient["PAT_MARITAL_STATUS"] = $row["PAT_MARITAL_STATUS"];
             $Inpatient["PAT_EMP_STATUS"] = $row["PAT_EMP_STATUS"];
+            $Inpatient["PAT_RACE"] = $row["PAT_RACE"];
+            $Inpatient["PAT_ETHNICITY"] = $row["PAT_ETHNICITY"];
             $Inpatient["PAT_REF_PHYSICIAN"] = $row["PAT_REF_PHYSICIAN"];
             $Inpatient["PAT_REF_PHYSICIAN_NO"] = $row["PAT_REF_PHYSICIAN_NO"];
             $Inpatient["PAT_RELATIVE_NAME"] = $row["PAT_RELATIVE_NAME"];
