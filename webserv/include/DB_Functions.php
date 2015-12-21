@@ -98,7 +98,7 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         $reg_device = "";
         $CR_device = "";
         $MD_device = "";
-        $result = mysql_query("INSERT INTO Specialization_Master (br_id, SP_NAME, REG_VIA, REG_FRM_DEVICE,CREATED_DATE, CREATED_DEVICE, CREATED_IP, CREATED_BY, MODIFY_DATE, MODIFY_DEVICE, MODIFY_IP, MODIFY_BY) VALUES('$Br_Id',$Sp_Name', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        $result = mysql_query("INSERT INTO Specialization_Master (br_id, SP_NAME, REG_VIA, REG_FRM_DEVICE,CREATED_DATE, CREATED_DEVICE, CREATED_IP, CREATED_BY, MODIFY_DATE, MODIFY_DEVICE, MODIFY_IP, MODIFY_BY) VALUES('$Br_Id','$Sp_Name', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     
@@ -364,13 +364,23 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
-    public function insertInstrumentSchedule($Br_Id,$Inventory_Type,$Inventory_Id,$Inv_Service_Id,$Service_Person_Name,$Service_Person_Idproof,$Company_Phone) {
+    public function insertInstrumentSchedule($Br_Id,$Inventory_Type,$Inventory_Id,$Inv_Service_Id,$Service_Person_Name,$Service_Person_Idproof,$Service_Date) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
         $reg_device = "";
         $CR_device = "";
         $MD_device = "";
-        $result = mysql_query("INSERT INTO inventory_schedule_master(br_id,inventory_type,inventory_id,inv_service_id,service_person_name,service_person_idproof,company_phone,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Service_Company_Name', '$Company_Address','$Company_Address1','$Postal_Code', '$Company_Email', '$Company_Phone', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        $result = mysql_query("INSERT INTO inventory_schedule_master(br_id,inventory_type,inventory_id,inv_service_id,service_person_name,service_person_idproof,service_date,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Inventory_Type', '$Inventory_Id','$Inv_Service_Id','$Service_Person_Name', '$Service_Person_Idproof', '$Service_Date', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertSurgery($Br_Id,$Surgery_Doctor_Id,$Surgery_Pat_Id,$Surgery_Staff_Id,$Surgery_Date,$Surgery_Time,$Surgery_Type,$Surgery_Anesthetist_Id,$Surgery_Ot_No,$Surgery_Inventory_Managed_By) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO surgery_master(br_id,surgery_doctor_id,surgery_pat_id,surgery_staff_id,surgery_date,surgery_time,surgery_type,surgery_anesthetist_id,surgery_ot_no,surgery_inventory_managed_by,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Surgery_Doctor_Id', '$Surgery_Pat_Id' ,'$Surgery_Staff_Id', '$Surgery_Date', '$Surgery_Time', '$Surgery_Type', '$Surgery_Anesthetist_Id', '$Surgery_Ot_No', '$Surgery_Inventory_Managed_By', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     
@@ -867,9 +877,9 @@ public function isBranchExisted($Branch_Name) {
         }
     }
     
-    public function isInventoryServiceExisted($Service_Company_Name) {
+    public function isInventoryServiceExisted($Company_Email) {
         
-        $result = mysql_query("SELECT service_company_name FROM inventory_service_master where service_company_name = '$Service_Company_Name'");
+        $result = mysql_query("SELECT company_email FROM inventory_service_master where company_email = '$Company_Email'");
         $user_data = mysql_fetch_array($result);
         $no_rows_res = mysql_num_rows($result);
         //$num_rows = mysql_num_rows($result);                
@@ -877,7 +887,26 @@ public function isBranchExisted($Branch_Name) {
             // user existed 
             //$stmt->close();
             //echo $user;
-            return $Service_Company_Name;
+            return $Company_Email;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+     public function isSurgeryExisted($Surgery_Pat_Id) {
+        
+        $result = mysql_query("SELECT surgery_pat_id FROM surgery_master where surgery_pat_id = '$Surgery_Pat_Id'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Surgery_Pat_Id;
         } else {
             // user not existed
             //$stmt->close();

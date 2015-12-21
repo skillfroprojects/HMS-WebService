@@ -8,10 +8,10 @@ if (isset($_POST['sp_name'])) {
     // receiving the post params
     $Br_Id = $_POST['br_id'];
     $Sp_Name = $_POST['sp_name'];
+    $Sp_ID = $_POST['sp_id'];
     
     if ($_POST['sp_id']=="")
     {
-        $Sp_ID = $_POST['sp_id'];
         // check if user already exists with the same email
         if ($db->isSpecializeExisted($Sp_Name)) 
         {
