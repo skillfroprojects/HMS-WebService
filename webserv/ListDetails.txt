@@ -1266,3 +1266,190 @@ if (isset($_POST['diet_pat_id']) && isset($_POST['diet_meal_plan_id']) && isset(
     echo json_encode($response);
 }
 
+22. GeneralStore_All
+
+http://hms.yogintechnologies.com/webservice/generalstoreall.php
+
+if (isset($_POST['br_id'])) {
+
+    $BR_ID = $_POST['br_id'];
+    $result = mysql_query("Select * from inventory_master where inventory_master.br_id = '$BR_ID'") or die("Error");
+
+    if (mysql_num_rows($result) > 0) {
+        // looping through all results
+        // products node
+        $response["inventoryall"] = array();
+
+        while ($row = mysql_fetch_array($result)) {
+            // response
+            $response["response"] = 1;
+            // temp user array
+            $InventoryAll = array();
+            $InventoryAll["br_id"] = $row["br_id"];
+            $InventoryAll["inventory_type"] = $row["inventory_type"];
+            $InventoryAll["name"] = $row["name"];
+            $InventoryAll["quantity"] = $row["quantity"];
+            $InventoryAll["unique_id_no"] = $row["unique_id_no"];
+            $InventoryAll["description"] = $row["description"];
+            $InventoryAll["service_frequency_type"] = $row["service_frequency_type"];
+            //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+            // push single product into final response array
+            array_push($response["inventoryall"], $InventoryAll);
+        }
+        // echoing JSON response
+        echo json_encode($response);
+    } 
+    else {
+        // no products found
+        $response["response"] = 0;
+        $response["message"] = "No data found";
+
+        // echo no users JSON
+        echo json_encode($response);
+    }
+}else {
+        // no products found
+        $response["response"] = 2;
+        $response["message"] = "Required Parameters Missing";
+
+        // echo no users JSON
+        echo json_encode($response);
+}
+
+22. GeneralStore_Insert
+
+http://hms.yogintechnologies.com/webservice/generalstore_insert.php
+
+if (isset($_POST['br_id']) && isset($_POST['name'])) {
+
+    // receiving the post params
+    $Br_id = $_POST['br_id'];
+    $Inventory_Type = $_POST['inventory_type'];
+    $Name = $_POST['name'];
+    $Quantity = $_POST['quantity'];
+    $Unique_Id_No = $_POST['unique_id_no'];
+    $Description = $_POST['description']; 
+    $Service_Frequency_Type = $_POST['service_frequency_type'];
+    
+    // check if patient already exists 
+    if ($db->isInventoryExisted($Name)) {
+        // Bed already allocated
+        $response["response"] = 0;
+        $response["message"] = $Name. " already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertGeneralStore($Br_Id,$Inventory_Type,$Name,$Quantity,$Unique_Id_No,$Description,$Service_Frequency_Type);
+        
+        if ($user) {
+            // Bed allocated successfully
+        $response["response"] = 1;
+        $response["message"] = "Instrument Inserted.";
+        echo json_encode($response);
+        } else {
+            // Bed allocation failed
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+23. InstrumentService_Insert
+
+http://hms.yogintechnologies.com/webservice/instrumentservice_insert.php
+
+if (isset($_POST['br_id']) && isset($_POST['company_email'])) {
+
+    // receiving the post params
+    $Br_id = $_POST['br_id'];
+    $Service_Company_Name = $_POST['service_company_name'];
+    $Company_Address = $_POST['company_address'];
+    $Company_Address1 = $_POST['company_address1'];
+    $Postal_Code = $_POST['postal_code'];
+    $Company_Email = $_POST['company_email'];
+    $Company_Phone = $_POST['company_phone'];
+    
+    // check if patient already exists 
+    if ($db->isInventoryServiceExisted($Company_Email)) {
+        // Bed already allocated
+        $response["response"] = 0;
+        $response["message"] = $Company_Email. " already exists";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertInstrumentService($Br_Id,$Service_Company_Name,$Company_Address,$Company_Address1,$Postal_Code,$Company_Email,$Company_Phone);
+        
+        if ($user) {
+            // Bed allocated successfully
+        $response["response"] = 1;
+        $response["message"] = "Instrument Service Inserted.";
+        echo json_encode($response);
+        } else {
+            // Bed allocation failed
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+24. InstrumentService_All
+
+http://hms.yogintechnologies.com/webservice/instrumentserviceall.php
+
+if (isset($_POST['br_id'])) {
+
+    $BR_ID = $_POST['br_id'];
+    $result = mysql_query("Select * from inventory_service_master where inventory_service_master.br_id = '$BR_ID'") or die("Error");
+
+    if (mysql_num_rows($result) > 0) {
+        // looping through all results
+        // products node
+        $response["inventoryserviceall"] = array();
+
+        while ($row = mysql_fetch_array($result)) {
+            // response
+            $response["response"] = 1;
+            // temp user array
+            $InventoryServiceAll = array();
+            $InventoryServiceAll["br_id"] = $row["br_id"];
+            $InventoryServiceAll["service_company_name"] = $row["service_company_name"];
+            $InventoryServiceAll["company_address"] = $row["company_address"];
+            $InventoryServiceAll["company_address1"] = $row["company_address1"];
+            $InventoryServiceAll["postal_code"] = $row["postal_code"];
+            $InventoryServiceAll["company_email"] = $row["company_email"];
+            $InventoryServiceAll["company_phone"] = $row["company_phone"];
+            //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+            // push single product into final response array
+            array_push($response["inventoryserviceall"], $InventoryServiceAll);
+        }
+        // echoing JSON response
+        echo json_encode($response);
+    } 
+    else {
+        // no products found
+        $response["response"] = 0;
+        $response["message"] = "No data found";
+
+        // echo no users JSON
+        echo json_encode($response);
+    }
+}else {
+        // no products found
+        $response["response"] = 2;
+        $response["message"] = "Required Parameters Missing";
+
+        // echo no users JSON
+        echo json_encode($response);
+}

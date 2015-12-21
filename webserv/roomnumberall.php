@@ -4,7 +4,7 @@ $db = new DB_Class();
 if (isset($_POST['room_type'])) {
 
     $Room_Type = $_POST['room_type'];
-$result = mysql_query("Select * from room_master where room_master.room_type='$Room_Type'") or die("Error");
+$result = mysql_query("Select * from room_master where room_master.room_type_id='$Room_Type'") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
     // looping through all results
@@ -19,7 +19,7 @@ if (mysql_num_rows($result) > 0) {
         $Roomnumber["room_id"] = $row["room_id"];
         $Roomnumber["br_id"] = $row["br_id"];
         $Roomnumber["room_no"] = $row["room_no"];
-        $Roomnumber["room_type"] = $row["room_type"];
+        $Roomnumber["room_type"] = $row["room_type_id"];
         $Roomnumber["room_charges"] = $row["room_charges"];
         //$services["SERV_PRICE"] = $row["SERV_PRICE"];
         // push single product into final response array
