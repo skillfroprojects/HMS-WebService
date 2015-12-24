@@ -5,6 +5,13 @@ $db = new DB_Class();
 if (isset($_POST['BR_ID']) && isset($_POST['PAT_TYPE'])) {
     $PAT_TYPE = $_POST['PAT_TYPE'];
     $BR_ID = $_POST['BR_ID'];
+    
+    if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
+$Price_Type = $Type;
+if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
+if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=1; }; 
+$start_from = ($page-1) * 10; 
+    
     $result = mysql_query("SELECT
         *
         FROM

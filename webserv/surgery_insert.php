@@ -9,7 +9,7 @@ $db = new DB_Functions();
 if (isset($_POST['br_id']) && isset($_POST['surgery_pat_id'])) {
 
     // receiving the post params
-    $Br_id = $_POST['br_id'];
+    $Br_Id = $_POST['br_id'];
     $Surgery_Doctor_Id = $_POST['surgery_doctor_id'];
     $Surgery_Pat_Id = $_POST['surgery_pat_id'];
     $Surgery_Staff_Id = $_POST['surgery_staff_id'];
@@ -18,21 +18,22 @@ if (isset($_POST['br_id']) && isset($_POST['surgery_pat_id'])) {
     $Surgery_Type = $_POST['surgery_type'];
     $Surgery_Anesthetist_Id = $_POST['surgery_anesthetist_id'];
     $Surgery_Ot_No = $_POST['surgery_ot_no'];
+    $Surgery_Requested_By = $_POST['surgery_requested_by'];
     $Surgery_Inventory_Managed_By = $_POST['surgery_inventory_managed_by'];
     // check if patient already exists 
-    if ($db->isSurgeryExisted($Surgery_Pat_Id)) {
+    if ($db->isSurgeryExisted($Surgery_Pat_Id,$Surgery_Date,$Surgery_Time)) {
         // Bed already allocated
         $response["response"] = 0;
-        $response["message"] = $Surgery_Pat_Id. " already exists";
+        $response["message"] = " Already Surgery Scheduled.";
         echo json_encode($response);
     } else {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
-        $user = $db->insertSurgery($Br_Id,$Surgery_Doctor_Id,$Surgery_Pat_Id,$Surgery_Staff_Id,$Surgery_Date,$Surgery_Time,$Surgery_Type,$Surgery_Anesthetist_Id,$Surgery_Ot_No,$Surgery_Inventory_Managed_By);
+        $user = $db->insertSurgery($Br_Id,$Surgery_Doctor_Id,$Surgery_Pat_Id,$Surgery_Staff_Id,$Surgery_Date,$Surgery_Time,$Surgery_Type,$Surgery_Anesthetist_Id,$Surgery_Ot_No,$Surgery_Requested_By,$Surgery_Inventory_Managed_By);
         
         if ($user) {
             // Bed allocated successfully
         $response["response"] = 1;
-        $response["message"] = "Surgery Schedule.";
+        $response["message"] = "Surgery Scheduled.";
         echo json_encode($response);
         } else {
             // Bed allocation failed

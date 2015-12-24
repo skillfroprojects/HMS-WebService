@@ -1497,6 +1497,13 @@ if (isset($_POST['br_id'])) {
 
 http://hms.yogintechnologies.com/webservice/instrumentscheduleall.php
 
+if (isset($_POST['br_id'])) {
+
+    $BR_ID = $_POST['br_id'];
+
+$result = mysql_query("SELECT * FROM inventory_schedule_master INNER JOIN inventory_service_master ON inventory_schedule_master.inv_service_id = inventory_service_master.inv_service_id INNER JOIN inventory_master ON inventory_schedule_master.inventory_id = inventory_master.inventory_id
+ORDER BY inventory_schedule_master.inv_sch_id where inventory_schedule_master.br_id = '$BR_ID'") or die("Error");
+
 if (mysql_num_rows($result) > 0) {
      // response
     $response["response"] = 1;
@@ -1523,10 +1530,16 @@ if (mysql_num_rows($result) > 0) {
     echo json_encode($response);
 } else {
     // no products found
-    $response["response"] = 0;
+    $response["response"] = 2;
     $response["message"] = "No data found";
 
     // echo no users JSON
+    echo json_encode($response);
+}
+}
+else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
     echo json_encode($response);
 }
 
@@ -1562,20 +1575,357 @@ if (mysql_num_rows($result) > 0) {
     
     // echoing JSON response
     echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
 }
- else {
-        // no products found
+}
+else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+28. Ambulance_Insert
+
+http://hms.yogintechnologies.com/webservice/ambulance_insert.php
+
+if (isset($_POST['br_id']) && isset($_POST['ambulance_no'])) {
+
+    // receiving the post params
+    $Br_id = $_POST['br_id'];
+    $Ambulance_No = $_POST['ambulance_no'];
+    $Ambulance_Name = $_POST['ambulance_name'];
+    $Ambulance_Type = $_POST['ambulance_type'];
+    $Ambulance_Charges = $_POST['ambulance_charges'];
+    $Driver_Name = $_POST['driver_name']; 
+    $Driver_License_No = $_POST['driver_license_no'];
+    $Driver_Lincense_Image = $_POST['driver_lincense_image'];
+    $Status = $_POST['status'];
+    // check if patient already exists 
+    if ($db->isAmbulanceExisted($Ambulance_No)) {
+        // Bed already allocated
         $response["response"] = 0;
-        $response["message"] = "No data found";
-
-        // echo no users JSON
+        $response["message"] = $Ambulance_No. " already exists";
         echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertAmbulance($Br_Id,$Ambulance_No,$Ambulance_Name,$Ambulance_Type,$Ambulance_Charges,$Driver_Name,$Driver_License_No,$Driver_Lincense_Image,$Status);
+        
+        if ($user) {
+            // Bed allocated successfully
+        $response["response"] = 1;
+        $response["message"] = "Ambulance Details Inserted.";
+        echo json_encode($response);
+        } else {
+            // Bed allocation failed
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
     }
-}else {
-        // no products found
-        $response["response"] = 2;
-        $response["message"] = "Required Parameters Missing";
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
 
-        // echo no users JSON
+29. Ambulance_All
+
+http://hms.yogintechnologies.com/webservice/ambulanceall.php
+
+if (isset($_POST['br_id'])) {
+
+    $BR_ID = $_POST['br_id'];
+
+$result = mysql_query("Select * from ambulance_master where br_id = '$BR_ID'") or die("Error");
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["ambulanceall"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Ambulanceall = array();
+        $Ambulanceall["br_id"] = $row["br_id"];
+        $Ambulanceall["ambulance_no"] = $row["ambulance_no"];
+        $Ambulanceall["ambulance_name"] = $row["ambulance_name"];
+        $Ambulanceall["ambulance_type"] = $row["ambulance_type"];
+        $Ambulanceall["ambulance_charges"] = $row["ambulance_charges"];
+        $Ambulanceall["driver_name"] = $row["driver_name"];
+        $Ambulanceall["driver_license_no"] = $row["driver_license_no"];
+        $Ambulanceall["driver_lincense_image"] = $row["driver_lincense_image"];
+        $Ambulanceall["status"] = $row["status"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["ambulanceall"], $Ambulanceall);
+    }
+   
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+}
+else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+30. AmbulanceSchedule_Insert
+
+http://hms.yogintechnologies.com/webservice/ambulanceschedule_insert.php
+
+if (isset($_POST['br_id']) && isset($_POST['ambulance_id'])) {
+
+    // receiving the post params
+    $Br_id = $_POST['br_id'];
+    $Ambulance_Type = $_POST['ambulance_type'];
+    $Ambulance_Id = $_POST['ambulance_id'];
+    $Pat_Name = $_POST['pat_name'];
+    $Address = $_POST['address'];
+    $Date = $_POST['date']; 
+    $Time = $_POST['time'];
+    // check if patient already exists 
+    if ($db->isAmbulanceSchedule($Ambulance_Id)) {
+        // Bed already allocated
+        $response["response"] = 0;
+        $response["message"] = $Ambulance_Id. " already exists";
         echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertAmbulanceSchedule($Br_Id,$Ambulance_Type,$Ambulance_Id,$Pat_Name,$Address,$Date,$Time);
+        
+        if ($user) {
+            // Bed allocated successfully
+        $response["response"] = 1;
+        $response["message"] = "Ambulance Scheduled.";
+        echo json_encode($response);
+        } else {
+            // Bed allocation failed
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+31. AmbulanceSchedule_All
+
+http://hms.yogintechnologies.com/webservice/ambulancescheduleall.php
+
+if (isset($_POST['br_id'])) {
+
+    $BR_ID = $_POST['br_id'];
+
+$result = mysql_query("SELECT * FROM ambulance_schedule_master INNER JOIN ambulance_master ON ambulance_schedule_master.ambulance_id = ambulance_master.ambulance_id where ambulance_schedule_master.br_id = '$BR_ID'") or die("Error");
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["ambulancescheduleall"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+        // temp user array
+        $Ambulancescheduleall = array();
+        $Ambulancescheduleall["br_id"] = $row["br_id"];
+        $Ambulancescheduleall["ambulance_type"] = $row["ambulance_type"];
+        $Ambulancescheduleall["ambulance_id"] = $row["ambulance_id"];
+        $Ambulancescheduleall["ambulance_no"] = $row["ambulance_no"];
+        $Ambulancescheduleall["pat_name"] = $row["pat_name"];
+        $Ambulancescheduleall["address"] = $row["address"];
+        $Ambulancescheduleall["date"] = $row["date"];
+        $Ambulancescheduleall["time"] = $row["time"];
+        //$services["SERV_PRICE"] = $row["SERV_PRICE"];
+        // push single product into final response array
+        array_push($response["ambulancescheduleall"], $Ambulancescheduleall);
+    }
+   
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+}
+else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
+}
+
+32. Surgery_Insert
+
+http://hms.yogintechnologies.com/webservice/surgery_insert.php
+
+if (isset($_POST['br_id']) && isset($_POST['surgery_pat_id'])) {
+
+    // receiving the post params
+    $Br_Id = $_POST['br_id'];
+    $Surgery_Doctor_Id = $_POST['surgery_doctor_id'];
+    $Surgery_Pat_Id = $_POST['surgery_pat_id'];
+    $Surgery_Staff_Id = $_POST['surgery_staff_id'];
+    $Surgery_Date = $_POST['surgery_date'];
+    $Surgery_Time = $_POST['surgery_time']; 
+    $Surgery_Type = $_POST['surgery_type'];
+    $Surgery_Anesthetist_Id = $_POST['surgery_anesthetist_id'];
+    $Surgery_Ot_No = $_POST['surgery_ot_no'];
+    $Surgery_Requested_By = $_POST['surgery_requested_by'];
+    $Surgery_Inventory_Managed_By = $_POST['surgery_inventory_managed_by'];
+    // check if patient already exists 
+    if ($db->isSurgeryExisted($Surgery_Pat_Id,$Surgery_Date,$Surgery_Time)) {
+        // Bed already allocated
+        $response["response"] = 0;
+        $response["message"] = " Already Surgery Scheduled.";
+        echo json_encode($response);
+    } else {
+        // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
+        $user = $db->insertSurgery($Br_Id,$Surgery_Doctor_Id,$Surgery_Pat_Id,$Surgery_Staff_Id,$Surgery_Date,$Surgery_Time,$Surgery_Type,$Surgery_Anesthetist_Id,$Surgery_Ot_No,$Surgery_Requested_By,$Surgery_Inventory_Managed_By);
+        
+        if ($user) {
+            // Bed allocated successfully
+        $response["response"] = 1;
+        $response["message"] = "Surgery Scheduled.";
+        echo json_encode($response);
+        } else {
+            // Bed allocation failed
+            
+            $response["response"] = 2;
+            $response["message"] = "Unknown error occurred in registration!";
+            echo json_encode($response);
+        }
+    }
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters missing!";
+    echo json_encode($response);
+}
+
+33. Surgery_All
+
+http://hms.yogintechnologies.com/webservice/surgeryall.php
+
+if (isset($_GET['br_id'])) {
+
+// receiving the post params
+$BR_ID = $_GET['br_id'];
+$DOC_ID = $_GET['surgery_doctor_id'];
+        
+if (isset($_GET["type"])) { $Type  = $_GET["type"]; } else { $Type='DESC'; }; 
+$Price_Type = $Type;
+if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; }; 
+if (isset($_GET["page_count"])) { $page_data  = $_GET["page_count"]; } else { $page_data=10; }; 
+$start_from = ($page-1) * 10; 
+
+if (isset($_GET['surgery_doctor_id'])) {
+    $DOCTOR_ID = "AND surgery_master.surgery_doctor_id = '$DOC_ID'";
+}
+
+$result = mysql_query("SELECT
+            surgery_master.surgery_id,
+            surgery_master.br_id,
+            surgery_master.surgery_doctor_id,
+            surgery_master.surgery_pat_id,
+            surgery_master.surgery_pat_feedback,
+            surgery_master.surgery_staff_id,
+            surgery_master.surgery_date,
+            surgery_master.surgery_time,
+            surgery_master.surgery_type,
+            surgery_master.surgery_anesthetist_id,
+            surgery_master.surgery_ot_no,
+            surgery_master.surgery_start_time,
+            surgery_master.surgery_end_time,
+            surgery_master.surgery_requester_id,
+            surgery_master.surgery_requested_by,
+            surgery_master.surgery_rquester_remarks,
+            surgery_master.surgery_request_approve_by,
+            surgery_master.surgery_approver_remarks,
+            surgery_master.surgery_inventory_managed_by,
+            surgery_master.surgery_pr_id,
+            surgery_master.surgery_test_reports_id,
+            surgery_master.surgery_remark_id,
+            surgery_master.surgery_status,
+            surgery_master.reg_via,
+            surgery_master.reg_frm_device,
+            surgery_master.created_date,
+            surgery_master.created_device,
+            surgery_master.created_ip,
+            surgery_master.created_by,
+            surgery_master.modify_date,
+            surgery_master.modify_device,
+            surgery_master.modify_ip,
+            surgery_master.modify_by,
+            doctor_master.DOC_NAME,
+            patient_master.PAT_NAME,
+            staff_master.staff_name
+            FROM
+            surgery_master
+            INNER JOIN doctor_master ON surgery_master.surgery_doctor_id = doctor_master.DOC_ID
+            INNER JOIN patient_master ON surgery_master.surgery_pat_id = patient_master.PAT_ID
+            INNER JOIN staff_master ON surgery_master.surgery_staff_id = staff_master.staff_id
+            INNER JOIN anesthetist_schedule_master ON surgery_master.surgery_anesthetist_id = anesthetist_schedule_master.ana_schedule_id
+            WHERE
+            surgery_master.br_id = '$BR_ID' $DOCTOR_ID") or die("Error");
+
+if (mysql_num_rows($result) > 0) {
+     // response
+    $response["response"] = 1;
+    $response["surgery"] = array();
+    
+    while ($row = mysql_fetch_array($result)) {
+       
+        // temp user array
+        $surgery = array();
+                $surgery["br_id"] = $row["br_id"];
+                $surgery["surgery_doctor_id"] = $row["surgery_doctor_id"];
+                $surgery["doc_name"] = $row["DOC_NAME"];
+                $surgery["surgery_pat_id"] = $row["surgery_pat_id"];
+                $surgery["pat_name"] = $row["PAT_NAME"];
+                $surgery["surgery_staff_id"] = $row["surgery_staff_id"];
+                $surgery["staff_name"] = $row["staff_name"];
+                $surgery["surgery_date"] = $row["surgery_date"];
+                $surgery["surgery_time"] = $row["surgery_time"];
+                $surgery["surgery_type"] = $row["surgery_type"];
+                $surgery["surgery_anesthetist_id"] = $row["surgery_anesthetist_id"];
+                $surgery["surgery_ot_no"] = $row["surgery_ot_no"];
+                $surgery["surgery_requested_by"] = $row["surgery_requested_by"];
+                $surgery["surgery_inventory_managed_by"] = $row["surgery_inventory_managed_by"];
+                array_push($response["surgery"], $surgery);  
+    }
+    
+    // echoing JSON response
+    echo json_encode($response);
+} else {
+    // no products found
+    $response["response"] = 2;
+    $response["message"] = "No data found";
+
+    // echo no users JSON
+    echo json_encode($response);
+}
+} else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
+    echo json_encode($response);
 }

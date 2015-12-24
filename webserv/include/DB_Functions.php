@@ -354,6 +354,16 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
+     public function UpdateGeneralStore($Inventory_Id,$Inventory_Type,$Name,$Quantity,$Unique_Id_No,$Description,$Service_Frequency_Type) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("Update inventory_master set inventory_type= '$Inventory_Type',name= '$Name', quantity='$Quantity', unique_id_no='$Unique_Id_No', description='$Description', service_frequency_type='$Service_Frequency_Type',REG_VIA= '$reg_via', REG_FRM_DEVICE= '$reg_device', CREATED_DATE= '$CR_Date', CREATED_DEVICE= '$CR_device', CREATED_IP= '100', CREATED_BY= 'Admin', MODIFY_DATE= '$CR_Date', MODIFY_DEVICE= '$MD_device', MODIFY_IP= '100', MODIFY_BY= 'Admin' WHERE inventory_id = '$Inventory_Id'");
+        return $result;
+    }
+    
     public function insertInstrumentService($Br_Id,$Service_Company_Name,$Company_Address,$Company_Address1,$Postal_Code,$Company_Email,$Company_Phone) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
@@ -374,13 +384,33 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
-    public function insertSurgery($Br_Id,$Surgery_Doctor_Id,$Surgery_Pat_Id,$Surgery_Staff_Id,$Surgery_Date,$Surgery_Time,$Surgery_Type,$Surgery_Anesthetist_Id,$Surgery_Ot_No,$Surgery_Inventory_Managed_By) {
+    public function insertSurgery($Br_Id,$Surgery_Doctor_Id,$Surgery_Pat_Id,$Surgery_Staff_Id,$Surgery_Date,$Surgery_Time,$Surgery_Type,$Surgery_Anesthetist_Id,$Surgery_Ot_No,$Surgery_Requested_By,$Surgery_Inventory_Managed_By) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
         $reg_device = "";
         $CR_device = "";
         $MD_device = "";
-        $result = mysql_query("INSERT INTO surgery_master(br_id,surgery_doctor_id,surgery_pat_id,surgery_staff_id,surgery_date,surgery_time,surgery_type,surgery_anesthetist_id,surgery_ot_no,surgery_inventory_managed_by,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Surgery_Doctor_Id', '$Surgery_Pat_Id' ,'$Surgery_Staff_Id', '$Surgery_Date', '$Surgery_Time', '$Surgery_Type', '$Surgery_Anesthetist_Id', '$Surgery_Ot_No', '$Surgery_Inventory_Managed_By', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        $result = mysql_query("INSERT INTO surgery_master(br_id,surgery_doctor_id,surgery_pat_id,surgery_staff_id,surgery_date,surgery_time,surgery_type,surgery_anesthetist_id,surgery_ot_no,surgery_requested_by,surgery_inventory_managed_by,surgery_status,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Surgery_Doctor_Id', '$Surgery_Pat_Id' ,'$Surgery_Staff_Id', '$Surgery_Date', '$Surgery_Time', '$Surgery_Type', '$Surgery_Anesthetist_Id', '$Surgery_Ot_No','$Surgery_Requested_By', '$Surgery_Inventory_Managed_By','0', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function insertAmbulance($Br_Id,$Ambulance_No,$Ambulance_Name,$Ambulance_Type,$Ambulance_Charges,$Driver_Name,$Driver_License_No,$Driver_Lincense_Image,$Status) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO ambulance_master(br_id,ambulance_no,ambulance_name,ambulance_type,ambulance_charges,driver_name,driver_license_no,driver_lincense_image,status,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Ambulance_No', '$Ambulance_Name', '$Ambulance_Type', '$Ambulance_Charges', '$Driver_Name', '$Driver_License_No', '$Driver_Lincense_Image', '$Status', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+     public function insertAmbulanceSchedule($Br_Id,$Ambulance_Type,$Ambulance_Id,$Pat_Name,$Address,$Date,$Time) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("INSERT INTO ambulance_schedule_master(br_id,ambulance_type,ambulance_id,pat_name,address,date,time,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Ambulance_Type', '$Ambulance_Id', '$Pat_Name', '$Address', '$Date', '$Time', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
         return $result;
     }
     
@@ -896,9 +926,9 @@ public function isBranchExisted($Branch_Name) {
         }
     }
     
-     public function isSurgeryExisted($Surgery_Pat_Id) {
+    public function isSurgeryExisted($Surgery_Pat_Id,$Surgery_Date,$Surgery_Time) {
         
-        $result = mysql_query("SELECT surgery_pat_id FROM surgery_master where surgery_pat_id = '$Surgery_Pat_Id'");
+        $result = mysql_query("SELECT surgery_pat_id FROM surgery_master where surgery_pat_id = '$Surgery_Pat_Id' AND surgery_date = '$Surgery_Date' AND surgery_time = '$Surgery_Time'");
         $user_data = mysql_fetch_array($result);
         $no_rows_res = mysql_num_rows($result);
         //$num_rows = mysql_num_rows($result);                
@@ -907,6 +937,44 @@ public function isBranchExisted($Branch_Name) {
             //$stmt->close();
             //echo $user;
             return $Surgery_Pat_Id;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+    public function isAmbulanceExisted($Ambulance_No) {
+        
+        $result = mysql_query("SELECT ambulance_no FROM ambulance_master where ambulance_no = '$Ambulance_No'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Ambulance_No;
+        } else {
+            // user not existed
+            //$stmt->close();
+            //echo $user;
+            return FALSE;
+        }
+    }
+    
+     public function isAmbulanceSchedule($Ambulance_Id) {
+        
+        $result = mysql_query("SELECT ambulance_id FROM ambulance_schedule_master where ambulance_no = '$Ambulance_Id'");
+        $user_data = mysql_fetch_array($result);
+        $no_rows_res = mysql_num_rows($result);
+        //$num_rows = mysql_num_rows($result);                
+        if ($no_rows_res == 1) {
+            // user existed 
+            //$stmt->close();
+            //echo $user;
+            return $Ambulance_Id;
         } else {
             // user not existed
             //$stmt->close();

@@ -14,7 +14,7 @@ $PAT_ID = $_POST['pat_id'];
 if (isset($_POST["type"])) { $Type  = $_POST["type"]; } else { $Type='DESC'; }; 
 $Price_Type = $Type;
 if (isset($_POST["page"])) { $page  = $_POST["page"]; } else { $page=1; }; 
-if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=10; }; 
+if (isset($_POST["page_count"])) { $page_data  = $_POST["page_count"]; } else { $page_data=1; }; 
 $start_from = ($page-1) * 10; 
 
 if (isset($_POST['doc_id'])) {

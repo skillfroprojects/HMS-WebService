@@ -2,8 +2,12 @@
 include 'include/Config.php';
 $db = new DB_Class();
 
+if (isset($_POST['br_id'])) {
+
+    $BR_ID = $_POST['br_id'];
+
 $result = mysql_query("SELECT * FROM inventory_schedule_master INNER JOIN inventory_service_master ON inventory_schedule_master.inv_service_id = inventory_service_master.inv_service_id INNER JOIN inventory_master ON inventory_schedule_master.inventory_id = inventory_master.inventory_id
-ORDER BY inventory_schedule_master.inv_sch_id") or die("Error");
+ORDER BY inventory_schedule_master.inv_sch_id where inventory_schedule_master.br_id = '$BR_ID'") or die("Error");
 
 if (mysql_num_rows($result) > 0) {
      // response
@@ -31,10 +35,16 @@ if (mysql_num_rows($result) > 0) {
     echo json_encode($response);
 } else {
     // no products found
-    $response["response"] = 0;
+    $response["response"] = 2;
     $response["message"] = "No data found";
 
     // echo no users JSON
+    echo json_encode($response);
+}
+}
+else {
+    $response["response"] = 3;
+    $response["message"] = "Required parameters is missing!";
     echo json_encode($response);
 }
 ?>
