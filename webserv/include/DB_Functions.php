@@ -111,6 +111,12 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         $result = mysql_query("Update Specialization_Master set SP_NAME= '$Sp_Name', REG_VIA= '$reg_via', REG_FRM_DEVICE= '$reg_device', CREATED_DATE= '$CR_Date', CREATED_DEVICE= '$CR_device', CREATED_IP= '100', CREATED_BY= 'Admin', MODIFY_DATE= '$CR_Date', MODIFY_DEVICE= '$MD_device', MODIFY_IP= '100', MODIFY_BY= 'Admin' WHERE SP_ID = '$Sp_ID'");
         return $result;
     }
+    
+    public function deleteSpecialization($Sp_ID) {
+        $result = mysql_query("Delete from  Specialization_Master WHERE SP_ID = '$Sp_ID'");
+        return $result;
+    }
+    
     public function insertDoctor($Br_ID, $Doc_Name,$Doc_Email,$Doc_Date_Of_Birth,$Doc_Gender,$Doc_Mobile,$Doc_Address1,$Doc_Address2,$Doc_Postal_Code,$Doc_Qualification, $Doc_Emergency_Availability,$Sp_ID, $Doc_Med_Licence_no) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
@@ -158,6 +164,21 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         $CR_device = "";
         $MD_device = "";
         $result = mysql_query("INSERT INTO Pharmacy_Master(br_id,pharmacy_name,pharmacist_name,pharma_email,pharma_dob,pharma_gender,pharma_phone,pharma_addr1,pharma_addr2,pharma_postal_code,pharmacist_licence_no,pharma_store_no,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_ID', '$Pharmacy_Name','$Pharmacist_Name','$Pharma_Email','$Pharma_DOB','$Pharma_Gender','$Pharma_Phone','$Pharma_Addr1','$Pharma_Addr2','$Pharma_Postal_Code','$Pharmacist_Licence_No','$Pharma_Store_No', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+     public function updatePharmacy($Pharma_Email, $Pharmacy_Name,$Pharmacist_Name,$Pharma_DOB,$Pharma_Gender,$Pharma_Phone,$Pharma_Addr1,$Pharma_Addr2,$Pharma_Postal_Code,$Pharmacist_Licence_No,$Pharma_Store_No) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("Update Pharmacy_Master set pharmacy_name= '$Pharmacy_Name',pharmacist_name= '$Pharmacist_Name', pharma_dob='$Pharma_DOB', pharma_gender='$Pharma_Gender', pharma_phone='$Pharma_Phone', pharma_addr1='$Pharma_Addr1', pharma_addr2='$Pharma_Addr2', pharma_postal_code='$Pharma_Postal_Code', pharmacist_licence_no='$Pharmacist_Licence_No', pharma_store_no='$Pharma_Store_No', REG_VIA= '$reg_via', REG_FRM_DEVICE= '$reg_device', CREATED_DATE= '$CR_Date', CREATED_DEVICE= '$CR_device', CREATED_IP= '100', CREATED_BY= 'Admin', MODIFY_DATE= '$CR_Date', MODIFY_DEVICE= '$MD_device', MODIFY_IP= '100', MODIFY_BY= 'Admin' WHERE pharma_email = '$Pharma_Email'");
+        return $result;
+    }
+    
+     public function deletePharmacy($Pharma_Id) {
+        $result = mysql_query("Delete from  Pharmacy_Master WHERE pharma_id = '$Pharma_Id'");
         return $result;
     }
     
@@ -354,13 +375,18 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
-     public function UpdateGeneralStore($Inventory_Id,$Inventory_Type,$Name,$Quantity,$Unique_Id_No,$Description,$Service_Frequency_Type) {
+     public function updateGeneralStore($Inventory_Id,$Inventory_Type,$Name,$Quantity,$Unique_Id_No,$Description,$Service_Frequency_Type) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
         $reg_device = "";
         $CR_device = "";
         $MD_device = "";
         $result = mysql_query("Update inventory_master set inventory_type= '$Inventory_Type',name= '$Name', quantity='$Quantity', unique_id_no='$Unique_Id_No', description='$Description', service_frequency_type='$Service_Frequency_Type',REG_VIA= '$reg_via', REG_FRM_DEVICE= '$reg_device', CREATED_DATE= '$CR_Date', CREATED_DEVICE= '$CR_device', CREATED_IP= '100', CREATED_BY= 'Admin', MODIFY_DATE= '$CR_Date', MODIFY_DEVICE= '$MD_device', MODIFY_IP= '100', MODIFY_BY= 'Admin' WHERE inventory_id = '$Inventory_Id'");
+        return $result;
+    }
+    
+    public function deleteGeneralStore($Inventory_Id) {
+        $result = mysql_query("Delete from  inventory_master WHERE inventory_id = '$Inventory_Id'");
         return $result;
     }
     
@@ -374,6 +400,21 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
+     public function updateInstrumentService($Inv_Service_Id,$Service_Company_Name,$Company_Address,$Company_Address1,$Postal_Code,$Company_Email,$Company_Phone) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("Update inventory_service_master set service_company_name= '$Service_Company_Name',company_address= '$Company_Address', company_address1='$Company_Address1', postal_code='$Postal_Code', company_email='$Company_Email', company_phone='$Company_Phone',REG_VIA= '$reg_via', REG_FRM_DEVICE= '$reg_device', CREATED_DATE= '$CR_Date', CREATED_DEVICE= '$CR_device', CREATED_IP= '100', CREATED_BY= 'Admin', MODIFY_DATE= '$CR_Date', MODIFY_DEVICE= '$MD_device', MODIFY_IP= '100', MODIFY_BY= 'Admin' WHERE inv_service_id = '$Inv_Service_Id'");
+        return $result;
+    }
+    
+    public function deleteInstrumentService($Inv_Service_Id) {
+        $result = mysql_query("Delete from  inventory_service_master WHERE inv_service_id = '$Inv_Service_Id'");
+        return $result;
+    }
+    
     public function insertInstrumentSchedule($Br_Id,$Inventory_Type,$Inventory_Id,$Inv_Service_Id,$Service_Person_Name,$Service_Person_Idproof,$Service_Date) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
@@ -381,6 +422,21 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         $CR_device = "";
         $MD_device = "";
         $result = mysql_query("INSERT INTO inventory_schedule_master(br_id,inventory_type,inventory_id,inv_service_id,service_person_name,service_person_idproof,service_date,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Inventory_Type', '$Inventory_Id','$Inv_Service_Id','$Service_Person_Name', '$Service_Person_Idproof', '$Service_Date', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+     public function updateInstrumentSchedule($Inv_Sch_Id,$Inventory_Type,$Inventory_Id,$Inv_Service_Id,$Service_Person_Name,$Service_Person_Idproof,$Service_Date) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("Update inventory_schedule_master set inventory_type= '$Inventory_Type',inventory_id= '$Inventory_Id', inv_service_id='$Inv_Service_Id', service_person_name='$Service_Person_Name', service_person_idproof='$Service_Person_Idproof', service_date='$Service_Date',REG_VIA= '$reg_via', REG_FRM_DEVICE= '$reg_device', CREATED_DATE= '$CR_Date', CREATED_DEVICE= '$CR_device', CREATED_IP= '100', CREATED_BY= 'Admin', MODIFY_DATE= '$CR_Date', MODIFY_DEVICE= '$MD_device', MODIFY_IP= '100', MODIFY_BY= 'Admin' WHERE inv_sch_id = '$Inv_Sch_Id'");
+        return $result;
+    }
+    
+    public function deleteInstrumentSchedule($Inv_Sch_Id) {
+        $result = mysql_query("Delete from  inventory_schedule_master WHERE inv_sch_id = '$Inv_Sch_Id'");
         return $result;
     }
     
@@ -394,6 +450,16 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
+    public function updateSurgery($Surgery_Id,$Surgery_Doctor_Id,$Surgery_Pat_Id,$Surgery_Staff_Id,$Surgery_Date,$Surgery_Time,$Surgery_Type,$Surgery_Anesthetist_Id,$Surgery_Ot_No,$Surgery_Requested_By,$Surgery_Inventory_Managed_By,$Surgery_Status) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("Update surgery_master set surgery_doctor_id= '$Surgery_Doctor_Id',surgery_pat_id= '$Surgery_Pat_Id', surgery_staff_id='$Surgery_Staff_Id', surgery_date='$Surgery_Date', surgery_time='$Surgery_Time', surgery_type='$Surgery_Type', surgery_anesthetist_id='$Surgery_Anesthetist_Id', surgery_ot_no='$Surgery_Ot_No', surgery_requested_by='$Surgery_Requested_By', surgery_inventory_managed_by='$Surgery_Inventory_Managed_By', surgery_status='$Surgery_Status',REG_VIA= '$reg_via', REG_FRM_DEVICE= '$reg_device', CREATED_DATE= '$CR_Date', CREATED_DEVICE= '$CR_device', CREATED_IP= '100', CREATED_BY= 'Admin', MODIFY_DATE= '$CR_Date', MODIFY_DEVICE= '$MD_device', MODIFY_IP= '100', MODIFY_BY= 'Admin' WHERE surgery_id = '$Surgery_Id'");
+        return $result;
+    }
+    
     public function insertAmbulance($Br_Id,$Ambulance_No,$Ambulance_Name,$Ambulance_Type,$Ambulance_Charges,$Driver_Name,$Driver_License_No,$Driver_Lincense_Image,$Status) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
@@ -404,6 +470,21 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         return $result;
     }
     
+     public function updateAmbulance($Ambulance_Id,$Ambulance_No,$Ambulance_Name,$Ambulance_Type,$Ambulance_Charges,$Driver_Name,$Driver_License_No,$Driver_Lincense_Image,$Status) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("Update ambulance_master set ambulance_no= '$Ambulance_No',ambulance_name= '$Ambulance_Name', ambulance_type='$Ambulance_Type', ambulance_charges='$Ambulance_Charges', driver_name='$Driver_Name', driver_license_no='$Driver_License_No', driver_lincense_image='$Driver_Lincense_Image', status='$Status', REG_VIA= '$reg_via', REG_FRM_DEVICE= '$reg_device', CREATED_DATE= '$CR_Date', CREATED_DEVICE= '$CR_device', CREATED_IP= '100', CREATED_BY= 'Admin', MODIFY_DATE= '$CR_Date', MODIFY_DEVICE= '$MD_device', MODIFY_IP= '100', MODIFY_BY= 'Admin' WHERE ambulance_id = '$Ambulance_Id'");
+        return $result;
+    }
+    
+    public function deleteAmbulance($Ambulance_Id) {
+        $result = mysql_query("Delete from  ambulance_master WHERE ambulance_id = '$Ambulance_Id'");
+        return $result;
+    }
+    
      public function insertAmbulanceSchedule($Br_Id,$Ambulance_Type,$Ambulance_Id,$Pat_Name,$Address,$Date,$Time) {
         $CR_Date = date('d/m/Y');
         $reg_via = "";
@@ -411,6 +492,21 @@ function mt_rand_str ($l, $c = 'ABCDEFGHIJKLMNOPQRSTYVWXYZabcdefghijklmnopqrstuv
         $CR_device = "";
         $MD_device = "";
         $result = mysql_query("INSERT INTO ambulance_schedule_master(br_id,ambulance_type,ambulance_id,pat_name,address,date,time,reg_via,reg_frm_device,created_date,created_device,created_ip,created_by, modify_date,modify_device,modify_ip,modify_by) VALUES('$Br_Id', '$Ambulance_Type', '$Ambulance_Id', '$Pat_Name', '$Address', '$Date', '$Time', '$reg_via', '$reg_device','$CR_Date', '$CR_device','100','Admin','$CR_Date', '$MD_device','100','Admin')");
+        return $result;
+    }
+    
+    public function updateAmbulanceSchedule($Am_Sch_Id,$Ambulance_Type,$Ambulance_Id,$Pat_Name,$Address,$Date,$Time) {
+        $CR_Date = date('d/m/Y');
+        $reg_via = "";
+        $reg_device = "";
+        $CR_device = "";
+        $MD_device = "";
+        $result = mysql_query("Update ambulance_schedule_master set ambulance_type= '$Ambulance_Type',ambulance_id= '$Ambulance_Id', pat_name='$Pat_Name', address='$Address', date='$Date', time='$Time', REG_VIA= '$reg_via', REG_FRM_DEVICE= '$reg_device', CREATED_DATE= '$CR_Date', CREATED_DEVICE= '$CR_device', CREATED_IP= '100', CREATED_BY= 'Admin', MODIFY_DATE= '$CR_Date', MODIFY_DEVICE= '$MD_device', MODIFY_IP= '100', MODIFY_BY= 'Admin' WHERE am_sch_id = '$Am_Sch_Id'");
+        return $result;
+    }
+    
+    public function deleteAmbulanceSchedule($Am_Sch_Id) {
+        $result = mysql_query("Delete from  ambulance_schedule_master WHERE am_sch_id = '$Am_Sch_Id'");
         return $result;
     }
     

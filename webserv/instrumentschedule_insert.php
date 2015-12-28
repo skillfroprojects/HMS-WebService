@@ -16,8 +16,10 @@ if (isset($_POST['br_id'])) {
     $Service_Person_Name = $_POST['service_person_name'];
     $Service_Person_Idproof = $_POST['service_person_idproof'];
     $Service_Date = $_POST['service_date'];
+    $Inv_Sch_Id = $_POST['inv_sch_id'];
     
-    
+    if ($_POST['inv_sch_id']=="")
+    {
         // create a new user$Cust_Name, $Cust_Email, $Cust_Phone,$Cust_Address,$Cust_City,$Cust_State
         //$user = $db->insertLaboratory($Br_ID, $Lab_Name);
         $user = $db->insertInstrumentSchedule($Br_Id,$Inventory_Type,$Inventory_Id,$Inv_Service_Id,$Service_Person_Name,$Service_Person_Idproof,$Service_Date);
@@ -35,11 +37,27 @@ if (isset($_POST['br_id'])) {
             echo json_encode($response);
         }
     }
- else {
-    $response["response"] = 3;
-    $response["message"] = "Required parameters missing!";
-    echo json_encode($response);
-}   
+  
+     else
+         {
+             $user = $db->updateInstrumentSchedule($Inv_Sch_Id,$Inventory_Type,$Inventory_Id,$Inv_Service_Id,$Service_Person_Name,$Service_Person_Idproof,$Service_Date);
+             if ($user) {
+                    // user stored successfully
+                $response["response"] = 1;
+                $response["message"] = "Data Updated.";
+                echo json_encode($response);
+                } else {
+                    // user failed to store
+                    $response["response"] = 2;
+                    $response["message"] = "Unknown error occurred during Updation!";
+                    echo json_encode($response);
+                }
+         }   
+    }else {
+        $response["response"] = 3;
+        $response["message"] = "Required parameters missing!";
+        echo json_encode($response);
+    }
 
 ?>
 

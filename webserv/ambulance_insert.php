@@ -18,6 +18,10 @@ if (isset($_POST['br_id']) && isset($_POST['ambulance_no'])) {
     $Driver_License_No = $_POST['driver_license_no'];
     $Driver_Lincense_Image = $_POST['driver_lincense_image'];
     $Status = $_POST['status'];
+    $Ambulance_Id = $_POST['ambulance_id'];
+    
+    if ($_POST['ambulance_id']=="")
+    {
     // check if patient already exists 
     if ($db->isAmbulanceExisted($Ambulance_No)) {
         // Bed already allocated
@@ -41,10 +45,26 @@ if (isset($_POST['br_id']) && isset($_POST['ambulance_no'])) {
             echo json_encode($response);
         }
     }
-} else {
-    $response["response"] = 3;
-    $response["message"] = "Required parameters missing!";
-    echo json_encode($response);
-}
+} else
+         {
+             $user = $db->updateAmbulance($Ambulance_Id,$Ambulance_No,$Ambulance_Name,$Ambulance_Type,$Ambulance_Charges,$Driver_Name,$Driver_License_No,$Driver_Lincense_Image,$Status);
+             if ($user) {
+                    // user stored successfully
+                $response["response"] = 1;
+                $response["message"] = "Data Updated.";
+                echo json_encode($response);
+                } else {
+                    // user failed to store
+                    $response["response"] = 2;
+                    $response["message"] = "Unknown error occurred during Updation!";
+                    echo json_encode($response);
+                }
+         }   
+    }else {
+        $response["response"] = 3;
+        $response["message"] = "Required parameters missing!";
+        echo json_encode($response);
+    }
 ?>
+
 

@@ -3,12 +3,12 @@
 include_once 'include/DB_Functions.php';
 $db = new DB_Functions();
 
-if (isset($_POST['sp_id'])) {
+if (isset($_GET['sp_id'])) {
 
     // receiving the post params    
-    $Sp_ID = $_POST['sp_id'];
+    $Sp_ID = $_GET['sp_id'];
      
-    $user = $db->DeleteSpecialization($Sp_ID);
+    $user = $db->deleteSpecialization($Sp_ID);
     if ($user) {
             // user stored successfully
         $response["response"] = 1;

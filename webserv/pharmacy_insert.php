@@ -26,7 +26,10 @@ if (isset($_POST['pharmacy_name']) && isset($_POST['pharma_email'])) {
     $Br_id = $_POST['branch_id'];  
     $Login_password = 'pharma';
     $Login_type = 'pharma';
-
+    $Pharma_Id = $_POST['pharma_id'];
+    
+    if ($_POST['pharma_email']=="")
+    {
     
     // check if pharma already exists 
     if ($db->isPharmacyExisted($Pharma_Email)) {
@@ -69,10 +72,24 @@ if (isset($_POST['pharmacy_name']) && isset($_POST['pharma_email'])) {
             echo json_encode($response);
         }
     }
-} else {
-    $response["response"] = 3;
-    $response["message"] = "Required parameters missing!";
-    echo json_encode($response);
-}
+} else
+         {
+             $user = $db->updatePharmacy($Pharma_Email, $Pharmacy_Name,$Pharmacist_Name,$Pharma_DOB,$Pharma_Gender,$Pharma_Phone,$Pharma_Addr1,$Pharma_Addr2,$Pharma_Postal_Code,$Pharmacist_Licence_No,$Pharma_Store_No);
+             if ($user) {
+                    // user stored successfully
+                $response["response"] = 1;
+                $response["message"] = "Data Updated.";
+                echo json_encode($response);
+                } else {
+                    // user failed to store
+                    $response["response"] = 2;
+                    $response["message"] = "Unknown error occurred during Updation!";
+                    echo json_encode($response);
+                }
+         }   
+    }else {
+        $response["response"] = 3;
+        $response["message"] = "Required parameters missing!";
+        echo json_encode($response);
+    }
 ?>
-

@@ -16,7 +16,10 @@ if (isset($_POST['br_id']) && isset($_POST['company_email'])) {
     $Postal_Code = $_POST['postal_code'];
     $Company_Email = $_POST['company_email'];
     $Company_Phone = $_POST['company_phone'];
+    $Inv_Service_Id = $_POST['inv_service_id'];
     
+    if ($_POST['inv_service_id']=="")
+    {
     // check if patient already exists 
     if ($db->isInventoryServiceExisted($Company_Email)) {
         // Bed already allocated
@@ -40,10 +43,27 @@ if (isset($_POST['br_id']) && isset($_POST['company_email'])) {
             echo json_encode($response);
         }
     }
-} else {
-    $response["response"] = 3;
-    $response["message"] = "Required parameters missing!";
-    echo json_encode($response);
 }
+  
+     else
+         {
+             $user = $db->updateInstrumentService($Inv_Service_Id,$Service_Company_Name,$Company_Address,$Company_Address1,$Postal_Code,$Company_Email,$Company_Phone);
+             if ($user) {
+                    // user stored successfully
+                $response["response"] = 1;
+                $response["message"] = "Data Updated.";
+                echo json_encode($response);
+                } else {
+                    // user failed to store
+                    $response["response"] = 2;
+                    $response["message"] = "Unknown error occurred during Updation!";
+                    echo json_encode($response);
+                }
+         }   
+    }else {
+        $response["response"] = 3;
+        $response["message"] = "Required parameters missing!";
+        echo json_encode($response);
+    }
 ?>
 

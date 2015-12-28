@@ -3,12 +3,12 @@
 include_once 'include/DB_Functions.php';
 $db = new DB_Functions();
 
-if (isset($_POST['inventory_id'])) {
+if (isset($_POST['ambulance_id'])) {
 
     // receiving the post params    
-    $Inventory_Id = $_POST['inventory_id'];
+    $Ambulance_Id = $_POST['ambulance_id'];
      
-    $user = $db->deleteGeneralStore($Inventory_Id);
+    $user = $db->deleteAmbulance($Ambulance_Id);
     if ($user) {
             // user stored successfully
         $response["response"] = 1;
@@ -26,4 +26,3 @@ if (isset($_POST['inventory_id'])) {
     echo json_encode($response);
 }
 ?>
-

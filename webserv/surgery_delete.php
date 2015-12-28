@@ -3,12 +3,12 @@
 include_once 'include/DB_Functions.php';
 $db = new DB_Functions();
 
-if (isset($_POST['inventory_id'])) {
+if (isset($_POST['surgery_id'])) {
 
     // receiving the post params    
-    $Inventory_Id = $_POST['inventory_id'];
+    $Surgery_Id = $_POST['surgery_id'];
      
-    $user = $db->deleteGeneralStore($Inventory_Id);
+    $user = $db->DeleteGeneralStore($Surgery_Id);
     if ($user) {
             // user stored successfully
         $response["response"] = 1;

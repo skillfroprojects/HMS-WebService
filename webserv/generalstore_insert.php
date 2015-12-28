@@ -46,7 +46,7 @@ if (isset($_POST['br_id']) && isset($_POST['name'])) {
     } 
      else
          {
-             $user = $db->UpdateGeneralStore($Inventory_Id,$Inventory_Type,$Name,$Quantity,$Unique_Id_No,$Description,$Service_Frequency_Type);
+             $user = $db->updateGeneralStore($Inventory_Id,$Inventory_Type,$Name,$Quantity,$Unique_Id_No,$Description,$Service_Frequency_Type);
              if ($user) {
                     // user stored successfully
                 $response["response"] = 1;

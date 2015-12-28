@@ -16,6 +16,10 @@ if (isset($_POST['br_id']) && isset($_POST['ambulance_id'])) {
     $Address = $_POST['address'];
     $Date = $_POST['date']; 
     $Time = $_POST['time'];
+    $Am_Sch_Id = $_POST['am_sch_id'];
+    
+    if ($_POST['am_sch_id']=="")
+    {
     // check if patient already exists 
     if ($db->isAmbulanceSchedule($Ambulance_Id)) {
         // Bed already allocated
@@ -39,10 +43,28 @@ if (isset($_POST['br_id']) && isset($_POST['ambulance_id'])) {
             echo json_encode($response);
         }
     }
-} else {
-    $response["response"] = 3;
-    $response["message"] = "Required parameters missing!";
-    echo json_encode($response);
-}
+} else
+         {
+             $user = $db->updateAmbulanceSchedule($Am_Sch_Id,$Ambulance_Type,$Ambulance_Id,$Pat_Name,$Address,$Date,$Time);
+             if ($user) {
+                    // user stored successfully
+                $response["response"] = 1;
+                $response["message"] = "Data Updated.";
+                echo json_encode($response);
+                } else {
+                    // user failed to store
+                    $response["response"] = 2;
+                    $response["message"] = "Unknown error occurred during Updation!";
+                    echo json_encode($response);
+                }
+         }   
+    }else {
+        $response["response"] = 3;
+        $response["message"] = "Required parameters missing!";
+        echo json_encode($response);
+    }
 ?>
+
+
+
 
